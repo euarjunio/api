@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum MerchantType {
+  CPF
+  CNPJ
+}
+
+enum MerchantStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(USER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  merchant Merchant?
+
+  @@map("users")
+}
+
+model Merchant {
+  id String @id @default(uuid())
+
+  name         String
+  email        String
+  phone        String
+  document     String         @unique
+  documentType MerchantType   @default(CNPJ) @map("document_type")
+  status       MerchantStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  apikey Apikey[]
+
+  @@index([userId])
+  @@map("merchants")
+}
+
+model Apikey {
+  id String @id @default(uuid())
+
+  name        String
+  value       String @unique
+  description String
+  status      String @default("ACTIVE")
+
+  createdAt DateTime @default(now())
+
+  merchantId String
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@map("apikeys")
+}

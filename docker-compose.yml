@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:18
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pdw@123
+      POSTGRES_DB: gateway
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
