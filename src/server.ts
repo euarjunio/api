@@ -1,6 +1,7 @@
 import { env } from "./config/env.ts";
 
 import fastify from "fastify";
+import { fastifyCors } from "@fastify/cors";
 import { fastifySwagger } from "@fastify/swagger";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
 import {
@@ -17,6 +18,10 @@ import { loginAuth } from "./routes/auth/login.ts";
 import { merchantCreate } from "./routes/merchant/create.ts";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
+
+app.register(fastifyCors, {
+  origin: true,
+});
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
