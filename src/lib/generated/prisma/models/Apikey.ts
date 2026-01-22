@@ -31,6 +31,7 @@ export type ApikeyMinAggregateOutputType = {
   description: string | null
   status: string | null
   createdAt: Date | null
+  updatedAt: Date | null
   merchantId: string | null
 }
 
@@ -41,6 +42,7 @@ export type ApikeyMaxAggregateOutputType = {
   description: string | null
   status: string | null
   createdAt: Date | null
+  updatedAt: Date | null
   merchantId: string | null
 }
 
@@ -51,6 +53,7 @@ export type ApikeyCountAggregateOutputType = {
   description: number
   status: number
   createdAt: number
+  updatedAt: number
   merchantId: number
   _all: number
 }
@@ -63,6 +66,7 @@ export type ApikeyMinAggregateInputType = {
   description?: true
   status?: true
   createdAt?: true
+  updatedAt?: true
   merchantId?: true
 }
 
@@ -73,6 +77,7 @@ export type ApikeyMaxAggregateInputType = {
   description?: true
   status?: true
   createdAt?: true
+  updatedAt?: true
   merchantId?: true
 }
 
@@ -83,6 +88,7 @@ export type ApikeyCountAggregateInputType = {
   description?: true
   status?: true
   createdAt?: true
+  updatedAt?: true
   merchantId?: true
   _all?: true
 }
@@ -166,6 +172,7 @@ export type ApikeyGroupByOutputType = {
   description: string
   status: string
   createdAt: Date
+  updatedAt: Date
   merchantId: string
   _count: ApikeyCountAggregateOutputType | null
   _min: ApikeyMinAggregateOutputType | null
@@ -197,6 +204,7 @@ export type ApikeyWhereInput = {
   description?: Prisma.StringFilter<"Apikey"> | string
   status?: Prisma.StringFilter<"Apikey"> | string
   createdAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   merchantId?: Prisma.StringFilter<"Apikey"> | string
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
 }
@@ -208,6 +216,7 @@ export type ApikeyOrderByWithRelationInput = {
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
   merchant?: Prisma.MerchantOrderByWithRelationInput
 }
@@ -222,6 +231,7 @@ export type ApikeyWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringFilter<"Apikey"> | string
   status?: Prisma.StringFilter<"Apikey"> | string
   createdAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   merchantId?: Prisma.StringFilter<"Apikey"> | string
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
 }, "id" | "value">
@@ -233,6 +243,7 @@ export type ApikeyOrderByWithAggregationInput = {
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
   _count?: Prisma.ApikeyCountOrderByAggregateInput
   _max?: Prisma.ApikeyMaxOrderByAggregateInput
@@ -249,6 +260,7 @@ export type ApikeyScalarWhereWithAggregatesInput = {
   description?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
   status?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Apikey"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Apikey"> | Date | string
   merchantId?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
 }
 
@@ -259,6 +271,7 @@ export type ApikeyCreateInput = {
   description: string
   status?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutApikeyInput
 }
 
@@ -269,6 +282,7 @@ export type ApikeyUncheckedCreateInput = {
   description: string
   status?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   merchantId: string
 }
 
@@ -279,6 +293,7 @@ export type ApikeyUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutApikeyNestedInput
 }
 
@@ -289,6 +304,7 @@ export type ApikeyUncheckedUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -299,6 +315,7 @@ export type ApikeyCreateManyInput = {
   description: string
   status?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
   merchantId: string
 }
 
@@ -309,6 +326,7 @@ export type ApikeyUpdateManyMutationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApikeyUncheckedUpdateManyInput = {
@@ -318,6 +336,7 @@ export type ApikeyUncheckedUpdateManyInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -338,6 +357,7 @@ export type ApikeyCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
 }
 
@@ -348,6 +368,7 @@ export type ApikeyMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
 }
 
@@ -358,6 +379,7 @@ export type ApikeyMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
 }
 
@@ -410,6 +432,7 @@ export type ApikeyCreateWithoutMerchantInput = {
   description: string
   status?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ApikeyUncheckedCreateWithoutMerchantInput = {
@@ -419,6 +442,7 @@ export type ApikeyUncheckedCreateWithoutMerchantInput = {
   description: string
   status?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ApikeyCreateOrConnectWithoutMerchantInput = {
@@ -457,6 +481,7 @@ export type ApikeyScalarWhereInput = {
   description?: Prisma.StringFilter<"Apikey"> | string
   status?: Prisma.StringFilter<"Apikey"> | string
   createdAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   merchantId?: Prisma.StringFilter<"Apikey"> | string
 }
 
@@ -467,6 +492,7 @@ export type ApikeyCreateManyMerchantInput = {
   description: string
   status?: string
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ApikeyUpdateWithoutMerchantInput = {
@@ -476,6 +502,7 @@ export type ApikeyUpdateWithoutMerchantInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApikeyUncheckedUpdateWithoutMerchantInput = {
@@ -485,6 +512,7 @@ export type ApikeyUncheckedUpdateWithoutMerchantInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ApikeyUncheckedUpdateManyWithoutMerchantInput = {
@@ -494,6 +522,7 @@ export type ApikeyUncheckedUpdateManyWithoutMerchantInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -505,6 +534,7 @@ export type ApikeySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   description?: boolean
   status?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   merchantId?: boolean
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["apikey"]>
@@ -516,6 +546,7 @@ export type ApikeySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   description?: boolean
   status?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   merchantId?: boolean
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["apikey"]>
@@ -527,6 +558,7 @@ export type ApikeySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   description?: boolean
   status?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   merchantId?: boolean
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["apikey"]>
@@ -538,10 +570,11 @@ export type ApikeySelectScalar = {
   description?: boolean
   status?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   merchantId?: boolean
 }
 
-export type ApikeyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "value" | "description" | "status" | "createdAt" | "merchantId", ExtArgs["result"]["apikey"]>
+export type ApikeyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "value" | "description" | "status" | "createdAt" | "updatedAt" | "merchantId", ExtArgs["result"]["apikey"]>
 export type ApikeyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
 }
@@ -564,6 +597,7 @@ export type $ApikeyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     description: string
     status: string
     createdAt: Date
+    updatedAt: Date
     merchantId: string
   }, ExtArgs["result"]["apikey"]>
   composites: {}
@@ -995,6 +1029,7 @@ export interface ApikeyFieldRefs {
   readonly description: Prisma.FieldRef<"Apikey", 'String'>
   readonly status: Prisma.FieldRef<"Apikey", 'String'>
   readonly createdAt: Prisma.FieldRef<"Apikey", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Apikey", 'DateTime'>
   readonly merchantId: Prisma.FieldRef<"Apikey", 'String'>
 }
     

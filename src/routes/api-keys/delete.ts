@@ -1,0 +1,54 @@
+import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
+import { z } from "zod/v4";
+
+import { verifyJwt } from "../hooks/verify-jwt.ts";
+import { checkUserRequest } from "../../utils/check-user-request.ts";
+import { prisma } from "../../lib/prisma.ts";
+
+export const apiKeysDelete: FastifyPluginAsyncZod = async (app) => {
+  app
+    .addHook("onRequest", verifyJwt)
+    .delete(
+      "/api-keys/:id",
+      {
+        schema: {
+          tags: ["API Keys"],
+          summary: "Deletar API key",
+          description: "Remove uma API key específica do merchant do usuário",
+          params: z.object({ id: z.uuid() }),
+          response: {
+            200: z.object({
+              message: z.string(),
+            }),
+            404: z.object({
+              message: z.string(),
+            }),
+            401: z.object({
+              message: z.string(),
+            }),
+          },
+        },
+      },
+      async (request, reply) => {
+        const { id } = request.params;
+        const { id: userId } = await checkUserRequest(request);
+
+        const apiKey = await prisma.apikey.findUnique({
+          where: { id },
+          include: { merchant: true },
+        });
+
+        if (!apiKey || apiKey.merchant.userId !== userId) {
+          return reply.status(404).send({ message: "API key not found" });
+        }
+
+        await prisma.apikey.delete({
+          where: { id },
+        });
+
+        return reply
+          .status(200)
+          .send({ message: "API key deleted successfully" });
+      },
+    );
+};

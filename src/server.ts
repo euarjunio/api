@@ -15,7 +15,15 @@ import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import { registerAuth } from "./routes/auth/register.ts";
 import { loginAuth } from "./routes/auth/login.ts";
+
 import { merchantCreate } from "./routes/merchant/create.ts";
+import { merchantList } from "./routes/merchant/list.ts";
+import { merchantUpdate } from "./routes/merchant/update.ts";
+
+import { apiKeysCreate } from "./routes/api-keys/create.ts";
+import { apiKeysList } from "./routes/api-keys/list.ts";
+import { apiKeysDelete } from "./routes/api-keys/delete.ts";
+import { BadRequestError } from "./routes/errors/bad-request-error.ts";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -36,21 +44,40 @@ app.register(fastifySwagger, {
       title: "Gateway API",
       version: "1.0.0",
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 });
 
-app.register(fastifySwaggerUi, {
+env.NODE_ENV === "development" && app.register(fastifySwaggerUi, {
   routePrefix: "/docs",
 });
 
-app.register(registerAuth, { prefix: "/v1/auth/" });
-app.register(loginAuth, { prefix: "/v1/auth/" });
+app.register(registerAuth, { prefix: "/v1/auth" });
+app.register(loginAuth, { prefix: "/v1/auth" });
 
-app.register(merchantCreate, { prefix: "/v1/" });
+app.register(merchantCreate, { prefix: "/v1" });
+app.register(merchantList, { prefix: "/v1" });
+app.register(merchantUpdate, { prefix: "/v1" });
+
+app.register(apiKeysCreate, { prefix: "/v1" });
+app.register(apiKeysList, { prefix: "/v1" });
+app.register(apiKeysDelete, { prefix: "/v1" });
 
 app.setErrorHandler((error, request, reply) => {
   console.error(error);
+
+  if (error instanceof BadRequestError) {
+    return reply.status(error.statusCode).send({ message: error.message });
+  }
 
   return reply.status(500).send({ message: "Internal Server Error" });
 });

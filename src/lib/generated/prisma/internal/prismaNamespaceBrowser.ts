@@ -107,6 +107,7 @@ export const ApikeyScalarFieldEnum = {
   description: 'description',
   status: 'status',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   merchantId: 'merchantId'
 } as const
 

@@ -9,10 +9,21 @@ export const registerAuth: FastifyPluginAsyncZod = async (app) => {
     "/register",
     {
       schema: {
+        tags: ["Auth"],
+        summary: "Registrar novo usuário",
+        description: "Cria uma nova conta de usuário no sistema",
         body: z.object({
           email: z.email(),
           password: z.string().min(6),
         }),
+        response: {
+          201: z.object({
+            message: z.string(),
+          }),
+          400: z.object({
+            message: z.string(),
+          }),
+        },
       },
     },
     async (request, reply) => {

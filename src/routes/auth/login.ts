@@ -11,10 +11,26 @@ export const loginAuth: FastifyPluginAsyncZod = async (app) => {
     "/login",
     {
       schema: {
+        tags: ["Auth"],
+        summary: "Autenticar usuário",
+        description: "Realiza login e retorna token JWT",
         body: z.object({
           email: z.email(),
           password: z.string().min(6),
         }),
+        response: {
+          200: z.object({
+            token: z.string(),
+            user: z.object({
+              id: z.string(),
+              email: z.string(),
+              role: z.string(),
+            }),
+          }),
+          401: z.object({
+            message: z.string(),
+          }),
+        },
       },
     },
     async (request, reply) => {
