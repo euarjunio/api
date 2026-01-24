@@ -24,6 +24,7 @@ import { apiKeysCreate } from "./routes/api-keys/create.ts";
 import { apiKeysList } from "./routes/api-keys/list.ts";
 import { apiKeysDelete } from "./routes/api-keys/delete.ts";
 import { BadRequestError } from "./routes/errors/bad-request-error.ts";
+import { ZodError } from "zod";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -72,7 +73,9 @@ app.register(apiKeysCreate, { prefix: "/v1" });
 app.register(apiKeysList, { prefix: "/v1" });
 app.register(apiKeysDelete, { prefix: "/v1" });
 
-app.setErrorHandler((error, request, reply) => {
+app.setErrorHandler((error: any, request, reply) => {
+  console.error(error)
+
   if (error instanceof BadRequestError) {
     return reply.status(error.statusCode).send({ message: error.message });
   }
