@@ -73,8 +73,6 @@ app.register(apiKeysList, { prefix: "/v1" });
 app.register(apiKeysDelete, { prefix: "/v1" });
 
 app.setErrorHandler((error, request, reply) => {
-  console.error(error);
-
   if (error instanceof BadRequestError) {
     return reply.status(error.statusCode).send({ message: error.message });
   }
