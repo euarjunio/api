@@ -12,9 +12,8 @@ RUN npm ci
 # Copiar el resto del código
 COPY . .
 
-# Generar Prisma Client (DATABASE_URL dummy solo para el build)
-# Prisma generate no necesita una conexión real, solo el schema
-RUN DATABASE_URL="postgresql://neondb_owner:npg_aXnZRm8Oe0YQ@ep-super-resonance-acbw5n3b-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require" npx prisma generate
+# Generar Prisma Client
+RUN npx prisma generate
 
 EXPOSE 80
 
