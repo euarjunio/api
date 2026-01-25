@@ -5,6 +5,7 @@ import { fastifyCors } from "@fastify/cors";
 import { fastifySwagger } from "@fastify/swagger";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
 import {
+  hasZodFastifySchemaValidationErrors,
   jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
@@ -24,9 +25,18 @@ import { apiKeysCreate } from "./routes/api-keys/create.ts";
 import { apiKeysList } from "./routes/api-keys/list.ts";
 import { apiKeysDelete } from "./routes/api-keys/delete.ts";
 import { BadRequestError } from "./routes/errors/bad-request-error.ts";
-import { ZodError } from "zod";
 
-const app = fastify().withTypeProvider<ZodTypeProvider>();
+const app = fastify({
+  logger: {
+    transport: {
+      target: 'pino-pretty',
+      options: {
+        translateTime: 'HH:MM:ss Z',
+        ignore: 'pid,hostname',
+      },
+    },
+  },
+}).withTypeProvider<ZodTypeProvider>();
 
 app.register(fastifyCors, {
   origin: true,
@@ -74,7 +84,20 @@ app.register(apiKeysList, { prefix: "/v1" });
 app.register(apiKeysDelete, { prefix: "/v1" });
 
 app.setErrorHandler((error: any, request, reply) => {
-  console.error(error)
+  //console.error(error)
+
+  if (hasZodFastifySchemaValidationErrors(error)) {
+    return reply.code(400).send({
+      error: 'Response Validation Error',
+      message: "Request doesn't match the schema",
+      statusCode: 400,
+      details: {
+        issues: error.validation,
+        method: request.method,
+        url: request.url,
+      },
+    });
+  }
 
   if (error instanceof BadRequestError) {
     return reply.status(error.statusCode).send({ message: error.message });
