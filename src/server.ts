@@ -84,7 +84,7 @@ app.register(apiKeysList, { prefix: "/v1" });
 app.register(apiKeysDelete, { prefix: "/v1" });
 
 app.setErrorHandler((error: any, request, reply) => {
-  //console.error(error)
+  console.error(error)
 
   if (hasZodFastifySchemaValidationErrors(error)) {
     return reply.code(400).send({
