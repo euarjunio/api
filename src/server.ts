@@ -26,7 +26,7 @@ import { apiKeysList } from "./routes/api-keys/list.ts";
 import { apiKeysDelete } from "./routes/api-keys/delete.ts";
 import { BadRequestError } from "./routes/errors/bad-request-error.ts";
 
-const app = fastify({
+const app = fastify(/* {
   logger: {
     transport: {
       target: 'pino-pretty',
@@ -36,7 +36,7 @@ const app = fastify({
       },
     },
   },
-}).withTypeProvider<ZodTypeProvider>();
+} */).withTypeProvider<ZodTypeProvider>();
 
 app.register(fastifyCors, {
   origin: true,
@@ -49,28 +49,30 @@ app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
 });
 
-app.register(fastifySwagger, {
-  openapi: {
-    info: {
-      title: "Gateway API",
-      version: "1.0.0",
-    },
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
+if (env.NODE_ENV === "development") {
+  app.register(fastifySwagger, {
+    openapi: {
+      info: {
+        title: "Gateway API",
+        version: "1.0.0",
+      },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT",
+          },
         },
       },
     },
-  },
-  transform: jsonSchemaTransform,
-});
+    transform: jsonSchemaTransform,
+  });
 
-env.NODE_ENV === "development" && app.register(fastifySwaggerUi, {
-  routePrefix: "/docs",
-});
+  app.register(fastifySwaggerUi, {
+    routePrefix: "/docs",
+  });
+}
 
 app.register(registerAuth, { prefix: "/v1/auth" });
 app.register(loginAuth, { prefix: "/v1/auth" });
