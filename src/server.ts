@@ -11,6 +11,7 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import fastifyJwt from "@fastify/jwt";
+import { z } from "zod/v4";
 
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
@@ -73,6 +74,52 @@ if (env.NODE_ENV === "development") {
     routePrefix: "/docs",
   });
 }
+
+app.get(
+  "/health",
+  {
+    schema: {
+      tags: ["Health"],
+      summary: "Health check",
+      description: "Verifica o status da API",
+      response: {
+        200: z.object({
+          status: z.string(),
+          timestamp: z.string(),
+        }),
+      },
+    },
+  },
+  async (request, reply) => {
+    return reply.status(200).send({
+      status: "ok",
+      timestamp: new Date().toISOString(),
+    });
+  },
+);
+
+app.get(
+  "/",
+  {
+    schema: {
+      tags: ["Root"],
+      summary: "Root endpoint",
+      description: "Endpoint raiz da API",
+      response: {
+        200: z.object({
+          message: z.string(),
+          version: z.string(),
+        }),
+      },
+    },
+  },
+  async (request, reply) => {
+    return reply.status(200).send({
+      message: "Gateway API",
+      version: "1.0.0",
+    });
+  },
+);
 
 app.register(registerAuth, { prefix: "/v1/auth" });
 app.register(loginAuth, { prefix: "/v1/auth" });
