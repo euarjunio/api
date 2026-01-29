@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsx --env-file .env src/server.ts",
+    "start": "tsx src/server.ts",
     "dev": "tsx watch src/server.ts"
   },
   "keywords": [],
