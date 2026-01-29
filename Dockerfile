@@ -12,15 +12,15 @@ RUN npm ci
 # Copiar el resto del código
 COPY . .
 
-# Aceitar DATABASE_URL como build arg
+# Generar Prisma Client (não precisa de DATABASE_URL)
+RUN npx prisma generate
+
+# Aceitar variáveis de ambiente para runtime
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 
 ARG PORT
 ENV PORT=$PORT
-
-# Generar Prisma Client
-RUN npx prisma generate
 
 EXPOSE $PORT
 
