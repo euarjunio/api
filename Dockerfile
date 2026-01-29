@@ -9,15 +9,15 @@ COPY prisma ./prisma/
 # Instalar TODAS las dependencias (incluyendo devDependencies para Prisma)
 RUN npm ci
 
+# Aceitar DATABASE_URL como build arg ANTES de gerar o Prisma Client
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+
 # Copiar el resto del código
 COPY . .
 
-# Generar Prisma Client (não precisa de DATABASE_URL)
+# Generar Prisma Client (agora DATABASE_URL está disponível)
 RUN npx prisma generate
-
-# Aceitar variáveis de ambiente para runtime
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
 
 ARG PORT
 ENV PORT=$PORT
