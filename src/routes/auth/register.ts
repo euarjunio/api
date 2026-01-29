@@ -21,17 +21,22 @@ export const registerAuth: FastifyPluginAsyncZod = async (app) => {
     async (request, reply) => {
       const { email, password } = request.body;
 
+      request.log.info({ email }, 'Registration attempt');
+
       const existingUser = await prisma.user.findUnique({ where: { email } });
 
       if (existingUser) {
+        request.log.warn({ email }, 'Registration failed: email already exists');
         return reply.status(400).send({ message: "email já cadastrado" });
       }
 
       const passwordHash = await hash(password);
 
-      await prisma.user.create({
+      const user = await prisma.user.create({
         data: { email, passwordHash: passwordHash, role: "USER" },
       });
+
+      request.log.info({ userId: user.id, email }, 'User registered successfully');
 
       return reply
         .status(201)

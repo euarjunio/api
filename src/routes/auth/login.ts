@@ -36,19 +36,25 @@ export const loginAuth: FastifyPluginAsyncZod = async (app) => {
     async (request, reply) => {
       const { email, password } = request.body;
 
+      request.log.info({ email }, 'Login attempt');
+
       const user = await prisma.user.findUnique({ where: { email } });
 
       if (!user) {
+        request.log.warn({ email }, 'Login failed: user not found');
         return reply.status(401).send({ message: "email ou senha invalidos" });
       }
 
       const passwordHash = await verify(user.passwordHash, password);
 
       if (!passwordHash) {
+        request.log.warn({ email, userId: user.id }, 'Login failed: invalid password');
         return reply.status(401).send({ message: "email ou senha invalidos" });
       }
 
       const token = jwt.sign({ id: user.id, role: user.role }, env.JWT_SECRET);
+
+      request.log.info({ userId: user.id, email }, 'Login successful');
 
       return reply.status(200).send({
         token,

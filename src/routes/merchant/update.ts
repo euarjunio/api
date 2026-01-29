@@ -36,11 +36,14 @@ export const merchantUpdate: FastifyPluginAsyncZod = async (app) => {
 
       const { id } = await checkUserRequest(request);
 
+      request.log.info({ userId: id, updates: { name, email, phone } }, 'Updating merchant');
+
       const existingMerchant = await prisma.merchant.findUnique({
         where: { userId: id },
       });
 
       if (!existingMerchant) {
+        request.log.warn({ userId: id }, 'Merchant update failed: merchant not found');
         return reply.status(404).send({
           message: "Merchant not found",
         });
@@ -54,6 +57,8 @@ export const merchantUpdate: FastifyPluginAsyncZod = async (app) => {
           phone: phone ?? existingMerchant.phone,
         },
       });
+
+      request.log.info({ merchantId: merchants.id, userId: id }, 'Merchant updated successfully');
 
       return reply.status(200).send({ merchants: merchants });
     },

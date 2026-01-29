@@ -33,11 +33,14 @@ export const apiKeysCreate: FastifyPluginAsyncZod = async (app) => {
 
       const { id } = await checkUserRequest(request);
 
+      request.log.info({ userId: id, name }, 'Creating API key');
+
       const existingMerchant = await prisma.merchant.findUnique({
         where: { userId: id, status: "ACTIVE" },
       });
 
       if (!existingMerchant) {
+        request.log.warn({ userId: id }, 'API key creation failed: merchant not found');
         return reply.status(404).send({ message: "Merchant not found" });
       }
 
@@ -52,6 +55,8 @@ export const apiKeysCreate: FastifyPluginAsyncZod = async (app) => {
           status: "ACTIVE",
         },
       });
+
+      request.log.info({ apiKeyId: apiKey.id, merchantId: existingMerchant.id }, 'API key created successfully');
 
       return reply.status(201).send({
         apiKey: apiKey,

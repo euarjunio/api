@@ -43,11 +43,14 @@ export const merchantCreate: FastifyPluginAsyncZod = async (app) => {
 
       const { id } = await checkUserRequest(request);
 
+      request.log.info({ userId: id, document }, 'Creating merchant');
+
       const existingUserMerchant = await prisma.merchant.findUnique({
         where: { userId: id },
       });
 
       if (existingUserMerchant) {
+        request.log.warn({ userId: id }, 'Merchant creation failed: user already has merchant');
         return reply.status(409).send({
           message: "Você já possui um logista cadastrado",
         });
@@ -58,6 +61,7 @@ export const merchantCreate: FastifyPluginAsyncZod = async (app) => {
       });
 
       if (existingMerchantByDocument) {
+        request.log.warn({ document }, 'Merchant creation failed: document already exists');
         return reply.status(409).send({
           message: "Documento já cadastrado",
         });
@@ -73,6 +77,8 @@ export const merchantCreate: FastifyPluginAsyncZod = async (app) => {
           userId: id,
         },
       });
+
+      request.log.info({ merchantId: merchants.id, userId: id }, 'Merchant created successfully');
 
       return reply.status(201).send({
         merchants: {

@@ -25,9 +25,13 @@ export const apiKeysList: FastifyPluginAsyncZod = async (app) => {
     }, async (request, reply) => {
       const { id } = await checkUserRequest(request);
 
+      request.log.info({ userId: id }, 'Listing API keys');
+
       const apiKeys = await prisma.apikey.findMany({
         where: { merchant: { userId: id } },
       });
+
+      request.log.info({ userId: id, count: apiKeys.length }, 'API keys listed');
 
       return reply.status(200).send({ apiKeys: apiKeys });
     });

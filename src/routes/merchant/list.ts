@@ -24,9 +24,13 @@ export const merchantList: FastifyPluginAsyncZod = async (app) => {
     }, async (request, reply) => {
       const { id } = await checkUserRequest(request);
 
+      request.log.info({ userId: id }, 'Listing merchants');
+
       const merchants = await prisma.merchant.findMany({
         where: { userId: id },
       });
+
+      request.log.info({ userId: id, count: merchants.length }, 'Merchants listed');
 
       return reply.status(200).send({ merchants: merchants });
     });

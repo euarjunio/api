@@ -33,18 +33,23 @@ export const apiKeysDelete: FastifyPluginAsyncZod = async (app) => {
         const { id } = request.params;
         const { id: userId } = await checkUserRequest(request);
 
+        request.log.info({ apiKeyId: id, userId }, 'Deleting API key');
+
         const apiKey = await prisma.apikey.findUnique({
           where: { id },
           include: { merchant: true },
         });
 
         if (!apiKey || apiKey.merchant.userId !== userId) {
+          request.log.warn({ apiKeyId: id, userId }, 'API key deletion failed: not found or unauthorized');
           return reply.status(404).send({ message: "API key not found" });
         }
 
         await prisma.apikey.delete({
           where: { id },
         });
+
+        request.log.info({ apiKeyId: id, userId }, 'API key deleted successfully');
 
         return reply
           .status(200)
