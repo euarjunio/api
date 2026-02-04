@@ -53,6 +53,8 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Merchant: 'Merchant',
+  Customer: 'Customer',
+  Charges: 'Charges',
   Apikey: 'Apikey'
 } as const
 
@@ -92,12 +94,47 @@ export const MerchantScalarFieldEnum = {
   document: 'document',
   documentType: 'documentType',
   status: 'status',
+  metadata: 'metadata',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'
 } as const
 
 export type MerchantScalarFieldEnum = (typeof MerchantScalarFieldEnum)[keyof typeof MerchantScalarFieldEnum]
+
+
+export const CustomerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  document: 'document',
+  documentType: 'documentType',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
+
+
+export const ChargesScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  description: 'description',
+  externalId: 'externalId',
+  status: 'status',
+  type: 'type',
+  qrCode: 'qrCode',
+  expiresIn: 'expiresIn',
+  metadata: 'metadata',
+  merchantId: 'merchantId',
+  customerId: 'customerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ChargesScalarFieldEnum = (typeof ChargesScalarFieldEnum)[keyof typeof ChargesScalarFieldEnum]
 
 
 export const ApikeyScalarFieldEnum = {
@@ -122,10 +159,35 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

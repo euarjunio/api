@@ -386,6 +386,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Merchant: 'Merchant',
+  Customer: 'Customer',
+  Charges: 'Charges',
   Apikey: 'Apikey'
 } as const
 
@@ -402,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "merchant" | "apikey"
+    modelProps: "user" | "merchant" | "customer" | "charges" | "apikey"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -554,6 +556,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Customer: {
+      payload: Prisma.$CustomerPayload<ExtArgs>
+      fields: Prisma.CustomerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CustomerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CustomerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload>
+        }
+        findFirst: {
+          args: Prisma.CustomerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CustomerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload>
+        }
+        findMany: {
+          args: Prisma.CustomerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload>[]
+        }
+        create: {
+          args: Prisma.CustomerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload>
+        }
+        createMany: {
+          args: Prisma.CustomerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CustomerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload>[]
+        }
+        delete: {
+          args: Prisma.CustomerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload>
+        }
+        update: {
+          args: Prisma.CustomerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload>
+        }
+        deleteMany: {
+          args: Prisma.CustomerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CustomerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CustomerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload>[]
+        }
+        upsert: {
+          args: Prisma.CustomerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CustomerPayload>
+        }
+        aggregate: {
+          args: Prisma.CustomerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCustomer>
+        }
+        groupBy: {
+          args: Prisma.CustomerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CustomerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CustomerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CustomerCountAggregateOutputType> | number
+        }
+      }
+    }
+    Charges: {
+      payload: Prisma.$ChargesPayload<ExtArgs>
+      fields: Prisma.ChargesFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ChargesFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ChargesFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload>
+        }
+        findFirst: {
+          args: Prisma.ChargesFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ChargesFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload>
+        }
+        findMany: {
+          args: Prisma.ChargesFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload>[]
+        }
+        create: {
+          args: Prisma.ChargesCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload>
+        }
+        createMany: {
+          args: Prisma.ChargesCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ChargesCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload>[]
+        }
+        delete: {
+          args: Prisma.ChargesDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload>
+        }
+        update: {
+          args: Prisma.ChargesUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload>
+        }
+        deleteMany: {
+          args: Prisma.ChargesDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ChargesUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ChargesUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload>[]
+        }
+        upsert: {
+          args: Prisma.ChargesUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChargesPayload>
+        }
+        aggregate: {
+          args: Prisma.ChargesAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCharges>
+        }
+        groupBy: {
+          args: Prisma.ChargesGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChargesGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ChargesCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChargesCountAggregateOutputType> | number
+        }
+      }
+    }
     Apikey: {
       payload: Prisma.$ApikeyPayload<ExtArgs>
       fields: Prisma.ApikeyFieldRefs
@@ -687,12 +837,47 @@ export const MerchantScalarFieldEnum = {
   document: 'document',
   documentType: 'documentType',
   status: 'status',
+  metadata: 'metadata',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'
 } as const
 
 export type MerchantScalarFieldEnum = (typeof MerchantScalarFieldEnum)[keyof typeof MerchantScalarFieldEnum]
+
+
+export const CustomerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  document: 'document',
+  documentType: 'documentType',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
+
+
+export const ChargesScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  description: 'description',
+  externalId: 'externalId',
+  status: 'status',
+  type: 'type',
+  qrCode: 'qrCode',
+  expiresIn: 'expiresIn',
+  metadata: 'metadata',
+  merchantId: 'merchantId',
+  customerId: 'customerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ChargesScalarFieldEnum = (typeof ChargesScalarFieldEnum)[keyof typeof ChargesScalarFieldEnum]
 
 
 export const ApikeyScalarFieldEnum = {
@@ -717,12 +902,37 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -802,6 +1012,20 @@ export type ListEnumMerchantStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -812,6 +1036,48 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ChargeStatus'
+ */
+export type EnumChargeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChargeStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ChargeStatus[]'
+ */
+export type ListEnumChargeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChargeStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ApiKeyStatus'
+ */
+export type EnumApiKeyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApiKeyStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ApiKeyStatus[]'
+ */
+export type ListEnumApiKeyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApiKeyStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -911,6 +1177,8 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   merchant?: Prisma.MerchantOmit
+  customer?: Prisma.CustomerOmit
+  charges?: Prisma.ChargesOmit
   apikey?: Prisma.ApikeyOmit
 }
 

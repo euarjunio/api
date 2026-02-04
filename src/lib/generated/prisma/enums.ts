@@ -31,3 +31,22 @@ export const MerchantStatus = {
 } as const
 
 export type MerchantStatus = (typeof MerchantStatus)[keyof typeof MerchantStatus]
+
+
+export const ChargeStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  FAILED: 'FAILED',
+  CANCELED: 'CANCELED',
+  REFUNDED: 'REFUNDED'
+} as const
+
+export type ChargeStatus = (typeof ChargeStatus)[keyof typeof ChargeStatus]
+
+
+export const ApiKeyStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type ApiKeyStatus = (typeof ApiKeyStatus)[keyof typeof ApiKeyStatus]

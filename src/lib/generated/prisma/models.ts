@@ -10,5 +10,7 @@
  */
 export type * from './models/User.ts'
 export type * from './models/Merchant.ts'
+export type * from './models/Customer.ts'
+export type * from './models/Charges.ts'
 export type * from './models/Apikey.ts'
 export type * from './commonInputTypes.ts'

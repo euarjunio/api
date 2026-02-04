@@ -4,19 +4,22 @@ import { prisma } from "../../lib/prisma.ts";
 import { verifyJwt } from "../hooks/verify-jwt.ts";
 import { z } from "zod/v4";
 
-export const merchantList: FastifyPluginAsyncZod = async (app) => {
+export const getListRoute: FastifyPluginAsyncZod = async (app) => {
   app
     .addHook("onRequest", verifyJwt)
-    .get("/merchants", {
+    .get("/", {
       schema: {
-        tags: ["Merchants"],
-        summary: "Listar merchants",
-        description: "Retorna todos os merchants do usuário autenticado",
+        tags: ["Merchant"],
+        summary: "Listar logistas",
+        description: "Retorna o logista do usuário autenticado",
         response: {
           200: z.object({
-            merchants: z.array(z.any()),
+            merchant: z.any(),
           }),
           401: z.object({
+            message: z.string(),
+          }),
+          404: z.object({
             message: z.string(),
           }),
         },
@@ -26,12 +29,12 @@ export const merchantList: FastifyPluginAsyncZod = async (app) => {
 
       request.log.info({ userId: id }, 'Listing merchants');
 
-      const merchants = await prisma.merchant.findMany({
+      const merchant = await prisma.merchant.findUnique({
         where: { userId: id },
       });
 
-      request.log.info({ userId: id, count: merchants.length }, 'Merchants listed');
+      request.log.info({ userId: id }, 'Merchant listed');
 
-      return reply.status(200).send({ merchants: merchants });
+      return reply.status(200).send({ merchant: merchant ?? {} });
     });
 };

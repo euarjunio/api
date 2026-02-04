@@ -5,14 +5,14 @@ import { checkUserRequest } from "../../utils/check-user-request.ts";
 import { prisma } from "../../lib/prisma.ts";
 import { verifyJwt } from "../hooks/verify-jwt.ts";
 
-export const merchantUpdate: FastifyPluginAsyncZod = async (app) => {
+export const patchRoute: FastifyPluginAsyncZod = async (app) => {
   app.addHook("onRequest", verifyJwt).patch(
-    "/merchants",
+    "/",
     {
       schema: {
-        tags: ["Merchants"],
-        summary: "Atualizar merchant",
-        description: "Atualiza dados do merchant do usuário autenticado",
+        tags: ["Merchant"],
+        summary: "Atualizar logista",
+        description: "Atualiza dados do logista do usuário autenticado",
         body: z.object({
           name: z.string().optional(),
           email: z.email().optional(),
@@ -20,7 +20,7 @@ export const merchantUpdate: FastifyPluginAsyncZod = async (app) => {
         }),
         response: {
           200: z.object({
-            merchants: z.any(),
+            merchant: z.any(),
           }),
           404: z.object({
             message: z.string(),
@@ -49,7 +49,7 @@ export const merchantUpdate: FastifyPluginAsyncZod = async (app) => {
         });
       }
 
-      const merchants = await prisma.merchant.update({
+      const merchant = await prisma.merchant.update({
         where: { userId: id },
         data: {
           name: name ?? existingMerchant.name,
@@ -58,9 +58,9 @@ export const merchantUpdate: FastifyPluginAsyncZod = async (app) => {
         },
       });
 
-      request.log.info({ merchantId: merchants.id, userId: id }, 'Merchant updated successfully');
+      request.log.info({ merchantId: merchant.id, userId: id }, 'Merchant updated successfully');
 
-      return reply.status(200).send({ merchants: merchants });
+      return reply.status(200).send({ merchant: merchant });
     },
   );
 };

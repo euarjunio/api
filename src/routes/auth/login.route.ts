@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import { prisma } from "../../lib/prisma.ts";
 import { env } from "../../config/env.ts";
 
-export const loginAuth: FastifyPluginAsyncZod = async (app) => {
+export const loginRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
     "/login",
     {

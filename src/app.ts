@@ -11,21 +11,15 @@ import {
     validatorCompiler,
 } from "fastify-type-provider-zod";
 import fastifyJwt from "@fastify/jwt";
-import { z } from "zod/v4";
 
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
-import { registerAuth } from "./routes/auth/register.ts";
-import { loginAuth } from "./routes/auth/login.ts";
-
-import { merchantCreate } from "./routes/merchant/create.ts";
-import { merchantList } from "./routes/merchant/list.ts";
-import { merchantUpdate } from "./routes/merchant/update.ts";
-
-import { apiKeysCreate } from "./routes/api-keys/create.ts";
-import { apiKeysList } from "./routes/api-keys/list.ts";
-import { apiKeysDelete } from "./routes/api-keys/delete.ts";
 import { BadRequestError } from "./routes/errors/bad-request-error.ts";
+
+import { authRoutes } from "./routes/auth/index.ts";
+import { merchantRoutes } from "./routes/merchant/index.ts";
+import { apiKeyRoutes } from "./routes/api-key/index.ts";
+import { systemRoutes } from "./routes/system/index.ts";
 
 const server = fastify({
     logger: {
@@ -78,62 +72,10 @@ if (env.NODE_ENV === "development") {
     });
 }
 
-server.get(
-    "/health",
-    {
-        schema: {
-            tags: ["Health"],
-            summary: "Health check",
-            description: "Verifica o status da API",
-            response: {
-                200: z.object({
-                    status: z.string(),
-                    timestamp: z.string(),
-                }),
-            },
-        },
-    },
-    async (request, reply) => {
-        return reply.status(200).send({
-            status: "ok",
-            timestamp: new Date().toISOString(),
-        });
-    },
-);
-
-server.get(
-    "/",
-    {
-        schema: {
-            tags: ["Root"],
-            summary: "Root endpoint",
-            description: "Endpoint raiz da API",
-            response: {
-                200: z.object({
-                    message: z.string(),
-                    version: z.string(),
-                }),
-            },
-        },
-    },
-    async (request, reply) => {
-        return reply.status(200).send({
-            message: "Gateway API",
-            version: "1.0.0",
-        });
-    },
-);
-
-server.register(registerAuth, { prefix: "/v1/auth" });
-server.register(loginAuth, { prefix: "/v1/auth" });
-
-server.register(merchantCreate, { prefix: "/v1" });
-server.register(merchantList, { prefix: "/v1" });
-server.register(merchantUpdate, { prefix: "/v1" });
-
-server.register(apiKeysCreate, { prefix: "/v1" });
-server.register(apiKeysList, { prefix: "/v1" });
-server.register(apiKeysDelete, { prefix: "/v1" });
+server.register(systemRoutes);
+server.register(authRoutes, { prefix: "/v1/auth" });
+server.register(merchantRoutes, { prefix: "/v1/merchant" });
+server.register(apiKeyRoutes, { prefix: "/v1/api-key" });
 
 server.setErrorHandler((error: any, request, reply) => {
     request.log.error({ error, url: request.url, method: request.method }, 'Request error')

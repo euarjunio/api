@@ -58,6 +58,7 @@ export type MerchantCountAggregateOutputType = {
   document: number
   documentType: number
   status: number
+  metadata: number
   createdAt: number
   updatedAt: number
   userId: number
@@ -99,6 +100,7 @@ export type MerchantCountAggregateInputType = {
   document?: true
   documentType?: true
   status?: true
+  metadata?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -185,6 +187,7 @@ export type MerchantGroupByOutputType = {
   document: string
   documentType: $Enums.MerchantType
   status: $Enums.MerchantStatus
+  metadata: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
   userId: string
@@ -219,11 +222,13 @@ export type MerchantWhereInput = {
   document?: Prisma.StringFilter<"Merchant"> | string
   documentType?: Prisma.EnumMerchantTypeFilter<"Merchant"> | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusFilter<"Merchant"> | $Enums.MerchantStatus
+  metadata?: Prisma.JsonNullableFilter<"Merchant">
   createdAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
   userId?: Prisma.StringFilter<"Merchant"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   apikey?: Prisma.ApikeyListRelationFilter
+  charges?: Prisma.ChargesListRelationFilter
 }
 
 export type MerchantOrderByWithRelationInput = {
@@ -234,11 +239,13 @@ export type MerchantOrderByWithRelationInput = {
   document?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   apikey?: Prisma.ApikeyOrderByRelationAggregateInput
+  charges?: Prisma.ChargesOrderByRelationAggregateInput
 }
 
 export type MerchantWhereUniqueInput = Prisma.AtLeast<{
@@ -253,10 +260,12 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   phone?: Prisma.StringFilter<"Merchant"> | string
   documentType?: Prisma.EnumMerchantTypeFilter<"Merchant"> | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusFilter<"Merchant"> | $Enums.MerchantStatus
+  metadata?: Prisma.JsonNullableFilter<"Merchant">
   createdAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   apikey?: Prisma.ApikeyListRelationFilter
+  charges?: Prisma.ChargesListRelationFilter
 }, "id" | "document" | "userId">
 
 export type MerchantOrderByWithAggregationInput = {
@@ -267,6 +276,7 @@ export type MerchantOrderByWithAggregationInput = {
   document?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -286,6 +296,7 @@ export type MerchantScalarWhereWithAggregatesInput = {
   document?: Prisma.StringWithAggregatesFilter<"Merchant"> | string
   documentType?: Prisma.EnumMerchantTypeWithAggregatesFilter<"Merchant"> | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusWithAggregatesFilter<"Merchant"> | $Enums.MerchantStatus
+  metadata?: Prisma.JsonNullableWithAggregatesFilter<"Merchant">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Merchant"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Merchant"> | Date | string
   userId?: Prisma.StringWithAggregatesFilter<"Merchant"> | string
@@ -299,10 +310,12 @@ export type MerchantCreateInput = {
   document: string
   documentType?: $Enums.MerchantType
   status?: $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
+  charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateInput = {
@@ -313,10 +326,12 @@ export type MerchantUncheckedCreateInput = {
   document: string
   documentType?: $Enums.MerchantType
   status?: $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
+  charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUpdateInput = {
@@ -327,10 +342,12 @@ export type MerchantUpdateInput = {
   document?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
+  charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateInput = {
@@ -341,10 +358,12 @@ export type MerchantUncheckedUpdateInput = {
   document?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
+  charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateManyInput = {
@@ -355,6 +374,7 @@ export type MerchantCreateManyInput = {
   document: string
   documentType?: $Enums.MerchantType
   status?: $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
@@ -368,6 +388,7 @@ export type MerchantUpdateManyMutationInput = {
   document?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -380,6 +401,7 @@ export type MerchantUncheckedUpdateManyInput = {
   document?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -398,6 +420,7 @@ export type MerchantCountOrderByAggregateInput = {
   document?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -474,6 +497,20 @@ export type EnumMerchantStatusFieldUpdateOperationsInput = {
   set?: $Enums.MerchantStatus
 }
 
+export type MerchantCreateNestedOneWithoutChargesInput = {
+  create?: Prisma.XOR<Prisma.MerchantCreateWithoutChargesInput, Prisma.MerchantUncheckedCreateWithoutChargesInput>
+  connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutChargesInput
+  connect?: Prisma.MerchantWhereUniqueInput
+}
+
+export type MerchantUpdateOneRequiredWithoutChargesNestedInput = {
+  create?: Prisma.XOR<Prisma.MerchantCreateWithoutChargesInput, Prisma.MerchantUncheckedCreateWithoutChargesInput>
+  connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutChargesInput
+  upsert?: Prisma.MerchantUpsertWithoutChargesInput
+  connect?: Prisma.MerchantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MerchantUpdateToOneWithWhereWithoutChargesInput, Prisma.MerchantUpdateWithoutChargesInput>, Prisma.MerchantUncheckedUpdateWithoutChargesInput>
+}
+
 export type MerchantCreateNestedOneWithoutApikeyInput = {
   create?: Prisma.XOR<Prisma.MerchantCreateWithoutApikeyInput, Prisma.MerchantUncheckedCreateWithoutApikeyInput>
   connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutApikeyInput
@@ -496,9 +533,11 @@ export type MerchantCreateWithoutUserInput = {
   document: string
   documentType?: $Enums.MerchantType
   status?: $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
+  charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutUserInput = {
@@ -509,9 +548,11 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   document: string
   documentType?: $Enums.MerchantType
   status?: $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
+  charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutUserInput = {
@@ -538,9 +579,11 @@ export type MerchantUpdateWithoutUserInput = {
   document?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
+  charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutUserInput = {
@@ -551,8 +594,86 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   document?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
+  charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+}
+
+export type MerchantCreateWithoutChargesInput = {
+  id?: string
+  name: string
+  email: string
+  phone: string
+  document: string
+  documentType?: $Enums.MerchantType
+  status?: $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutMerchantInput
+  apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
+}
+
+export type MerchantUncheckedCreateWithoutChargesInput = {
+  id?: string
+  name: string
+  email: string
+  phone: string
+  document: string
+  documentType?: $Enums.MerchantType
+  status?: $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userId: string
+  apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
+}
+
+export type MerchantCreateOrConnectWithoutChargesInput = {
+  where: Prisma.MerchantWhereUniqueInput
+  create: Prisma.XOR<Prisma.MerchantCreateWithoutChargesInput, Prisma.MerchantUncheckedCreateWithoutChargesInput>
+}
+
+export type MerchantUpsertWithoutChargesInput = {
+  update: Prisma.XOR<Prisma.MerchantUpdateWithoutChargesInput, Prisma.MerchantUncheckedUpdateWithoutChargesInput>
+  create: Prisma.XOR<Prisma.MerchantCreateWithoutChargesInput, Prisma.MerchantUncheckedCreateWithoutChargesInput>
+  where?: Prisma.MerchantWhereInput
+}
+
+export type MerchantUpdateToOneWithWhereWithoutChargesInput = {
+  where?: Prisma.MerchantWhereInput
+  data: Prisma.XOR<Prisma.MerchantUpdateWithoutChargesInput, Prisma.MerchantUncheckedUpdateWithoutChargesInput>
+}
+
+export type MerchantUpdateWithoutChargesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  document?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
+  status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
+  apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
+}
+
+export type MerchantUncheckedUpdateWithoutChargesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  document?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
+  status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
@@ -564,9 +685,11 @@ export type MerchantCreateWithoutApikeyInput = {
   document: string
   documentType?: $Enums.MerchantType
   status?: $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
+  charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutApikeyInput = {
@@ -577,9 +700,11 @@ export type MerchantUncheckedCreateWithoutApikeyInput = {
   document: string
   documentType?: $Enums.MerchantType
   status?: $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
+  charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutApikeyInput = {
@@ -606,9 +731,11 @@ export type MerchantUpdateWithoutApikeyInput = {
   document?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
+  charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutApikeyInput = {
@@ -619,9 +746,11 @@ export type MerchantUncheckedUpdateWithoutApikeyInput = {
   document?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
   status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 
@@ -631,10 +760,12 @@ export type MerchantUncheckedUpdateWithoutApikeyInput = {
 
 export type MerchantCountOutputType = {
   apikey: number
+  charges: number
 }
 
 export type MerchantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   apikey?: boolean | MerchantCountOutputTypeCountApikeyArgs
+  charges?: boolean | MerchantCountOutputTypeCountChargesArgs
 }
 
 /**
@@ -654,6 +785,13 @@ export type MerchantCountOutputTypeCountApikeyArgs<ExtArgs extends runtime.Types
   where?: Prisma.ApikeyWhereInput
 }
 
+/**
+ * MerchantCountOutputType without action
+ */
+export type MerchantCountOutputTypeCountChargesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChargesWhereInput
+}
+
 
 export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -663,11 +801,13 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   document?: boolean
   documentType?: boolean
   status?: boolean
+  metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   apikey?: boolean | Prisma.Merchant$apikeyArgs<ExtArgs>
+  charges?: boolean | Prisma.Merchant$chargesArgs<ExtArgs>
   _count?: boolean | Prisma.MerchantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["merchant"]>
 
@@ -679,6 +819,7 @@ export type MerchantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   document?: boolean
   documentType?: boolean
   status?: boolean
+  metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -693,6 +834,7 @@ export type MerchantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   document?: boolean
   documentType?: boolean
   status?: boolean
+  metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -707,15 +849,17 @@ export type MerchantSelectScalar = {
   document?: boolean
   documentType?: boolean
   status?: boolean
+  metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
 }
 
-export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "document" | "documentType" | "status" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["merchant"]>
+export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "document" | "documentType" | "status" | "metadata" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["merchant"]>
 export type MerchantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   apikey?: boolean | Prisma.Merchant$apikeyArgs<ExtArgs>
+  charges?: boolean | Prisma.Merchant$chargesArgs<ExtArgs>
   _count?: boolean | Prisma.MerchantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MerchantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -730,6 +874,7 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     apikey: Prisma.$ApikeyPayload<ExtArgs>[]
+    charges: Prisma.$ChargesPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -739,6 +884,7 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     document: string
     documentType: $Enums.MerchantType
     status: $Enums.MerchantStatus
+    metadata: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
     userId: string
@@ -1138,6 +1284,7 @@ export interface Prisma__MerchantClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   apikey<T extends Prisma.Merchant$apikeyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$apikeyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApikeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  charges<T extends Prisma.Merchant$chargesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$chargesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChargesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1174,6 +1321,7 @@ export interface MerchantFieldRefs {
   readonly document: Prisma.FieldRef<"Merchant", 'String'>
   readonly documentType: Prisma.FieldRef<"Merchant", 'MerchantType'>
   readonly status: Prisma.FieldRef<"Merchant", 'MerchantStatus'>
+  readonly metadata: Prisma.FieldRef<"Merchant", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Merchant", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Merchant", 'DateTime'>
   readonly userId: Prisma.FieldRef<"Merchant", 'String'>
@@ -1594,6 +1742,30 @@ export type Merchant$apikeyArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ApikeyScalarFieldEnum | Prisma.ApikeyScalarFieldEnum[]
+}
+
+/**
+ * Merchant.charges
+ */
+export type Merchant$chargesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Charges
+   */
+  select?: Prisma.ChargesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Charges
+   */
+  omit?: Prisma.ChargesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChargesInclude<ExtArgs> | null
+  where?: Prisma.ChargesWhereInput
+  orderBy?: Prisma.ChargesOrderByWithRelationInput | Prisma.ChargesOrderByWithRelationInput[]
+  cursor?: Prisma.ChargesWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChargesScalarFieldEnum | Prisma.ChargesScalarFieldEnum[]
 }
 
 /**

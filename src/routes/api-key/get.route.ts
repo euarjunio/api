@@ -5,17 +5,17 @@ import { verifyJwt } from "../hooks/verify-jwt.ts";
 import { checkUserRequest } from "../../utils/check-user-request.ts";
 import { prisma } from "../../lib/prisma.ts";
 
-export const apiKeysList: FastifyPluginAsyncZod = async (app) => {
+export const getRoute: FastifyPluginAsyncZod = async (app) => {
   app
     .addHook("onRequest", verifyJwt)
-    .get("/api-keys", {
+    .get("/", {
       schema: {
-        tags: ["API Keys"],
-        summary: "Listar API keys",
-        description: "Retorna todas as API keys do merchant do usuário autenticado",
+        tags: ["API Key"],
+        summary: "Listar API Key",
+        description: "Retorna todas as API Key do logista do usuário autenticado",
         response: {
           200: z.object({
-            apiKeys: z.array(z.any()),
+            apiKey: z.array(z.any()),
           }),
           401: z.object({
             message: z.string(),
@@ -27,12 +27,12 @@ export const apiKeysList: FastifyPluginAsyncZod = async (app) => {
 
       request.log.info({ userId: id }, 'Listing API keys');
 
-      const apiKeys = await prisma.apikey.findMany({
+      const apiKey = await prisma.apikey.findMany({
         where: { merchant: { userId: id } },
       });
 
-      request.log.info({ userId: id, count: apiKeys.length }, 'API keys listed');
+      request.log.info({ userId: id, count: apiKey.length }, 'API key listed');
 
-      return reply.status(200).send({ apiKeys: apiKeys });
+      return reply.status(200).send({ apiKey: apiKey });
     });
 };

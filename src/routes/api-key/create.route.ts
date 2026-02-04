@@ -6,14 +6,14 @@ import { checkUserRequest } from "../../utils/check-user-request.ts";
 import { prisma } from "../../lib/prisma.ts";
 import { generateApiKey } from "../../utils/api-keys.ts";
 
-export const apiKeysCreate: FastifyPluginAsyncZod = async (app) => {
+export const createRoute: FastifyPluginAsyncZod = async (app) => {
   app.addHook("onRequest", verifyJwt).post(
-    "/api-keys",
+    "/",
     {
       schema: {
-        tags: ["API Keys"],
-        summary: "Criar API key",
-        description: "Cria uma nova API key para o merchant ativo do usuário",
+        tags: ["API Key"],
+        summary: "Criar API Key",
+        description: "Cria uma nova API Key para o logista ativo do usuário",
         body: z.object({ name: z.string(), description: z.string() }),
         response: {
           201: z.object({

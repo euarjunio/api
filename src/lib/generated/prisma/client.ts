@@ -50,6 +50,16 @@ export type User = Prisma.UserModel
  */
 export type Merchant = Prisma.MerchantModel
 /**
+ * Model Customer
+ * 
+ */
+export type Customer = Prisma.CustomerModel
+/**
+ * Model Charges
+ * 
+ */
+export type Charges = Prisma.ChargesModel
+/**
  * Model Apikey
  * 
  */

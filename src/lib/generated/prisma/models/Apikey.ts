@@ -29,7 +29,7 @@ export type ApikeyMinAggregateOutputType = {
   name: string | null
   value: string | null
   description: string | null
-  status: string | null
+  status: $Enums.ApiKeyStatus | null
   createdAt: Date | null
   updatedAt: Date | null
   merchantId: string | null
@@ -40,7 +40,7 @@ export type ApikeyMaxAggregateOutputType = {
   name: string | null
   value: string | null
   description: string | null
-  status: string | null
+  status: $Enums.ApiKeyStatus | null
   createdAt: Date | null
   updatedAt: Date | null
   merchantId: string | null
@@ -170,7 +170,7 @@ export type ApikeyGroupByOutputType = {
   name: string
   value: string
   description: string
-  status: string
+  status: $Enums.ApiKeyStatus
   createdAt: Date
   updatedAt: Date
   merchantId: string
@@ -202,7 +202,7 @@ export type ApikeyWhereInput = {
   name?: Prisma.StringFilter<"Apikey"> | string
   value?: Prisma.StringFilter<"Apikey"> | string
   description?: Prisma.StringFilter<"Apikey"> | string
-  status?: Prisma.StringFilter<"Apikey"> | string
+  status?: Prisma.EnumApiKeyStatusFilter<"Apikey"> | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   merchantId?: Prisma.StringFilter<"Apikey"> | string
@@ -229,7 +229,7 @@ export type ApikeyWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ApikeyWhereInput | Prisma.ApikeyWhereInput[]
   name?: Prisma.StringFilter<"Apikey"> | string
   description?: Prisma.StringFilter<"Apikey"> | string
-  status?: Prisma.StringFilter<"Apikey"> | string
+  status?: Prisma.EnumApiKeyStatusFilter<"Apikey"> | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   merchantId?: Prisma.StringFilter<"Apikey"> | string
@@ -258,7 +258,7 @@ export type ApikeyScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
   value?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
   description?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
-  status?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
+  status?: Prisma.EnumApiKeyStatusWithAggregatesFilter<"Apikey"> | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Apikey"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Apikey"> | Date | string
   merchantId?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
@@ -269,7 +269,7 @@ export type ApikeyCreateInput = {
   name: string
   value: string
   description: string
-  status?: string
+  status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   merchant: Prisma.MerchantCreateNestedOneWithoutApikeyInput
@@ -280,7 +280,7 @@ export type ApikeyUncheckedCreateInput = {
   name: string
   value: string
   description: string
-  status?: string
+  status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   merchantId: string
@@ -291,7 +291,7 @@ export type ApikeyUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchant?: Prisma.MerchantUpdateOneRequiredWithoutApikeyNestedInput
@@ -302,7 +302,7 @@ export type ApikeyUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -313,7 +313,7 @@ export type ApikeyCreateManyInput = {
   name: string
   value: string
   description: string
-  status?: string
+  status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   merchantId: string
@@ -324,7 +324,7 @@ export type ApikeyUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -334,7 +334,7 @@ export type ApikeyUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -425,12 +425,16 @@ export type ApikeyUncheckedUpdateManyWithoutMerchantNestedInput = {
   deleteMany?: Prisma.ApikeyScalarWhereInput | Prisma.ApikeyScalarWhereInput[]
 }
 
+export type EnumApiKeyStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ApiKeyStatus
+}
+
 export type ApikeyCreateWithoutMerchantInput = {
   id?: string
   name: string
   value: string
   description: string
-  status?: string
+  status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -440,7 +444,7 @@ export type ApikeyUncheckedCreateWithoutMerchantInput = {
   name: string
   value: string
   description: string
-  status?: string
+  status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -479,7 +483,7 @@ export type ApikeyScalarWhereInput = {
   name?: Prisma.StringFilter<"Apikey"> | string
   value?: Prisma.StringFilter<"Apikey"> | string
   description?: Prisma.StringFilter<"Apikey"> | string
-  status?: Prisma.StringFilter<"Apikey"> | string
+  status?: Prisma.EnumApiKeyStatusFilter<"Apikey"> | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   merchantId?: Prisma.StringFilter<"Apikey"> | string
@@ -490,7 +494,7 @@ export type ApikeyCreateManyMerchantInput = {
   name: string
   value: string
   description: string
-  status?: string
+  status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -500,7 +504,7 @@ export type ApikeyUpdateWithoutMerchantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -510,7 +514,7 @@ export type ApikeyUncheckedUpdateWithoutMerchantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -520,7 +524,7 @@ export type ApikeyUncheckedUpdateManyWithoutMerchantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -595,7 +599,7 @@ export type $ApikeyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     name: string
     value: string
     description: string
-    status: string
+    status: $Enums.ApiKeyStatus
     createdAt: Date
     updatedAt: Date
     merchantId: string
@@ -1027,7 +1031,7 @@ export interface ApikeyFieldRefs {
   readonly name: Prisma.FieldRef<"Apikey", 'String'>
   readonly value: Prisma.FieldRef<"Apikey", 'String'>
   readonly description: Prisma.FieldRef<"Apikey", 'String'>
-  readonly status: Prisma.FieldRef<"Apikey", 'String'>
+  readonly status: Prisma.FieldRef<"Apikey", 'ApiKeyStatus'>
   readonly createdAt: Prisma.FieldRef<"Apikey", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Apikey", 'DateTime'>
   readonly merchantId: Prisma.FieldRef<"Apikey", 'String'>

@@ -5,14 +5,14 @@ import { prisma } from "../../lib/prisma.ts";
 import { verifyJwt } from "../hooks/verify-jwt.ts";
 import { checkUserRequest } from "../../utils/check-user-request.ts";
 
-export const merchantCreate: FastifyPluginAsyncZod = async (app) => {
+export const createRoute: FastifyPluginAsyncZod = async (app) => {
   app.addHook("onRequest", verifyJwt).post(
-    "/merchants",
+    "/",
     {
       schema: {
-        tags: ["Merchants"],
-        summary: "Criar merchant",
-        description: "Cria um novo merchant para o usuário autenticado",
+        tags: ["Merchant"],
+        summary: "Criar logista",
+        description: "Cria um novo logista para o usuário autenticado",
         body: z.object({
           name: z.string(),
           email: z.email(),

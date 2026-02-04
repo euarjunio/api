@@ -5,16 +5,16 @@ import { verifyJwt } from "../hooks/verify-jwt.ts";
 import { checkUserRequest } from "../../utils/check-user-request.ts";
 import { prisma } from "../../lib/prisma.ts";
 
-export const apiKeysDelete: FastifyPluginAsyncZod = async (app) => {
+export const deleteRoute: FastifyPluginAsyncZod = async (app) => {
   app
     .addHook("onRequest", verifyJwt)
     .delete(
-      "/api-keys/:id",
+      "/:id",
       {
         schema: {
-          tags: ["API Keys"],
-          summary: "Deletar API key",
-          description: "Remove uma API key específica do merchant do usuário",
+          tags: ["API Key"],
+          summary: "Deletar API Key",
+          description: "Remove uma API Key específica do logista do usuário",
           params: z.object({ id: z.uuid() }),
           response: {
             200: z.object({

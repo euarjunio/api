@@ -4,7 +4,7 @@ import { hash } from "argon2";
 
 import { prisma } from "../../lib/prisma.ts";
 
-export const registerAuth: FastifyPluginAsyncZod = async (app) => {
+export const registerRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
     "/register",
     {
