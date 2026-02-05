@@ -1,5 +1,7 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 
-export const changeRoutes: FastifyPluginAsyncZod = async (app) => {
+import { createRoute } from "./create.route.ts";
 
+export const chargeRoutes: FastifyPluginAsyncZod = async (app) => {
+    app.register(createRoute);
 }

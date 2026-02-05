@@ -16,10 +16,11 @@ import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import { BadRequestError } from "./routes/errors/bad-request-error.ts";
 
+import { systemRoutes } from "./routes/system/index.ts";
 import { authRoutes } from "./routes/auth/index.ts";
 import { merchantRoutes } from "./routes/merchant/index.ts";
 import { apiKeyRoutes } from "./routes/api-key/index.ts";
-import { systemRoutes } from "./routes/system/index.ts";
+import { chargeRoutes } from "./routes/charge/index.ts";
 
 const server = fastify({
     logger: {
@@ -76,9 +77,12 @@ server.register(systemRoutes);
 server.register(authRoutes, { prefix: "/v1/auth" });
 server.register(merchantRoutes, { prefix: "/v1/merchant" });
 server.register(apiKeyRoutes, { prefix: "/v1/api-key" });
+server.register(chargeRoutes, { prefix: "/v1/charge" });
 
 server.setErrorHandler((error: any, request, reply) => {
     request.log.error({ error, url: request.url, method: request.method }, 'Request error')
+
+    console.log(error);
 
     if (hasZodFastifySchemaValidationErrors(error)) {
         return reply.code(400).send({

@@ -40,9 +40,7 @@ export type ChargesMinAggregateOutputType = {
   id: string | null
   amount: number | null
   description: string | null
-  externalId: string | null
   status: $Enums.ChargeStatus | null
-  type: string | null
   qrCode: string | null
   expiresIn: number | null
   merchantId: string | null
@@ -55,9 +53,7 @@ export type ChargesMaxAggregateOutputType = {
   id: string | null
   amount: number | null
   description: string | null
-  externalId: string | null
   status: $Enums.ChargeStatus | null
-  type: string | null
   qrCode: string | null
   expiresIn: number | null
   merchantId: string | null
@@ -70,9 +66,7 @@ export type ChargesCountAggregateOutputType = {
   id: number
   amount: number
   description: number
-  externalId: number
   status: number
-  type: number
   qrCode: number
   expiresIn: number
   metadata: number
@@ -98,9 +92,7 @@ export type ChargesMinAggregateInputType = {
   id?: true
   amount?: true
   description?: true
-  externalId?: true
   status?: true
-  type?: true
   qrCode?: true
   expiresIn?: true
   merchantId?: true
@@ -113,9 +105,7 @@ export type ChargesMaxAggregateInputType = {
   id?: true
   amount?: true
   description?: true
-  externalId?: true
   status?: true
-  type?: true
   qrCode?: true
   expiresIn?: true
   merchantId?: true
@@ -128,9 +118,7 @@ export type ChargesCountAggregateInputType = {
   id?: true
   amount?: true
   description?: true
-  externalId?: true
   status?: true
-  type?: true
   qrCode?: true
   expiresIn?: true
   metadata?: true
@@ -231,9 +219,7 @@ export type ChargesGroupByOutputType = {
   id: string
   amount: number
   description: string
-  externalId: string
   status: $Enums.ChargeStatus
-  type: string
   qrCode: string
   expiresIn: number
   metadata: runtime.JsonValue | null
@@ -270,9 +256,7 @@ export type ChargesWhereInput = {
   id?: Prisma.StringFilter<"Charges"> | string
   amount?: Prisma.IntFilter<"Charges"> | number
   description?: Prisma.StringFilter<"Charges"> | string
-  externalId?: Prisma.StringFilter<"Charges"> | string
   status?: Prisma.EnumChargeStatusFilter<"Charges"> | $Enums.ChargeStatus
-  type?: Prisma.StringFilter<"Charges"> | string
   qrCode?: Prisma.StringFilter<"Charges"> | string
   expiresIn?: Prisma.IntFilter<"Charges"> | number
   metadata?: Prisma.JsonNullableFilter<"Charges">
@@ -288,9 +272,7 @@ export type ChargesOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  externalId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   qrCode?: Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -304,14 +286,12 @@ export type ChargesOrderByWithRelationInput = {
 
 export type ChargesWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  externalId?: string
   AND?: Prisma.ChargesWhereInput | Prisma.ChargesWhereInput[]
   OR?: Prisma.ChargesWhereInput[]
   NOT?: Prisma.ChargesWhereInput | Prisma.ChargesWhereInput[]
   amount?: Prisma.IntFilter<"Charges"> | number
   description?: Prisma.StringFilter<"Charges"> | string
   status?: Prisma.EnumChargeStatusFilter<"Charges"> | $Enums.ChargeStatus
-  type?: Prisma.StringFilter<"Charges"> | string
   qrCode?: Prisma.StringFilter<"Charges"> | string
   expiresIn?: Prisma.IntFilter<"Charges"> | number
   metadata?: Prisma.JsonNullableFilter<"Charges">
@@ -321,15 +301,13 @@ export type ChargesWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Charges"> | Date | string
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
-}, "id" | "externalId">
+}, "id">
 
 export type ChargesOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  externalId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   qrCode?: Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -351,9 +329,7 @@ export type ChargesScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Charges"> | string
   amount?: Prisma.IntWithAggregatesFilter<"Charges"> | number
   description?: Prisma.StringWithAggregatesFilter<"Charges"> | string
-  externalId?: Prisma.StringWithAggregatesFilter<"Charges"> | string
   status?: Prisma.EnumChargeStatusWithAggregatesFilter<"Charges"> | $Enums.ChargeStatus
-  type?: Prisma.StringWithAggregatesFilter<"Charges"> | string
   qrCode?: Prisma.StringWithAggregatesFilter<"Charges"> | string
   expiresIn?: Prisma.IntWithAggregatesFilter<"Charges"> | number
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"Charges">
@@ -367,9 +343,7 @@ export type ChargesCreateInput = {
   id?: string
   amount: number
   description: string
-  externalId: string
   status?: $Enums.ChargeStatus
-  type?: string
   qrCode: string
   expiresIn: number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -383,9 +357,7 @@ export type ChargesUncheckedCreateInput = {
   id?: string
   amount: number
   description: string
-  externalId: string
   status?: $Enums.ChargeStatus
-  type?: string
   qrCode: string
   expiresIn: number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -399,9 +371,7 @@ export type ChargesUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   qrCode?: Prisma.StringFieldUpdateOperationsInput | string
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -415,9 +385,7 @@ export type ChargesUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   qrCode?: Prisma.StringFieldUpdateOperationsInput | string
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -431,9 +399,7 @@ export type ChargesCreateManyInput = {
   id?: string
   amount: number
   description: string
-  externalId: string
   status?: $Enums.ChargeStatus
-  type?: string
   qrCode: string
   expiresIn: number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -447,9 +413,7 @@ export type ChargesUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   qrCode?: Prisma.StringFieldUpdateOperationsInput | string
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -461,9 +425,7 @@ export type ChargesUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   qrCode?: Prisma.StringFieldUpdateOperationsInput | string
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -487,9 +449,7 @@ export type ChargesCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  externalId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   qrCode?: Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
@@ -508,9 +468,7 @@ export type ChargesMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  externalId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   qrCode?: Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
@@ -523,9 +481,7 @@ export type ChargesMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  externalId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   qrCode?: Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
@@ -639,9 +595,7 @@ export type ChargesCreateWithoutMerchantInput = {
   id?: string
   amount: number
   description: string
-  externalId: string
   status?: $Enums.ChargeStatus
-  type?: string
   qrCode: string
   expiresIn: number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -654,9 +608,7 @@ export type ChargesUncheckedCreateWithoutMerchantInput = {
   id?: string
   amount: number
   description: string
-  externalId: string
   status?: $Enums.ChargeStatus
-  type?: string
   qrCode: string
   expiresIn: number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -698,9 +650,7 @@ export type ChargesScalarWhereInput = {
   id?: Prisma.StringFilter<"Charges"> | string
   amount?: Prisma.IntFilter<"Charges"> | number
   description?: Prisma.StringFilter<"Charges"> | string
-  externalId?: Prisma.StringFilter<"Charges"> | string
   status?: Prisma.EnumChargeStatusFilter<"Charges"> | $Enums.ChargeStatus
-  type?: Prisma.StringFilter<"Charges"> | string
   qrCode?: Prisma.StringFilter<"Charges"> | string
   expiresIn?: Prisma.IntFilter<"Charges"> | number
   metadata?: Prisma.JsonNullableFilter<"Charges">
@@ -714,9 +664,7 @@ export type ChargesCreateWithoutCustomerInput = {
   id?: string
   amount: number
   description: string
-  externalId: string
   status?: $Enums.ChargeStatus
-  type?: string
   qrCode: string
   expiresIn: number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -729,9 +677,7 @@ export type ChargesUncheckedCreateWithoutCustomerInput = {
   id?: string
   amount: number
   description: string
-  externalId: string
   status?: $Enums.ChargeStatus
-  type?: string
   qrCode: string
   expiresIn: number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -770,9 +716,7 @@ export type ChargesCreateManyMerchantInput = {
   id?: string
   amount: number
   description: string
-  externalId: string
   status?: $Enums.ChargeStatus
-  type?: string
   qrCode: string
   expiresIn: number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -785,9 +729,7 @@ export type ChargesUpdateWithoutMerchantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   qrCode?: Prisma.StringFieldUpdateOperationsInput | string
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -800,9 +742,7 @@ export type ChargesUncheckedUpdateWithoutMerchantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   qrCode?: Prisma.StringFieldUpdateOperationsInput | string
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -815,9 +755,7 @@ export type ChargesUncheckedUpdateManyWithoutMerchantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   qrCode?: Prisma.StringFieldUpdateOperationsInput | string
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -830,9 +768,7 @@ export type ChargesCreateManyCustomerInput = {
   id?: string
   amount: number
   description: string
-  externalId: string
   status?: $Enums.ChargeStatus
-  type?: string
   qrCode: string
   expiresIn: number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -845,9 +781,7 @@ export type ChargesUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   qrCode?: Prisma.StringFieldUpdateOperationsInput | string
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -860,9 +794,7 @@ export type ChargesUncheckedUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   qrCode?: Prisma.StringFieldUpdateOperationsInput | string
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -875,9 +807,7 @@ export type ChargesUncheckedUpdateManyWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumChargeStatusFieldUpdateOperationsInput | $Enums.ChargeStatus
-  type?: Prisma.StringFieldUpdateOperationsInput | string
   qrCode?: Prisma.StringFieldUpdateOperationsInput | string
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -892,9 +822,7 @@ export type ChargesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   amount?: boolean
   description?: boolean
-  externalId?: boolean
   status?: boolean
-  type?: boolean
   qrCode?: boolean
   expiresIn?: boolean
   metadata?: boolean
@@ -910,9 +838,7 @@ export type ChargesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   amount?: boolean
   description?: boolean
-  externalId?: boolean
   status?: boolean
-  type?: boolean
   qrCode?: boolean
   expiresIn?: boolean
   metadata?: boolean
@@ -928,9 +854,7 @@ export type ChargesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   amount?: boolean
   description?: boolean
-  externalId?: boolean
   status?: boolean
-  type?: boolean
   qrCode?: boolean
   expiresIn?: boolean
   metadata?: boolean
@@ -946,9 +870,7 @@ export type ChargesSelectScalar = {
   id?: boolean
   amount?: boolean
   description?: boolean
-  externalId?: boolean
   status?: boolean
-  type?: boolean
   qrCode?: boolean
   expiresIn?: boolean
   metadata?: boolean
@@ -958,7 +880,7 @@ export type ChargesSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ChargesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "description" | "externalId" | "status" | "type" | "qrCode" | "expiresIn" | "metadata" | "merchantId" | "customerId" | "createdAt" | "updatedAt", ExtArgs["result"]["charges"]>
+export type ChargesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "description" | "status" | "qrCode" | "expiresIn" | "metadata" | "merchantId" | "customerId" | "createdAt" | "updatedAt", ExtArgs["result"]["charges"]>
 export type ChargesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -982,9 +904,7 @@ export type $ChargesPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     amount: number
     description: string
-    externalId: string
     status: $Enums.ChargeStatus
-    type: string
     qrCode: string
     expiresIn: number
     metadata: runtime.JsonValue | null
@@ -1420,9 +1340,7 @@ export interface ChargesFieldRefs {
   readonly id: Prisma.FieldRef<"Charges", 'String'>
   readonly amount: Prisma.FieldRef<"Charges", 'Int'>
   readonly description: Prisma.FieldRef<"Charges", 'String'>
-  readonly externalId: Prisma.FieldRef<"Charges", 'String'>
   readonly status: Prisma.FieldRef<"Charges", 'ChargeStatus'>
-  readonly type: Prisma.FieldRef<"Charges", 'String'>
   readonly qrCode: Prisma.FieldRef<"Charges", 'String'>
   readonly expiresIn: Prisma.FieldRef<"Charges", 'Int'>
   readonly metadata: Prisma.FieldRef<"Charges", 'Json'>

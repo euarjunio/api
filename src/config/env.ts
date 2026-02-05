@@ -9,6 +9,9 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(80),
   JWT_SECRET: z.string().min(1, "JWT_SECRET é obrigatório"),
   JWT_EXPIRES_IN: z.string().default("7d"),
+  URL_TRANSFEERA: z.url(),
+  TRANSFEERA_CLIENT_ID: z.string(),
+  TRANSFEERA_CLIENT_SECRET: z.string(),
 });
 
 function validateEnv() {
