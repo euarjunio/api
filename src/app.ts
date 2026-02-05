@@ -82,7 +82,7 @@ server.register(chargeRoutes, { prefix: "/v1/charge" });
 server.setErrorHandler((error: any, request, reply) => {
     request.log.error({ error, url: request.url, method: request.method }, 'Request error')
 
-    console.log(error);
+    console.error(error);
 
     if (hasZodFastifySchemaValidationErrors(error)) {
         return reply.code(400).send({

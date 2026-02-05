@@ -1,5 +1,8 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod/v4";
+import { randomUUID } from 'node:crypto';
+import axios from 'axios';
+
 import { checkUserRequest } from "../../utils/check-user-request.ts";
 import { prisma } from "../../lib/prisma.ts";
 import { verifyJwt } from "../hooks/verify-jwt.ts";
@@ -25,42 +28,40 @@ const loginTransfeera = async () => {
     return response.json();
 }
 
-const createChargeTransfeera = async (data: any, token: string) => {
-    const response = await fetch(`${process.env.URL_TRANSFEERA}/charges`, {
-        method: "POST",
-        body: JSON.stringify({
-            "payment_methods": ["pix"],
-            "payment_method_details": {
-                "pix": { "pix_key": "key@email.com" }
+const createCharge = async (customer: any, amount: number, description: string, token: string) => {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'https://api-sandbox.transfeera.com/charges',
+            headers: {
+                'accept': 'application/json',
+                'authorization': `Bearer ${token}`,
+                'content-type': 'application/json'
             },
-            "payer": {
-                "name": data.name,
-                "trade_name": data.name,
-                "tax_id": data.document,
-            },
-            /*"split_payment": [
-              {
-                "mode": "fixed",
-                "receiver": { "pix_key": "minhachave@gmail.com" },
-                "amount": 1000,
-                "split_days_after_settled": 1
-              }
-            ],
-            */
-            "amount": data.amount,
-            "due_date": data.due_date,
-            "expiration_date": data.expiration_date,
-            "description": data.description,
-            "external_id": data.external_id
-        }),
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error("Failed to create charge in Transfeera");
+            data: {
+                "payment_methods": [
+                    "pix"
+                ],
+                "payment_method_details": {
+                    "pix": {
+                        "pix_key": "4942dd7d-3859-41e4-8d94-5772f211e2af"
+                    }
+                },
+                "payer": {
+                    "name": customer.name,
+                    "trade_name": customer.name.split(' ')[1],
+                    "tax_id": customer.document
+                },
+                "amount": amount,
+                "due_date": new Date().toISOString().split('T')[0],
+                "expiration_date": new Date().toISOString().split('T')[0],
+                "description": description,
+                "external_id": randomUUID()
+            }
+        });
+        console.log(response);
+    } catch (error) {
+        console.error((error as any).response.data);
     }
 }
 
@@ -102,9 +103,14 @@ export const createRoute: FastifyPluginAsyncZod = async (app) => {
             return reply.status(404).send({ message: "Merchant not found" });
         }
 
-        const customer = await prisma.customer.findUnique({
-            where: { document },
-        }) as any
+        let customer = await prisma.customer.findFirst({
+            where: {
+                OR: [
+                    { document },
+                    { email }
+                ]
+            },
+        })
 
         if (!customer) {
             customer = await prisma.customer.create({
@@ -119,27 +125,9 @@ export const createRoute: FastifyPluginAsyncZod = async (app) => {
         }
 
         const token = await loginTransfeera();
-        console.log(token);
 
-        const charge = await createChargeTransfeera({
-            amount,
-            description,
-            customerId: customer.id,
-        }, token.access_token);
-
-
-        console.log(charge);
-
-        /* const charge = await prisma.charges.create({
-             data: {
-                 amount,
-                 description,
-                 customerId: customer.id,
-                 merchantId: merchant.id,
-                 qrCode: "",
-                 expiresIn: 0,
-             },
-         });*/
+        const charge = await createCharge(customer, amount, description, (token as any).access_token)
+        
 
         return reply.status(200).send({ message: "Charge created successfully" });
     });
