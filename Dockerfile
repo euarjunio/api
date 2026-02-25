@@ -29,13 +29,12 @@ COPY package*.json ./
 # Instalar APENAS dependências de produção
 RUN npm ci --omit=dev
 
-# Copiar Prisma Client gerado do builder
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
-
 # Copiar código-fonte e schema
 COPY prisma ./prisma/
 COPY src ./src/
+
+# Copiar Prisma Client gerado do builder (sobrescreve o diretório do contexto)
+COPY --from=builder /app/src/lib/generated/prisma ./src/lib/generated/prisma
 COPY tsconfig.json ./
 
 ARG PORT=80
