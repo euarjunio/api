@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { env, isSandbox } from "./config/env.ts";
+import { env, isDevelopment } from "./config/env.ts";
 
 import fastify from "fastify";
 import { fastifyCors } from "@fastify/cors";
@@ -51,7 +51,7 @@ function parseAllowedOrigins(): string[] | string {
 const allowedOrigins = parseAllowedOrigins();
 
 // ── Rate limit multiplier: sandbox é mais permissivo ─────────────────
-const rateLimitMultiplier = isSandbox ? 2 : 1;
+const rateLimitMultiplier = isDevelopment ? 2 : 1;
 
 const server = fastify({
     logger: {
@@ -133,8 +133,8 @@ server.addHook("onSend", async (request, reply) => {
     reply.header("x-request-id", request.id);
 
     // Em sandbox, identificar o ambiente no header
-    if (isSandbox) {
-        reply.header("x-environment", "sandbox");
+    if (isDevelopment) {
+        reply.header("x-environment", "development");
     }
 });
 
@@ -250,7 +250,7 @@ server.get(
 
         const body = {
             status: allHealthy ? "ok" : "degraded",
-            environment: env.APP_ENV,
+            environment: env.NODE_ENV,
             timestamp: new Date().toISOString(),
             services: {
                 redis: redisOk ? "up" as const : "down" as const,

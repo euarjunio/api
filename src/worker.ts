@@ -3,7 +3,7 @@ import { startWebhookWorker } from "./lib/queues/webhook-queue.ts";
 import { startSettlementWorker } from "./lib/queues/settlement-queue.ts";
 import { registerShutdown } from "./lib/shutdown.ts";
 
-console.log(`🔧 [WORKER] Iniciando workers (APP_ENV: ${env.APP_ENV})...`);
+console.log(`🔧 [WORKER] Iniciando workers (${env.NODE_ENV})...`);
 
 const webhookWorker = startWebhookWorker();
 const settlementWorker = startSettlementWorker();

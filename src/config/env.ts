@@ -7,9 +7,6 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
-  APP_ENV: z
-    .enum(["sandbox", "production"])
-    .default("sandbox"),
   PORT: z.coerce.number().default(80),
   API_BASE_URL: z.url().optional(),         // URL pública da API (ex: https://api.liquera.com.br)
 
@@ -72,7 +69,7 @@ function validateEnv() {
   const data = parsed.data;
 
   // ── Validações obrigatórias em produção ──────────────────────────
-  if (data.APP_ENV === "production") {
+  if (data.NODE_ENV === "production") {
     const errors: string[] = [];
 
     if (!data.TRANSFEERA_WEBHOOK_SECRET) {
@@ -104,5 +101,5 @@ function validateEnv() {
 export const env = validateEnv();
 
 // ── Helpers ───────────────────────────────────────────────────────────
-export const isSandbox = env.APP_ENV === "sandbox";
-export const isProduction = env.APP_ENV === "production";
+export const isDevelopment = env.NODE_ENV === "development";
+export const isProduction = env.NODE_ENV === "production";
