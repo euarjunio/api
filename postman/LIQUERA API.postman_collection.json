@@ -1,0 +1,862 @@
+{
+  "info": {
+    "_postman_id": "4b41b0d0-6b5c-4a45-8a16-0e88e8d9c1d0",
+    "name": "LIQUERA API",
+    "description": "Collection (v2.1) alinhada com as rotas em `src/app.ts` e `src/routes/**`.\n\nAuth:\n- `Authorization: Bearer <JWT>` (login) OU `Authorization: Bearer <API_KEY>` (prefixo `lk_`) nas rotas híbridas.\n- Admin: `Authorization: Bearer <JWT role=ADMIN>`.\n\nVariáveis principais:\n- baseUrl (ex: http://localhost:80)\n- userEmail/userPassword, adminEmail/adminPassword\n- token/adminToken/authToken\n- merchantId/apiKey/apiKeyId/chargeId/txid/infractionId/webhookId\n- transfeeraWebhookSecret (opcional; se vazio, /v1/webhooks/transfeera aceita sem assinatura).\n\nWebhooks multi-endpoint:\n- Cada merchant pode ter N webhooks, cada um inscrito em eventos específicos.\n- GET /v1/webhooks/merchant/events para ver eventos disponíveis.\n- POST /v1/webhooks/merchant cria webhook com url, name e events.\n- PATCH /v1/webhooks/merchant/:id atualiza webhook.\n- DELETE /v1/webhooks/merchant/:id remove webhook.\n- events=[] é wildcard (recebe todos os eventos).\n\nInfrações PIX (MED):\n- Webhook Transfeera envia evento `Infraction` → salvo no banco\n- Merchant analisa: POST /v1/merchants/me/infractions/:id/analyze → AWAITING_APPROVAL\n- Admin aprova e envia ao adquirente: POST /v1/admin/infractions/:id/approve\n- Admin pode sincronizar via: POST /v1/admin/infractions/sync",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /health",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /v1/auth/register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{userPassword}}\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/auth/register"
+          }
+        },
+        {
+          "name": "POST /v1/auth/login (USER)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json?.token) {",
+                  "  pm.environment.set('token', json.token);",
+                  "  pm.environment.set('authToken', json.token);",
+                  "}",
+                  "if (json?.user?.id) pm.environment.set('userId', json.user.id);",
+                  "if (json?.user?.role) pm.environment.set('userRole', json.user.role);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{userPassword}}\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/auth/login"
+          }
+        },
+        {
+          "name": "POST /v1/auth/login (ADMIN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json?.token) pm.environment.set('adminToken', json.token);",
+                  "if (json?.user?.id) pm.environment.set('adminUserId', json.user.id);",
+                  "if (json?.user?.role) pm.environment.set('adminUserRole', json.user.role);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Merchants (requires Authorization: Bearer {{authToken}})",
+      "item": [
+        {
+          "name": "POST /v1/merchants",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json?.merchant?.id) pm.environment.set('merchantId', json.merchant.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Loja Demo\",\n  \"email\": \"loja-demo@exemplo.com\",\n  \"phone\": \"11999999999\",\n  \"document\": \"11144477735\",\n  \"documentType\": \"CPF\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/merchants"
+          }
+        },
+        {
+          "name": "GET /v1/merchants/me",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json?.merchant?.id) pm.environment.set('merchantId', json.merchant.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": "{{baseUrl}}/v1/merchants/me"
+          }
+        },
+        {
+          "name": "PATCH /v1/merchants/me",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Loja Demo (Atualizada)\",\n  \"phone\": \"11988887777\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/merchants/me"
+          }
+        },
+        {
+          "name": "Documents",
+          "item": [
+            {
+              "name": "POST /v1/merchants/me/documents (multipart)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    { "key": "docFront", "type": "file", "src": [] },
+                    { "key": "docBack", "type": "file", "src": [] },
+                    { "key": "docSelfie", "type": "file", "src": [] }
+                  ]
+                },
+                "url": "{{baseUrl}}/v1/merchants/me/documents"
+              }
+            },
+            {
+              "name": "GET /v1/merchants/me/documents/kyc-status",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/documents/kyc-status"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Pix Keys",
+          "item": [
+            {
+              "name": "POST /v1/merchants/me/pix-keys",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const json = pm.response.json();",
+                      "if (json?.pixKey?.id) pm.environment.set('pixKeyId', json.pixKey.id);",
+                      "if (json?.pixKey?.key) pm.environment.set('pixKey', json.pixKey.key);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/pix-keys"
+              }
+            },
+            {
+              "name": "GET /v1/merchants/me/pix-keys",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/pix-keys"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Balance",
+          "item": [
+            {
+              "name": "GET /v1/merchants/me/balance",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/balance"
+              }
+            },
+            {
+              "name": "GET /v1/merchants/me/balance/transactions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/balance/transactions?page={{page}}&limit={{limit}}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Withdrawals",
+          "item": [
+            {
+              "name": "POST /v1/merchants/me/withdrawals",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"amount\": 100,\n  \"pixKeyType\": \"CHAVE_ALEATORIA\",\n  \"pixKey\": \"{{pixKey}}\",\n  \"description\": \"Saque teste\"\n}"
+                },
+                "url": "{{baseUrl}}/v1/merchants/me/withdrawals"
+              }
+            },
+            {
+              "name": "GET /v1/merchants/me/withdrawals",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/withdrawals?page={{page}}&limit={{limit}}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Infractions (MED PIX)",
+          "item": [
+            {
+              "name": "GET /v1/merchants/me/infractions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/infractions?page={{page}}&limit={{limit}}"
+              }
+            },
+            {
+              "name": "GET /v1/merchants/me/infractions (filter: AWAITING_APPROVAL)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/infractions?analysisStatus=PENDING&page={{page}}&limit={{limit}}"
+              }
+            },
+            {
+              "name": "GET /v1/merchants/me/infractions/:id",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/infractions/{{infractionId}}"
+              }
+            },
+            {
+              "name": "POST /v1/merchants/me/infractions/:id/analyze",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"analysis\": \"accepted\",\n  \"description\": \"Reconheço a transação como fraudulenta e aceito a devolução.\"\n}"
+                },
+                "url": "{{baseUrl}}/v1/merchants/me/infractions/{{infractionId}}/analyze"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Charges (requires Authorization: Bearer {{authToken}})",
+      "item": [
+        {
+          "name": "POST /v1/charges (x-idempotency-key)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.environment.get('idempotencyKey')) {",
+                  "  pm.environment.set('idempotencyKey', pm.variables.replaceIn('{{$guid}}'));",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json?.charge?.id) pm.environment.set('chargeId', json.charge.id);",
+                  "if (json?.charge?.txid) pm.environment.set('txid', json.charge.txid);",
+                  "if (json?.charge?.qrCode) pm.environment.set('qrCode', json.charge.qrCode);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-idempotency-key", "value": "{{idempotencyKey}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 100,\n  \"description\": \"Cobrança teste\",\n  \"expiresIn\": 86400,\n  \"customer\": {\n    \"name\": \"Cliente Teste\",\n    \"email\": \"cliente@exemplo.com\",\n    \"phone\": \"11999990000\",\n    \"document\": \"11144477735\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/v1/charges"
+          }
+        },
+        {
+          "name": "GET /v1/charges",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": "{{baseUrl}}/v1/charges?page={{page}}&limit={{limit}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "API Keys (requires Authorization: Bearer {{token}})",
+      "item": [
+        {
+          "name": "POST /v1/api-keys",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json?.apiKey?.id) pm.environment.set('apiKeyId', json.apiKey.id);",
+                  "if (json?.apiKey?.value) pm.environment.set('apiKey', json.apiKey.value);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Default\",\n  \"description\": \"Chave para integração\"\n}"
+            },
+            "url": "{{baseUrl}}/v1/api-keys"
+          }
+        },
+        {
+          "name": "GET /v1/api-keys",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/v1/api-keys"
+          }
+        },
+        {
+          "name": "DELETE /v1/api-keys/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/v1/api-keys/{{apiKeyId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin (requires Authorization: Bearer {{adminToken}})",
+      "item": [
+        {
+          "name": "GET /v1/admin/merchants",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/v1/admin/merchants?page={{page}}&limit={{limit}}"
+          }
+        },
+        {
+          "name": "GET /v1/admin/merchants/pending-kyc",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const first = json?.merchants?.[0];",
+                  "if (first?.id) pm.environment.set('merchantId', first.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/v1/admin/merchants/pending-kyc"
+          }
+        },
+        {
+          "name": "GET /v1/admin/merchants/:id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/v1/admin/merchants/{{merchantId}}"
+          }
+        },
+        {
+          "name": "POST /v1/admin/merchants/:id/approve",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/v1/admin/merchants/{{merchantId}}/approve"
+          }
+        },
+        {
+          "name": "POST /v1/admin/merchants/:id/reject",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"reason\": \"Documento ilegível\"\n}" },
+            "url": "{{baseUrl}}/v1/admin/merchants/{{merchantId}}/reject"
+          }
+        },
+        {
+          "name": "POST /v1/admin/merchants/:id/set-fee",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"feeMode\": \"FIXADO\",\n  \"feeAmount\": 50\n}" },
+            "url": "{{baseUrl}}/v1/admin/merchants/{{merchantId}}/set-fee"
+          }
+        },
+        {
+          "name": "POST /v1/admin/merchants/:id/setup-acquirer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/v1/admin/merchants/{{merchantId}}/setup-acquirer"
+          }
+        },
+        {
+          "name": "POST /v1/admin/merchants/:id/block",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"reason\": \"Suspeita de fraude\"\n}" },
+            "url": "{{baseUrl}}/v1/admin/merchants/{{merchantId}}/block"
+          }
+        },
+        {
+          "name": "POST /v1/admin/merchants/:id/unblock",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/v1/admin/merchants/{{merchantId}}/unblock"
+          }
+        },
+        {
+          "name": "GET /v1/admin/merchants/:id/acquirer-balance",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": "{{baseUrl}}/v1/admin/merchants/{{merchantId}}/acquirer-balance"
+          }
+        },
+        {
+          "name": "─── Infractions (MED PIX) ───",
+          "item": [
+            {
+              "name": "GET /v1/admin/infractions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/admin/infractions?page={{page}}&limit={{limit}}"
+              }
+            },
+            {
+              "name": "GET /v1/admin/infractions (filter: AWAITING_APPROVAL)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/admin/infractions?analysisStatus=AWAITING_APPROVAL&page={{page}}&limit={{limit}}"
+              }
+            },
+            {
+              "name": "GET /v1/admin/infractions/:id",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/admin/infractions/{{infractionId}}"
+              }
+            },
+            {
+              "name": "POST /v1/admin/infractions/:id/approve",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"adminNotes\": \"Análise do merchant verificada e aprovada.\"\n}"
+                },
+                "url": "{{baseUrl}}/v1/admin/infractions/{{infractionId}}/approve"
+              }
+            },
+            {
+              "name": "POST /v1/admin/infractions/:id/approve (override)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"analysis\": \"rejected\",\n  \"description\": \"Não reconhecemos fraude nesta transação após análise interna.\",\n  \"adminNotes\": \"Admin sobrescreveu decisão do merchant.\"\n}"
+                },
+                "url": "{{baseUrl}}/v1/admin/infractions/{{infractionId}}/approve"
+              }
+            },
+            {
+              "name": "POST /v1/admin/infractions/sync",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/admin/infractions/sync?page_size=50"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "Merchant (requires Authorization: Bearer {{authToken}})",
+          "item": [
+            {
+              "name": "GET /v1/webhooks/merchant/events",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/webhooks/merchant/events"
+              }
+            },
+            {
+              "name": "POST /v1/webhooks/merchant",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const json = pm.response.json();",
+                      "if (json?.webhook?.id) pm.environment.set('webhookId', json.webhook.id);",
+                      "if (json?.webhook?.secret) pm.environment.set('merchantWebhookSecret', json.webhook.secret);",
+                      "if (json?.webhook?.url) pm.environment.set('merchantWebhookUrl', json.webhook.url);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"{{merchantWebhookUrl}}\",\n  \"name\": \"Webhook Principal\",\n  \"events\": [\"charge.paid\", \"charge.refunded\", \"withdraw.completed\", \"withdraw.failed\"]\n}"
+                },
+                "url": "{{baseUrl}}/v1/webhooks/merchant"
+              }
+            },
+            {
+              "name": "POST /v1/webhooks/merchant (wildcard — todos eventos)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const json = pm.response.json();",
+                      "if (json?.webhook?.id) pm.environment.set('webhookId', json.webhook.id);",
+                      "if (json?.webhook?.secret) pm.environment.set('merchantWebhookSecret', json.webhook.secret);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"{{merchantWebhookUrl}}\",\n  \"name\": \"Webhook Wildcard\",\n  \"events\": []\n}"
+                },
+                "url": "{{baseUrl}}/v1/webhooks/merchant"
+              }
+            },
+            {
+              "name": "GET /v1/webhooks/merchant",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/webhooks/merchant"
+              }
+            },
+            {
+              "name": "PATCH /v1/webhooks/merchant/:id",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Webhook Atualizado\",\n  \"events\": [\"charge.paid\"],\n  \"status\": \"ACTIVE\"\n}"
+                },
+                "url": "{{baseUrl}}/v1/webhooks/merchant/{{webhookId}}"
+              }
+            },
+            {
+              "name": "PATCH /v1/webhooks/merchant/:id (disable)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"INACTIVE\"\n}"
+                },
+                "url": "{{baseUrl}}/v1/webhooks/merchant/{{webhookId}}"
+              }
+            },
+            {
+              "name": "DELETE /v1/webhooks/merchant/:id",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/webhooks/merchant/{{webhookId}}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Transfeera (public)",
+          "item": [
+            {
+              "name": "POST /v1/webhooks/transfeera (auto-sign if secret set)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const secret = pm.environment.get('transfeeraWebhookSecret');",
+                      "if (!secret) return;",
+                      "const timestamp = String(Date.now());",
+                      "const rawBody = pm.request.body?.raw ?? '';",
+                      "const signedPayload = `${timestamp}.${rawBody}`;",
+                      "const signatureHex = CryptoJS.HmacSHA256(signedPayload, secret).toString(CryptoJS.enc.Hex);",
+                      "pm.environment.set('transfeeraWebhookTimestamp', timestamp);",
+                      "pm.environment.set('transfeeraWebhookSignature', signatureHex);",
+                      "pm.request.headers.upsert({ key: 'Transfeera-Signature', value: `t=${timestamp},v1=${signatureHex}` });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"evt_0001\",\n  \"object\": \"CashIn\",\n  \"account_id\": \"acc_demo\",\n  \"data\": {\n    \"id\": \"cashin_0001\",\n    \"txid\": \"{{txid}}\",\n    \"value\": \"1.00\",\n    \"end2end_id\": \"E2EDEMO\",\n    \"pix_key\": \"{{pixKey}}\",\n    \"payer\": {\n      \"name\": \"Cliente Teste\",\n      \"document\": \"11144477735\"\n    }\n  }\n}"
+                },
+                "url": "{{baseUrl}}/v1/webhooks/transfeera"
+              }
+            },
+            {
+              "name": "POST /v1/webhooks/transfeera (Infraction event)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const secret = pm.environment.get('transfeeraWebhookSecret');",
+                      "if (!secret) return;",
+                      "const timestamp = String(Date.now());",
+                      "const rawBody = pm.request.body?.raw ?? '';",
+                      "const signedPayload = `${timestamp}.${rawBody}`;",
+                      "const signatureHex = CryptoJS.HmacSHA256(signedPayload, secret).toString(CryptoJS.enc.Hex);",
+                      "pm.request.headers.upsert({ key: 'Transfeera-Signature', value: `t=${timestamp},v1=${signatureHex}` });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"evt_infraction_0001\",\n  \"object\": \"Infraction\",\n  \"account_id\": \"acc_demo\",\n  \"data\": {\n    \"id\": \"infr_0001\",\n    \"status\": \"pending\",\n    \"analysis_status\": \"pending\",\n    \"situation_type\": \"scam\",\n    \"transaction_id\": \"E2EDEMO\",\n    \"txid\": \"{{txid}}\",\n    \"amount\": 100,\n    \"infraction_date\": \"2026-02-22T12:00:00.000Z\",\n    \"analysis_due_date\": \"2026-02-29T23:59:59.000Z\",\n    \"infraction_description\": \"Pagador alega fraude\",\n    \"payer_name\": \"Cliente Teste\",\n    \"payer_tax_id\": \"11144477735\"\n  }\n}"
+                },
+                "url": "{{baseUrl}}/v1/webhooks/transfeera"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Docs (dev only)",
+      "item": [
+        {
+          "name": "GET /docs",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/docs"
+          }
+        }
+      ]
+    }
+  ]
+}
+

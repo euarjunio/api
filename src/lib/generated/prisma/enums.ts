@@ -17,12 +17,12 @@ export const UserRole = {
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
-export const MerchantType = {
+export const DocumentType = {
   CPF: 'CPF',
   CNPJ: 'CNPJ'
 } as const
 
-export type MerchantType = (typeof MerchantType)[keyof typeof MerchantType]
+export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
 
 
 export const MerchantStatus = {
@@ -31,6 +31,16 @@ export const MerchantStatus = {
 } as const
 
 export type MerchantStatus = (typeof MerchantStatus)[keyof typeof MerchantStatus]
+
+
+export const KycStatus = {
+  PENDING: 'PENDING',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type KycStatus = (typeof KycStatus)[keyof typeof KycStatus]
 
 
 export const ChargeStatus = {
@@ -50,3 +60,91 @@ export const ApiKeyStatus = {
 } as const
 
 export type ApiKeyStatus = (typeof ApiKeyStatus)[keyof typeof ApiKeyStatus]
+
+
+export const FeeMode = {
+  PERCENTUAL: 'PERCENTUAL',
+  FIXADO: 'FIXADO'
+} as const
+
+export type FeeMode = (typeof FeeMode)[keyof typeof FeeMode]
+
+
+export const MerchantWebhookStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type MerchantWebhookStatus = (typeof MerchantWebhookStatus)[keyof typeof MerchantWebhookStatus]
+
+
+export const LedgerType = {
+  CASH_IN: 'CASH_IN',
+  FEE: 'FEE',
+  WITHDRAW: 'WITHDRAW',
+  REFUND: 'REFUND',
+  ADJUSTMENT: 'ADJUSTMENT'
+} as const
+
+export type LedgerType = (typeof LedgerType)[keyof typeof LedgerType]
+
+
+export const LedgerStatus = {
+  PENDING: 'PENDING',
+  AVAILABLE: 'AVAILABLE',
+  BLOCKED: 'BLOCKED'
+} as const
+
+export type LedgerStatus = (typeof LedgerStatus)[keyof typeof LedgerStatus]
+
+
+export const InfractionStatus = {
+  PENDING: 'PENDING',
+  AGREED: 'AGREED',
+  DISAGREED: 'DISAGREED',
+  CANCELED: 'CANCELED'
+} as const
+
+export type InfractionStatus = (typeof InfractionStatus)[keyof typeof InfractionStatus]
+
+
+export const InfractionAnalysisStatus = {
+  PENDING: 'PENDING',
+  AWAITING_APPROVAL: 'AWAITING_APPROVAL',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  DELAYED: 'DELAYED',
+  CANCELED: 'CANCELED'
+} as const
+
+export type InfractionAnalysisStatus = (typeof InfractionAnalysisStatus)[keyof typeof InfractionAnalysisStatus]
+
+
+export const InfractionSituationType = {
+  SCAM: 'SCAM',
+  ACCOUNT_TAKEOVER: 'ACCOUNT_TAKEOVER',
+  COERCION: 'COERCION',
+  FRAUDULENT_ACCESS: 'FRAUDULENT_ACCESS',
+  OTHER: 'OTHER',
+  UNKNOWN: 'UNKNOWN'
+} as const
+
+export type InfractionSituationType = (typeof InfractionSituationType)[keyof typeof InfractionSituationType]
+
+
+export const RefundStatus = {
+  REFUND_PENDING: 'REFUND_PENDING',
+  REFUND_CLOSED: 'REFUND_CLOSED',
+  REFUND_CANCELED: 'REFUND_CANCELED'
+} as const
+
+export type RefundStatus = (typeof RefundStatus)[keyof typeof RefundStatus]
+
+
+export const RefundAnalysisStatus = {
+  TOTALLY_ACCEPTED: 'TOTALLY_ACCEPTED',
+  PARTIALLY_ACCEPTED: 'PARTIALLY_ACCEPTED',
+  REFUND_REJECTED: 'REFUND_REJECTED'
+} as const
+
+export type RefundAnalysisStatus = (typeof RefundAnalysisStatus)[keyof typeof RefundAnalysisStatus]

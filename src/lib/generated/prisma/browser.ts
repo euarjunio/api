@@ -42,3 +42,23 @@ export type Charges = Prisma.ChargesModel
  * 
  */
 export type Apikey = Prisma.ApikeyModel
+/**
+ * Model Ledger
+ * 
+ */
+export type Ledger = Prisma.LedgerModel
+/**
+ * Model MerchantWebhook
+ * 
+ */
+export type MerchantWebhook = Prisma.MerchantWebhookModel
+/**
+ * Model WebhookLog
+ * 
+ */
+export type WebhookLog = Prisma.WebhookLogModel
+/**
+ * Model Infraction
+ * 
+ */
+export type Infraction = Prisma.InfractionModel

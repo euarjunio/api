@@ -5,6 +5,7 @@ declare module "@fastify/jwt" {
     user: {
       id: string;
       role: "ADMIN" | "USER";
+      merchantId?: string;
     };
   }
 }
@@ -14,6 +15,9 @@ declare module "fastify" {
     user: {
       id: string;
       role: "ADMIN" | "USER";
+      merchantId?: string;
     };
+    saveRequestFiles: () => Promise<Array<any>>
+    rawBody?: string
   }
 }

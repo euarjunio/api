@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.3.0
- * Query Engine version: 9d6ad21cbbceab97458517b147a6a09ff43aa735
+ * Prisma Client JS version: 7.4.1
+ * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.3.0",
-  engine: "9d6ad21cbbceab97458517b147a6a09ff43aa735"
+  client: "7.4.1",
+  engine: "55ae170b1ced7fc6ed07a15f110549408c501bb3"
 }
 
 /**
@@ -388,7 +388,11 @@ export const ModelName = {
   Merchant: 'Merchant',
   Customer: 'Customer',
   Charges: 'Charges',
-  Apikey: 'Apikey'
+  Apikey: 'Apikey',
+  Ledger: 'Ledger',
+  MerchantWebhook: 'MerchantWebhook',
+  WebhookLog: 'WebhookLog',
+  Infraction: 'Infraction'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "merchant" | "customer" | "charges" | "apikey"
+    modelProps: "user" | "merchant" | "customer" | "charges" | "apikey" | "ledger" | "merchantWebhook" | "webhookLog" | "infraction"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -778,6 +782,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Ledger: {
+      payload: Prisma.$LedgerPayload<ExtArgs>
+      fields: Prisma.LedgerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LedgerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LedgerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload>
+        }
+        findFirst: {
+          args: Prisma.LedgerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LedgerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload>
+        }
+        findMany: {
+          args: Prisma.LedgerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload>[]
+        }
+        create: {
+          args: Prisma.LedgerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload>
+        }
+        createMany: {
+          args: Prisma.LedgerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LedgerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload>[]
+        }
+        delete: {
+          args: Prisma.LedgerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload>
+        }
+        update: {
+          args: Prisma.LedgerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload>
+        }
+        deleteMany: {
+          args: Prisma.LedgerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LedgerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LedgerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload>[]
+        }
+        upsert: {
+          args: Prisma.LedgerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LedgerPayload>
+        }
+        aggregate: {
+          args: Prisma.LedgerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLedger>
+        }
+        groupBy: {
+          args: Prisma.LedgerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LedgerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LedgerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LedgerCountAggregateOutputType> | number
+        }
+      }
+    }
+    MerchantWebhook: {
+      payload: Prisma.$MerchantWebhookPayload<ExtArgs>
+      fields: Prisma.MerchantWebhookFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MerchantWebhookFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MerchantWebhookFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload>
+        }
+        findFirst: {
+          args: Prisma.MerchantWebhookFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MerchantWebhookFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload>
+        }
+        findMany: {
+          args: Prisma.MerchantWebhookFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload>[]
+        }
+        create: {
+          args: Prisma.MerchantWebhookCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload>
+        }
+        createMany: {
+          args: Prisma.MerchantWebhookCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MerchantWebhookCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload>[]
+        }
+        delete: {
+          args: Prisma.MerchantWebhookDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload>
+        }
+        update: {
+          args: Prisma.MerchantWebhookUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload>
+        }
+        deleteMany: {
+          args: Prisma.MerchantWebhookDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MerchantWebhookUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MerchantWebhookUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload>[]
+        }
+        upsert: {
+          args: Prisma.MerchantWebhookUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantWebhookPayload>
+        }
+        aggregate: {
+          args: Prisma.MerchantWebhookAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMerchantWebhook>
+        }
+        groupBy: {
+          args: Prisma.MerchantWebhookGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantWebhookGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MerchantWebhookCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantWebhookCountAggregateOutputType> | number
+        }
+      }
+    }
+    WebhookLog: {
+      payload: Prisma.$WebhookLogPayload<ExtArgs>
+      fields: Prisma.WebhookLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WebhookLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WebhookLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload>
+        }
+        findFirst: {
+          args: Prisma.WebhookLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WebhookLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload>
+        }
+        findMany: {
+          args: Prisma.WebhookLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload>[]
+        }
+        create: {
+          args: Prisma.WebhookLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload>
+        }
+        createMany: {
+          args: Prisma.WebhookLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WebhookLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload>[]
+        }
+        delete: {
+          args: Prisma.WebhookLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload>
+        }
+        update: {
+          args: Prisma.WebhookLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.WebhookLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WebhookLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WebhookLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.WebhookLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebhookLogPayload>
+        }
+        aggregate: {
+          args: Prisma.WebhookLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWebhookLog>
+        }
+        groupBy: {
+          args: Prisma.WebhookLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebhookLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WebhookLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebhookLogCountAggregateOutputType> | number
+        }
+      }
+    }
+    Infraction: {
+      payload: Prisma.$InfractionPayload<ExtArgs>
+      fields: Prisma.InfractionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InfractionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InfractionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload>
+        }
+        findFirst: {
+          args: Prisma.InfractionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InfractionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload>
+        }
+        findMany: {
+          args: Prisma.InfractionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload>[]
+        }
+        create: {
+          args: Prisma.InfractionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload>
+        }
+        createMany: {
+          args: Prisma.InfractionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InfractionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload>[]
+        }
+        delete: {
+          args: Prisma.InfractionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload>
+        }
+        update: {
+          args: Prisma.InfractionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload>
+        }
+        deleteMany: {
+          args: Prisma.InfractionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InfractionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InfractionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload>[]
+        }
+        upsert: {
+          args: Prisma.InfractionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InfractionPayload>
+        }
+        aggregate: {
+          args: Prisma.InfractionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInfraction>
+        }
+        groupBy: {
+          args: Prisma.InfractionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InfractionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InfractionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InfractionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -837,6 +1137,20 @@ export const MerchantScalarFieldEnum = {
   document: 'document',
   documentType: 'documentType',
   status: 'status',
+  kycStatus: 'kycStatus',
+  docFrontUrl: 'docFrontUrl',
+  docBackUrl: 'docBackUrl',
+  docSelfieUrl: 'docSelfieUrl',
+  kycNotes: 'kycNotes',
+  kycAnalyzedAt: 'kycAnalyzedAt',
+  acquirer: 'acquirer',
+  acquirerAccountId: 'acquirerAccountId',
+  pixKeyId: 'pixKeyId',
+  pixKey: 'pixKey',
+  pixKeyType: 'pixKeyType',
+  pixKeyStatus: 'pixKeyStatus',
+  feeMode: 'feeMode',
+  feeAmount: 'feeAmount',
   metadata: 'metadata',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -866,9 +1180,15 @@ export const ChargesScalarFieldEnum = {
   amount: 'amount',
   description: 'description',
   status: 'status',
+  acquirer: 'acquirer',
+  paymentMethod: 'paymentMethod',
+  txid: 'txid',
   qrCode: 'qrCode',
   expiresIn: 'expiresIn',
+  idempotencyKey: 'idempotencyKey',
   metadata: 'metadata',
+  paidAt: 'paidAt',
+  canceledAt: 'canceledAt',
   merchantId: 'merchantId',
   customerId: 'customerId',
   createdAt: 'createdAt',
@@ -892,6 +1212,101 @@ export const ApikeyScalarFieldEnum = {
 export type ApikeyScalarFieldEnum = (typeof ApikeyScalarFieldEnum)[keyof typeof ApikeyScalarFieldEnum]
 
 
+export const LedgerScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  type: 'type',
+  status: 'status',
+  description: 'description',
+  merchantId: 'merchantId',
+  chargeId: 'chargeId',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LedgerScalarFieldEnum = (typeof LedgerScalarFieldEnum)[keyof typeof LedgerScalarFieldEnum]
+
+
+export const MerchantWebhookScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  url: 'url',
+  events: 'events',
+  status: 'status',
+  secret: 'secret',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  merchantId: 'merchantId'
+} as const
+
+export type MerchantWebhookScalarFieldEnum = (typeof MerchantWebhookScalarFieldEnum)[keyof typeof MerchantWebhookScalarFieldEnum]
+
+
+export const WebhookLogScalarFieldEnum = {
+  id: 'id',
+  deliveryId: 'deliveryId',
+  event: 'event',
+  url: 'url',
+  payload: 'payload',
+  statusCode: 'statusCode',
+  response: 'response',
+  attempts: 'attempts',
+  success: 'success',
+  merchantId: 'merchantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  webhookId: 'webhookId'
+} as const
+
+export type WebhookLogScalarFieldEnum = (typeof WebhookLogScalarFieldEnum)[keyof typeof WebhookLogScalarFieldEnum]
+
+
+export const InfractionScalarFieldEnum = {
+  id: 'id',
+  acquirer: 'acquirer',
+  acquirerInfractionId: 'acquirerInfractionId',
+  acquirerEventId: 'acquirerEventId',
+  acquirerAccountId: 'acquirerAccountId',
+  status: 'status',
+  analysisStatus: 'analysisStatus',
+  situationType: 'situationType',
+  transactionId: 'transactionId',
+  txid: 'txid',
+  amount: 'amount',
+  infractionDate: 'infractionDate',
+  analysisDueDate: 'analysisDueDate',
+  analysisDate: 'analysisDate',
+  infractionDescription: 'infractionDescription',
+  payerName: 'payerName',
+  payerTaxId: 'payerTaxId',
+  contestedAt: 'contestedAt',
+  merchantAnalysis: 'merchantAnalysis',
+  merchantDescription: 'merchantDescription',
+  merchantAnalyzedAt: 'merchantAnalyzedAt',
+  adminApprovedBy: 'adminApprovedBy',
+  adminNotes: 'adminNotes',
+  adminApprovedAt: 'adminApprovedAt',
+  sentAnalysis: 'sentAnalysis',
+  sentDescription: 'sentDescription',
+  sentAt: 'sentAt',
+  refundStatus: 'refundStatus',
+  refundAnalysisStatus: 'refundAnalysisStatus',
+  refundTransactionId: 'refundTransactionId',
+  refundedAmount: 'refundedAmount',
+  refundDate: 'refundDate',
+  refundRejectionReason: 'refundRejectionReason',
+  reviewerName: 'reviewerName',
+  merchantId: 'merchantId',
+  chargeId: 'chargeId',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InfractionScalarFieldEnum = (typeof InfractionScalarFieldEnum)[keyof typeof InfractionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -906,6 +1321,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -982,16 +1404,16 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'MerchantType'
+ * Reference to a field of type 'DocumentType'
  */
-export type EnumMerchantTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantType'>
+export type EnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType'>
     
 
 
 /**
- * Reference to a field of type 'MerchantType[]'
+ * Reference to a field of type 'DocumentType[]'
  */
-export type ListEnumMerchantTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantType[]'>
+export type ListEnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType[]'>
     
 
 
@@ -1010,16 +1432,30 @@ export type ListEnumMerchantStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
- * Reference to a field of type 'Json'
+ * Reference to a field of type 'KycStatus'
  */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+export type EnumKycStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'KycStatus'>
     
 
 
 /**
- * Reference to a field of type 'QueryMode'
+ * Reference to a field of type 'KycStatus[]'
  */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+export type ListEnumKycStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'KycStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FeeMode'
+ */
+export type EnumFeeModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeeMode'>
+    
+
+
+/**
+ * Reference to a field of type 'FeeMode[]'
+ */
+export type ListEnumFeeModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeeMode[]'>
     
 
 
@@ -1034,6 +1470,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -1062,6 +1512,125 @@ export type EnumApiKeyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'ApiKeyStatus[]'
  */
 export type ListEnumApiKeyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApiKeyStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'LedgerType'
+ */
+export type EnumLedgerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LedgerType'>
+    
+
+
+/**
+ * Reference to a field of type 'LedgerType[]'
+ */
+export type ListEnumLedgerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LedgerType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'LedgerStatus'
+ */
+export type EnumLedgerStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LedgerStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'LedgerStatus[]'
+ */
+export type ListEnumLedgerStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LedgerStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantWebhookStatus'
+ */
+export type EnumMerchantWebhookStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantWebhookStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MerchantWebhookStatus[]'
+ */
+export type ListEnumMerchantWebhookStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MerchantWebhookStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'InfractionStatus'
+ */
+export type EnumInfractionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InfractionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'InfractionStatus[]'
+ */
+export type ListEnumInfractionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InfractionStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'InfractionAnalysisStatus'
+ */
+export type EnumInfractionAnalysisStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InfractionAnalysisStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'InfractionAnalysisStatus[]'
+ */
+export type ListEnumInfractionAnalysisStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InfractionAnalysisStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'InfractionSituationType'
+ */
+export type EnumInfractionSituationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InfractionSituationType'>
+    
+
+
+/**
+ * Reference to a field of type 'InfractionSituationType[]'
+ */
+export type ListEnumInfractionSituationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InfractionSituationType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RefundStatus'
+ */
+export type EnumRefundStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RefundStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RefundStatus[]'
+ */
+export type ListEnumRefundStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RefundStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RefundAnalysisStatus'
+ */
+export type EnumRefundAnalysisStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RefundAnalysisStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RefundAnalysisStatus[]'
+ */
+export type ListEnumRefundAnalysisStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RefundAnalysisStatus[]'>
     
 
 
@@ -1178,6 +1747,10 @@ export type GlobalOmitConfig = {
   customer?: Prisma.CustomerOmit
   charges?: Prisma.ChargesOmit
   apikey?: Prisma.ApikeyOmit
+  ledger?: Prisma.LedgerOmit
+  merchantWebhook?: Prisma.MerchantWebhookOmit
+  webhookLog?: Prisma.WebhookLogOmit
+  infraction?: Prisma.InfractionOmit
 }
 
 /* Types for Logging */

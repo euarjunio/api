@@ -1,26 +1,46 @@
+# ═══════════════════════════════════════════════════════════
+# Stage 1: Builder — instala tudo e gera o Prisma Client
+# ═══════════════════════════════════════════════════════════
 FROM node:25-alpine AS builder
 
 WORKDIR /app
 
-# Copiar archivos de dependencias
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Instalar TODAS las dependencias (incluyendo devDependencies para Prisma)
+# Instalar TODAS as dependências (devDeps necessárias para prisma generate)
 RUN npm ci
 
-# Aceitar DATABASE_URL como build arg ANTES de gerar o Prisma Client
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 
-# Copiar el resto del código
-COPY . .
-
-# Generar Prisma Client (agora DATABASE_URL está disponível)
+# Gerar Prisma Client
 RUN npx prisma generate
 
-ARG PORT
+# ═══════════════════════════════════════════════════════════
+# Stage 2: Runner — imagem final leve, sem devDependencies
+# ═══════════════════════════════════════════════════════════
+FROM node:25-alpine AS runner
+
+WORKDIR /app
+
+COPY package*.json ./
+
+# Instalar APENAS dependências de produção
+RUN npm ci --omit=dev
+
+# Copiar Prisma Client gerado do builder
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
+
+# Copiar código-fonte e schema
+COPY prisma ./prisma/
+COPY src ./src/
+COPY tsconfig.json ./
+
+ARG PORT=80
 ENV PORT=$PORT
+ENV NODE_ENV=production
 
 EXPOSE $PORT
 

@@ -55,7 +55,11 @@ export const ModelName = {
   Merchant: 'Merchant',
   Customer: 'Customer',
   Charges: 'Charges',
-  Apikey: 'Apikey'
+  Apikey: 'Apikey',
+  Ledger: 'Ledger',
+  MerchantWebhook: 'MerchantWebhook',
+  WebhookLog: 'WebhookLog',
+  Infraction: 'Infraction'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -94,6 +98,20 @@ export const MerchantScalarFieldEnum = {
   document: 'document',
   documentType: 'documentType',
   status: 'status',
+  kycStatus: 'kycStatus',
+  docFrontUrl: 'docFrontUrl',
+  docBackUrl: 'docBackUrl',
+  docSelfieUrl: 'docSelfieUrl',
+  kycNotes: 'kycNotes',
+  kycAnalyzedAt: 'kycAnalyzedAt',
+  acquirer: 'acquirer',
+  acquirerAccountId: 'acquirerAccountId',
+  pixKeyId: 'pixKeyId',
+  pixKey: 'pixKey',
+  pixKeyType: 'pixKeyType',
+  pixKeyStatus: 'pixKeyStatus',
+  feeMode: 'feeMode',
+  feeAmount: 'feeAmount',
   metadata: 'metadata',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -123,9 +141,15 @@ export const ChargesScalarFieldEnum = {
   amount: 'amount',
   description: 'description',
   status: 'status',
+  acquirer: 'acquirer',
+  paymentMethod: 'paymentMethod',
+  txid: 'txid',
   qrCode: 'qrCode',
   expiresIn: 'expiresIn',
+  idempotencyKey: 'idempotencyKey',
   metadata: 'metadata',
+  paidAt: 'paidAt',
+  canceledAt: 'canceledAt',
   merchantId: 'merchantId',
   customerId: 'customerId',
   createdAt: 'createdAt',
@@ -149,6 +173,101 @@ export const ApikeyScalarFieldEnum = {
 export type ApikeyScalarFieldEnum = (typeof ApikeyScalarFieldEnum)[keyof typeof ApikeyScalarFieldEnum]
 
 
+export const LedgerScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  type: 'type',
+  status: 'status',
+  description: 'description',
+  merchantId: 'merchantId',
+  chargeId: 'chargeId',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LedgerScalarFieldEnum = (typeof LedgerScalarFieldEnum)[keyof typeof LedgerScalarFieldEnum]
+
+
+export const MerchantWebhookScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  url: 'url',
+  events: 'events',
+  status: 'status',
+  secret: 'secret',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  merchantId: 'merchantId'
+} as const
+
+export type MerchantWebhookScalarFieldEnum = (typeof MerchantWebhookScalarFieldEnum)[keyof typeof MerchantWebhookScalarFieldEnum]
+
+
+export const WebhookLogScalarFieldEnum = {
+  id: 'id',
+  deliveryId: 'deliveryId',
+  event: 'event',
+  url: 'url',
+  payload: 'payload',
+  statusCode: 'statusCode',
+  response: 'response',
+  attempts: 'attempts',
+  success: 'success',
+  merchantId: 'merchantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  webhookId: 'webhookId'
+} as const
+
+export type WebhookLogScalarFieldEnum = (typeof WebhookLogScalarFieldEnum)[keyof typeof WebhookLogScalarFieldEnum]
+
+
+export const InfractionScalarFieldEnum = {
+  id: 'id',
+  acquirer: 'acquirer',
+  acquirerInfractionId: 'acquirerInfractionId',
+  acquirerEventId: 'acquirerEventId',
+  acquirerAccountId: 'acquirerAccountId',
+  status: 'status',
+  analysisStatus: 'analysisStatus',
+  situationType: 'situationType',
+  transactionId: 'transactionId',
+  txid: 'txid',
+  amount: 'amount',
+  infractionDate: 'infractionDate',
+  analysisDueDate: 'analysisDueDate',
+  analysisDate: 'analysisDate',
+  infractionDescription: 'infractionDescription',
+  payerName: 'payerName',
+  payerTaxId: 'payerTaxId',
+  contestedAt: 'contestedAt',
+  merchantAnalysis: 'merchantAnalysis',
+  merchantDescription: 'merchantDescription',
+  merchantAnalyzedAt: 'merchantAnalyzedAt',
+  adminApprovedBy: 'adminApprovedBy',
+  adminNotes: 'adminNotes',
+  adminApprovedAt: 'adminApprovedAt',
+  sentAnalysis: 'sentAnalysis',
+  sentDescription: 'sentDescription',
+  sentAt: 'sentAt',
+  refundStatus: 'refundStatus',
+  refundAnalysisStatus: 'refundAnalysisStatus',
+  refundTransactionId: 'refundTransactionId',
+  refundedAmount: 'refundedAmount',
+  refundDate: 'refundDate',
+  refundRejectionReason: 'refundRejectionReason',
+  reviewerName: 'reviewerName',
+  merchantId: 'merchantId',
+  chargeId: 'chargeId',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InfractionScalarFieldEnum = (typeof InfractionScalarFieldEnum)[keyof typeof InfractionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -163,6 +282,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

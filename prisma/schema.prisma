@@ -12,7 +12,7 @@ enum UserRole {
   USER
 }
 
-enum MerchantType {
+enum DocumentType {
   CPF
   CNPJ
 }
@@ -20,6 +20,13 @@ enum MerchantType {
 enum MerchantStatus {
   ACTIVE
   INACTIVE
+}
+
+enum KycStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
 }
 
 enum ChargeStatus {
@@ -35,10 +42,71 @@ enum ApiKeyStatus {
   INACTIVE
 }
 
-// usuario
-model User {
-  id String @id @default(uuid())
+enum FeeMode {
+  PERCENTUAL
+  FIXADO
+}
 
+enum MerchantWebhookStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum LedgerType {
+  CASH_IN   // Entrada de pagamento PIX
+  FEE       // Taxa da plataforma (saída)
+  WITHDRAW  // Saque para conta do merchant (saída)
+  REFUND    // Estorno (saída)
+  ADJUSTMENT // Ajuste manual (admin)
+}
+
+enum LedgerStatus {
+  PENDING   // Valor em processamento
+  AVAILABLE // Valor liberado para saque
+  BLOCKED   // Valor bloqueado (disputa/segurança)
+}
+
+// ── Infrações PIX (MED) ──────────────────────────────────────
+
+enum InfractionStatus {
+  PENDING     // Pendente de decisão final
+  AGREED      // Concordou com a infração
+  DISAGREED   // Rejeitou a infração
+  CANCELED    // Infração cancelada
+}
+
+enum InfractionAnalysisStatus {
+  PENDING             // Aguardando análise do merchant
+  AWAITING_APPROVAL   // Merchant respondeu, aguardando aprovação do admin
+  ACCEPTED            // Análise enviada → aceita
+  REJECTED            // Análise enviada → rejeitada
+  DELAYED             // Análise atrasada
+  CANCELED            // Cancelada
+}
+
+enum InfractionSituationType {
+  SCAM               // Golpe
+  ACCOUNT_TAKEOVER   // Conta tomada
+  COERCION           // Coação
+  FRAUDULENT_ACCESS  // Acesso fraudulento
+  OTHER              // Outro
+  UNKNOWN            // Desconhecido
+}
+
+enum RefundStatus {
+  REFUND_PENDING   // Reembolso em processamento
+  REFUND_CLOSED    // Processo concluído
+  REFUND_CANCELED  // Reembolso cancelado
+}
+
+enum RefundAnalysisStatus {
+  TOTALLY_ACCEPTED    // Reembolso total
+  PARTIALLY_ACCEPTED  // Reembolso parcial
+  REFUND_REJECTED     // Rejeitado
+}
+
+model User {
+  id           String   @id @default(uuid())
   email        String   @unique
   passwordHash String
   role         UserRole @default(USER)
@@ -51,79 +119,107 @@ model User {
   @@map("users")
 }
 
-// logista
 model Merchant {
-  id String @id @default(uuid())
-
+  id           String         @id @default(uuid())
   name         String
   email        String
   phone        String
   document     String         @unique
-  documentType MerchantType   @default(CNPJ) @map("document_type")
+  documentType DocumentType   @default(CNPJ) @map("document_type")
   status       MerchantStatus @default(ACTIVE)
-  metadata     Json?
 
+  // KYC / Compliance
+  kycStatus     KycStatus @default(PENDING) @map("kyc_status")
+  docFrontUrl   String?   @map("doc_front_url")
+  docBackUrl    String?   @map("doc_back_url")
+  docSelfieUrl  String?   @map("doc_selfie_url")
+  kycNotes      String?   @map("kyc_notes")
+  kycAnalyzedAt DateTime? @map("kyc_analyzed_at")
+
+  // ── Multi-Adquirente ──
+  acquirer          String  @default("transfeera")           // Nome do provedor (transfeera, etc.)
+  acquirerAccountId String? @unique @map("acquirer_account_id") // ID da conta no adquirente
+
+  // Chave PIX (agnóstico ao provedor)
+  pixKeyId            String? @unique @map("pix_key_id")
+  pixKey              String? @map("pix_key")
+  pixKeyType          String? @map("pix_key_type")
+  pixKeyStatus        String? @map("pix_key_status")
+
+  // Taxa da plataforma (split)
+  feeMode   FeeMode @default(FIXADO) @map("fee_mode")
+  feeAmount Int     @default(80) @map("fee_amount") // 80 CENTAVOS (R$ 0.80)
+
+  metadata  Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  apikey  Apikey[]
-  charges Charges[]
+  apikey      Apikey[]
+  charges     Charges[]
+  webhooks    MerchantWebhook[]
+  ledger      Ledger[]
+  infractions Infraction[]
 
   @@index([userId])
+  @@index([kycStatus])
   @@map("merchants")
 }
 
-// cliente
 model Customer {
-  id String @id @default(uuid())
-
+  id           String       @id @default(uuid())
   name         String
-  email        String       @unique
-  phone        String
+  email        String?      @unique
+  phone        String?
   document     String       @unique
-  documentType MerchantType
+  documentType DocumentType @map("document_type")
   metadata     Json?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  charges      Charges[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  charges Charges[]
-
+  @@index([document])
   @@map("customers")
 }
 
-// cobrança
 model Charges {
-  id String @id @default(uuid())
-
+  id          String       @id @default(uuid())
   amount      Int
   description String
-
   status      ChargeStatus @default(PENDING)
 
-  qrCode      String
-  expiresIn   Int
-  metadata    Json?
+  // ── Multi-Adquirente ──
+  acquirer      String @default("transfeera")   // Nome do provedor usado
+  paymentMethod String @default("PIX") @map("payment_method") // PIX, BOLETO, CARD
+
+  txid           String? @unique
+  qrCode         String? @map("qr_code")
+  expiresIn      Int     @default(86400) @map("expires_in")
+  idempotencyKey String? @map("idempotency_key")
+  metadata       Json?
+
+  paidAt     DateTime?
+  canceledAt DateTime?
 
   merchantId String
   merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
 
-  customerId String
-  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([merchantId, idempotencyKey])
+  @@index([merchantId, status])
+  @@index([txid])
   @@map("charges")
 }
 
-// apikey
 model Apikey {
-  id String @id @default(uuid())
-
+  id          String       @id @default(uuid())
   name        String
   value       String       @unique
   description String
@@ -135,5 +231,152 @@ model Apikey {
   merchantId String
   merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
 
+  @@index([merchantId])
   @@map("apikeys")
+}
+
+model Ledger {
+  id          String       @id @default(uuid())
+  amount      Int          // Valor em centavos (positivo = entrada, negativo = saída)
+  type        LedgerType
+  status      LedgerStatus @default(PENDING)
+  description String?
+
+  merchantId String   @map("merchant_id")
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  chargeId String? @map("charge_id")
+
+  metadata  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([merchantId, status])
+  @@index([merchantId, type])
+  @@index([chargeId])
+  @@map("ledger")
+}
+
+model MerchantWebhook {
+  id     String                @id @default(uuid())
+  name   String?
+  url    String
+  events String[]              @default([])
+  status MerchantWebhookStatus @default(ACTIVE)
+  secret String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  merchantId String
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  logs WebhookLog[]
+
+  @@index([merchantId, status])
+  @@map("merchant_webhooks")
+}
+
+model WebhookLog {
+  id         String  @id @default(uuid())
+  deliveryId String  @unique @map("delivery_id")
+  event      String
+  url        String
+  payload    Json
+  statusCode Int?    @map("status_code")
+  response   String?
+  attempts   Int     @default(0)
+  success    Boolean @default(false)
+  merchantId String  @map("merchant_id")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  webhookId String          @map("webhook_id")
+  webhook   MerchantWebhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+
+  @@index([merchantId, createdAt])
+  @@index([webhookId])
+  @@map("webhook_logs")
+}
+
+// ── Infrações PIX (MED — Mecanismo Especial de Devolução) ────
+
+model Infraction {
+  id                      String   @id @default(uuid())
+
+  // ── Multi-Adquirente ──
+  acquirer                String   @default("transfeera")                     // Nome do provedor
+  acquirerInfractionId    String   @unique @map("acquirer_infraction_id")     // ID da infração no adquirente
+  acquirerEventId         String?  @map("acquirer_event_id")                  // ID do evento no adquirente
+  acquirerAccountId       String?  @map("acquirer_account_id")                // ID da conta no adquirente
+
+  // Status da infração (decisão final do adquirente)
+  status                  InfractionStatus             @default(PENDING)
+
+  // Status da análise (inclui fluxo híbrido: merchant → admin → adquirente)
+  analysisStatus          InfractionAnalysisStatus      @default(PENDING) @map("analysis_status")
+
+  // Tipo de situação
+  situationType           InfractionSituationType       @map("situation_type")
+
+  // Dados da transação
+  transactionId           String?  @map("transaction_id")   // EndToEndID
+  txid                    String?                            // txid da cobrança original
+  amount                  Int                                // Valor em centavos
+
+  // Datas
+  infractionDate          DateTime  @map("infraction_date")
+  analysisDueDate         DateTime? @map("analysis_due_date")
+  analysisDate            DateTime? @map("analysis_date")
+  infractionDescription   String?   @map("infraction_description")
+
+  // Pagador
+  payerName               String?  @map("payer_name")
+  payerTaxId              String?  @map("payer_tax_id")
+
+  // Contestação
+  contestedAt             DateTime? @map("contested_at")
+
+  // ── Análise do Merchant (Opção C — Híbrida) ──
+  merchantAnalysis        String?  @map("merchant_analysis")
+  merchantDescription     String?  @map("merchant_description")
+  merchantAnalyzedAt      DateTime? @map("merchant_analyzed_at")
+
+  // ── Aprovação do Admin ──
+  adminApprovedBy         String?  @map("admin_approved_by")
+  adminNotes              String?  @map("admin_notes")
+  adminApprovedAt         DateTime? @map("admin_approved_at")
+
+  // ── Análise final enviada ao adquirente ──
+  sentAnalysis            String?  @map("sent_analysis")
+  sentDescription         String?  @map("sent_description")
+  sentAt                  DateTime? @map("sent_at")
+
+  // ── Refund (reembolso) ──
+  refundStatus            RefundStatus?         @map("refund_status")
+  refundAnalysisStatus    RefundAnalysisStatus?  @map("refund_analysis_status")
+  refundTransactionId     String?  @map("refund_transaction_id")
+  refundedAmount          Int?     @map("refunded_amount")
+  refundDate              DateTime? @map("refund_date")
+  refundRejectionReason   String?  @map("refund_rejection_reason")
+
+  // Quem analisou no adquirente
+  reviewerName            String?  @map("reviewer_name")
+
+  // Relações
+  merchantId              String   @map("merchant_id")
+  merchant                Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  chargeId                String?  @map("charge_id")
+
+  metadata                Json?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@index([merchantId, status])
+  @@index([merchantId, analysisStatus])
+  @@index([txid])
+  @@index([transactionId])
+  @@map("infractions")
 }

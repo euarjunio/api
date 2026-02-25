@@ -30,7 +30,7 @@ export type CustomerMinAggregateOutputType = {
   email: string | null
   phone: string | null
   document: string | null
-  documentType: $Enums.MerchantType | null
+  documentType: $Enums.DocumentType | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -41,7 +41,7 @@ export type CustomerMaxAggregateOutputType = {
   email: string | null
   phone: string | null
   document: string | null
-  documentType: $Enums.MerchantType | null
+  documentType: $Enums.DocumentType | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -170,10 +170,10 @@ export type CustomerGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type CustomerGroupByOutputType = {
   id: string
   name: string
-  email: string
-  phone: string
+  email: string | null
+  phone: string | null
   document: string
-  documentType: $Enums.MerchantType
+  documentType: $Enums.DocumentType
   metadata: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
@@ -203,10 +203,10 @@ export type CustomerWhereInput = {
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   id?: Prisma.StringFilter<"Customer"> | string
   name?: Prisma.StringFilter<"Customer"> | string
-  email?: Prisma.StringFilter<"Customer"> | string
-  phone?: Prisma.StringFilter<"Customer"> | string
+  email?: Prisma.StringNullableFilter<"Customer"> | string | null
+  phone?: Prisma.StringNullableFilter<"Customer"> | string | null
   document?: Prisma.StringFilter<"Customer"> | string
-  documentType?: Prisma.EnumMerchantTypeFilter<"Customer"> | $Enums.MerchantType
+  documentType?: Prisma.EnumDocumentTypeFilter<"Customer"> | $Enums.DocumentType
   metadata?: Prisma.JsonNullableFilter<"Customer">
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
@@ -216,8 +216,8 @@ export type CustomerWhereInput = {
 export type CustomerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   document?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -234,8 +234,8 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.CustomerWhereInput[]
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   name?: Prisma.StringFilter<"Customer"> | string
-  phone?: Prisma.StringFilter<"Customer"> | string
-  documentType?: Prisma.EnumMerchantTypeFilter<"Customer"> | $Enums.MerchantType
+  phone?: Prisma.StringNullableFilter<"Customer"> | string | null
+  documentType?: Prisma.EnumDocumentTypeFilter<"Customer"> | $Enums.DocumentType
   metadata?: Prisma.JsonNullableFilter<"Customer">
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
@@ -245,8 +245,8 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
 export type CustomerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   document?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -263,10 +263,10 @@ export type CustomerScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CustomerScalarWhereWithAggregatesInput | Prisma.CustomerScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   name?: Prisma.StringWithAggregatesFilter<"Customer"> | string
-  email?: Prisma.StringWithAggregatesFilter<"Customer"> | string
-  phone?: Prisma.StringWithAggregatesFilter<"Customer"> | string
+  email?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
   document?: Prisma.StringWithAggregatesFilter<"Customer"> | string
-  documentType?: Prisma.EnumMerchantTypeWithAggregatesFilter<"Customer"> | $Enums.MerchantType
+  documentType?: Prisma.EnumDocumentTypeWithAggregatesFilter<"Customer"> | $Enums.DocumentType
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"Customer">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
@@ -275,10 +275,10 @@ export type CustomerScalarWhereWithAggregatesInput = {
 export type CustomerCreateInput = {
   id?: string
   name: string
-  email: string
-  phone: string
+  email?: string | null
+  phone?: string | null
   document: string
-  documentType: $Enums.MerchantType
+  documentType: $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -288,10 +288,10 @@ export type CustomerCreateInput = {
 export type CustomerUncheckedCreateInput = {
   id?: string
   name: string
-  email: string
-  phone: string
+  email?: string | null
+  phone?: string | null
   document: string
-  documentType: $Enums.MerchantType
+  documentType: $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -301,10 +301,10 @@ export type CustomerUncheckedCreateInput = {
 export type CustomerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   document?: Prisma.StringFieldUpdateOperationsInput | string
-  documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -314,10 +314,10 @@ export type CustomerUpdateInput = {
 export type CustomerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   document?: Prisma.StringFieldUpdateOperationsInput | string
-  documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -327,10 +327,10 @@ export type CustomerUncheckedUpdateInput = {
 export type CustomerCreateManyInput = {
   id?: string
   name: string
-  email: string
-  phone: string
+  email?: string | null
+  phone?: string | null
   document: string
-  documentType: $Enums.MerchantType
+  documentType: $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -339,10 +339,10 @@ export type CustomerCreateManyInput = {
 export type CustomerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   document?: Prisma.StringFieldUpdateOperationsInput | string
-  documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -351,10 +351,10 @@ export type CustomerUpdateManyMutationInput = {
 export type CustomerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   document?: Prisma.StringFieldUpdateOperationsInput | string
-  documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -394,9 +394,9 @@ export type CustomerMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type CustomerScalarRelationFilter = {
-  is?: Prisma.CustomerWhereInput
-  isNot?: Prisma.CustomerWhereInput
+export type CustomerNullableScalarRelationFilter = {
+  is?: Prisma.CustomerWhereInput | null
+  isNot?: Prisma.CustomerWhereInput | null
 }
 
 export type CustomerCreateNestedOneWithoutChargesInput = {
@@ -405,10 +405,12 @@ export type CustomerCreateNestedOneWithoutChargesInput = {
   connect?: Prisma.CustomerWhereUniqueInput
 }
 
-export type CustomerUpdateOneRequiredWithoutChargesNestedInput = {
+export type CustomerUpdateOneWithoutChargesNestedInput = {
   create?: Prisma.XOR<Prisma.CustomerCreateWithoutChargesInput, Prisma.CustomerUncheckedCreateWithoutChargesInput>
   connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutChargesInput
   upsert?: Prisma.CustomerUpsertWithoutChargesInput
+  disconnect?: Prisma.CustomerWhereInput | boolean
+  delete?: Prisma.CustomerWhereInput | boolean
   connect?: Prisma.CustomerWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutChargesInput, Prisma.CustomerUpdateWithoutChargesInput>, Prisma.CustomerUncheckedUpdateWithoutChargesInput>
 }
@@ -416,10 +418,10 @@ export type CustomerUpdateOneRequiredWithoutChargesNestedInput = {
 export type CustomerCreateWithoutChargesInput = {
   id?: string
   name: string
-  email: string
-  phone: string
+  email?: string | null
+  phone?: string | null
   document: string
-  documentType: $Enums.MerchantType
+  documentType: $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -428,10 +430,10 @@ export type CustomerCreateWithoutChargesInput = {
 export type CustomerUncheckedCreateWithoutChargesInput = {
   id?: string
   name: string
-  email: string
-  phone: string
+  email?: string | null
+  phone?: string | null
   document: string
-  documentType: $Enums.MerchantType
+  documentType: $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -456,10 +458,10 @@ export type CustomerUpdateToOneWithWhereWithoutChargesInput = {
 export type CustomerUpdateWithoutChargesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   document?: Prisma.StringFieldUpdateOperationsInput | string
-  documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -468,10 +470,10 @@ export type CustomerUpdateWithoutChargesInput = {
 export type CustomerUncheckedUpdateWithoutChargesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   document?: Prisma.StringFieldUpdateOperationsInput | string
-  documentType?: Prisma.EnumMerchantTypeFieldUpdateOperationsInput | $Enums.MerchantType
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -574,10 +576,10 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    email: string
-    phone: string
+    email: string | null
+    phone: string | null
     document: string
-    documentType: $Enums.MerchantType
+    documentType: $Enums.DocumentType
     metadata: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
@@ -1010,7 +1012,7 @@ export interface CustomerFieldRefs {
   readonly email: Prisma.FieldRef<"Customer", 'String'>
   readonly phone: Prisma.FieldRef<"Customer", 'String'>
   readonly document: Prisma.FieldRef<"Customer", 'String'>
-  readonly documentType: Prisma.FieldRef<"Customer", 'MerchantType'>
+  readonly documentType: Prisma.FieldRef<"Customer", 'DocumentType'>
   readonly metadata: Prisma.FieldRef<"Customer", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Customer", 'DateTime'>
