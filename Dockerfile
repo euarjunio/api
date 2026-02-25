@@ -38,9 +38,6 @@ COPY src ./src/
 COPY --from=builder /app/src/lib/generated/prisma ./src/lib/generated/prisma
 COPY tsconfig.json ./
 
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-
 ARG PORT=80
 ENV PORT=$PORT
 ENV NODE_ENV=production
