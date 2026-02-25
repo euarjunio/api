@@ -31,11 +31,15 @@ RUN npm ci --omit=dev
 
 # Copiar código-fonte e schema
 COPY prisma ./prisma/
+COPY prisma.config.ts ./
 COPY src ./src/
 
 # Copiar Prisma Client gerado do builder (sobrescreve o diretório do contexto)
 COPY --from=builder /app/src/lib/generated/prisma ./src/lib/generated/prisma
 COPY tsconfig.json ./
+
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 
 ARG PORT=80
 ENV PORT=$PORT
