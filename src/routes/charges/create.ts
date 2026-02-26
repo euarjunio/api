@@ -25,6 +25,19 @@ export const createChargeRoute: FastifyPluginAsyncZod = async (app) => {
           phone: z.string().min(10).max(15),
           document: z.string().min(11).max(18),
         }).optional(),
+        tracking: z.object({
+          utmSource: z.string().max(255).optional(),
+          utmMedium: z.string().max(255).optional(),
+          utmCampaign: z.string().max(255).optional(),
+          utmContent: z.string().max(255).optional(),
+          utmTerm: z.string().max(255).optional(),
+          fbclid: z.string().max(500).optional(),
+          fbc: z.string().max(500).optional(),
+          fbp: z.string().max(500).optional(),
+          sourceUrl: z.string().max(2048).optional(),
+          clientIp: z.string().max(45).optional(),
+          userAgent: z.string().max(500).optional(),
+        }).optional(),
       }),
       headers: z.object({
         "x-idempotency-key": z.string().max(64).optional(),
@@ -72,7 +85,7 @@ export const createChargeRoute: FastifyPluginAsyncZod = async (app) => {
     },
   }, async (request, reply) => {
     const { id: userId } = await checkUserRequest(request);
-    const { amount, description, expiresIn, customer: customerData } = request.body;
+    const { amount, description, expiresIn, customer: customerData, tracking } = request.body;
     const idempotencyKey = (request.headers["x-idempotency-key"] as string | undefined) || null;
 
     // 1. Buscar merchant
@@ -214,6 +227,7 @@ export const createChargeRoute: FastifyPluginAsyncZod = async (app) => {
         idempotencyKey,
         merchantId: merchant.id,
         customerId: customer?.id ?? null,
+        tracking: tracking ?? undefined,
       },
     });
 

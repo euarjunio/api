@@ -1,6 +1,6 @@
 ## LIQUERA API (Gateway PIX)
 
-API de pagamentos PIX (cobranças + split de taxa) com onboarding de **merchant**, **KYC**, integração com **adquirente** (Transfeera via Strategy Pattern), storage de documentos (S3-compatible / Cloudflare R2), **ledger** (livro razão), **saques**, **webhooks multi-endpoint** e **worker** dedicado (BullMQ).
+API de pagamentos PIX (cobranças + split de taxa) com onboarding de **merchant**, **KYC**, integração com **adquirente** (Transfeera via Strategy Pattern), storage de documentos (S3-compatible / Cloudflare R2), **ledger** (livro razão), **saques**, **webhooks multi-endpoint**, **tracking plugins** (UTMify / Meta Pixel) e **worker** dedicado (BullMQ).
 
 ### Fluxo principal (diagrama Mermaid)
 
@@ -49,6 +49,11 @@ sequenceDiagram
   Redis->>MWH: Worker envia POST (x-webhook-secret, x-delivery-id)
   Redis->>DB: Salva log de entrega (webhook_logs)
 
+  Note over API,Redis: ── Tracking Plugins (UTMify / Meta Pixel) ──
+  API->>Redis: Enfileira eventos de tracking (purchase)
+  Redis->>Redis: Worker dispara para UTMify e/ou Meta Pixel CAPI
+  Redis->>DB: Salva tracking_logs (status: success/failed)
+
   Note over ACQ,WH: ── Infrações PIX (MED) ──
   ACQ->>WH: POST evento Infraction
   WH->>API: Valida assinatura + processa
@@ -69,7 +74,7 @@ sequenceDiagram
 - **API**: Fastify + Zod v4 (`fastify-type-provider-zod`)
 - **Banco**: PostgreSQL (Prisma + `@prisma/adapter-pg`)
 - **Filas / Jobs**: BullMQ + Redis — worker dedicado (`src/worker.ts`, processo separado no deploy)
-- **Integrações**: Adquirente via Strategy Pattern (`src/providers/`), implementação Transfeera. Cloudflare R2 (S3-compatible) para KYC.
+- **Integrações**: Adquirente via Strategy Pattern (`src/providers/`), implementação Transfeera. Cloudflare R2 (S3-compatible) para KYC. Tracking plugins (`src/plugins/`): UTMify e Meta Pixel Conversions API.
 - **Observabilidade**: Sentry (opcional, obrigatório em produção)
 - **Docs**: Swagger UI em `GET /docs` (controlado por `ENABLE_SWAGGER`)
 
@@ -95,8 +100,14 @@ sequenceDiagram
   - `GET /v1/merchants/me/infractions` (lista infrações MED)
   - `GET /v1/merchants/me/infractions/:id` (detalhe)
   - `POST /v1/merchants/me/infractions/:id/analyze` (enviar análise)
+  - **Tracking Plugins** (configura UTMify / Meta Pixel para disparo automático de eventos)
+    - `GET /v1/merchants/me/tracking` (lista plugins configurados + disponíveis)
+    - `POST /v1/merchants/me/tracking` (configura plugin com provider + credentials)
+    - `PATCH /v1/merchants/me/tracking/:provider` (atualiza credenciais / enabled)
+    - `DELETE /v1/merchants/me/tracking/:provider` (remove plugin)
+    - `GET /v1/merchants/me/tracking/logs` (histórico paginado de eventos disparados)
 - **Charges** (autenticado; idempotência via `x-idempotency-key`)
-  - `POST /v1/charges`
+  - `POST /v1/charges` (aceita campo opcional `tracking` com UTMs, fbclid, fbc, fbp, etc.)
   - `GET /v1/charges`
 - **API Keys** (exige **JWT**; gera `lk_test_...` em sandbox e `lk_live_...` em produção)
   - `POST /v1/api-keys`
@@ -244,6 +255,48 @@ Veja a pasta `postman/`:
 
 - `postman/LIQUERA API.postman_collection.json`
 - `postman/LIQUERA Local.postman_environment.json`
+
+### Tracking Plugins (UTMify / Meta Pixel)
+
+O sistema de tracking permite ao merchant configurar plugins que disparam eventos de conversão automaticamente quando um pagamento PIX é confirmado ou reembolsado.
+
+**Plugins disponíveis:**
+
+| Plugin | Provider key | Credenciais necessárias |
+|---|---|---|
+| UTMify | `utmify` | `apiToken` |
+| Meta Pixel (CAPI) | `meta_pixel` | `pixelId`, `accessToken` |
+
+**Fluxo:**
+
+1. O merchant configura um ou mais plugins via `POST /v1/merchants/me/tracking`
+2. Ao criar uma cobrança (`POST /v1/charges`), o checkout envia dados de UTM/Meta no campo `tracking`:
+
+```json
+{
+  "amount": 100,
+  "description": "Produto X",
+  "tracking": {
+    "utmSource": "google",
+    "utmMedium": "cpc",
+    "utmCampaign": "black-friday",
+    "fbclid": "abc123",
+    "fbc": "fb.1.1234567890.abc123",
+    "fbp": "fb.1.1234567890.987654321",
+    "sourceUrl": "https://loja.com/checkout",
+    "clientIp": "177.10.20.30",
+    "userAgent": "Mozilla/5.0"
+  }
+}
+```
+
+3. Quando o pagamento é confirmado (webhook CashIn), o sistema enfileira jobs no BullMQ para cada plugin ativo
+4. O worker processa os jobs com retry automático (3 tentativas, backoff exponencial)
+5. O resultado de cada disparo é registrado em `tracking_logs` (status: `pending` → `success` / `failed`)
+
+**Monitoramento:** O merchant pode consultar o histórico via `GET /v1/merchants/me/tracking/logs?provider=utmify&page=1&limit=20`.
+
+**Arquitetura:** Os plugins seguem o padrão Strategy (`src/plugins/tracker.interface.ts`). Para adicionar um novo plugin, basta implementar a interface `TrackerPlugin` e registrá-lo em `src/plugins/tracker.registry.ts`.
 
 ### Deploy (Fly.io)
 

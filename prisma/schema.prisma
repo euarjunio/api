@@ -162,6 +162,8 @@ model Merchant {
   webhooks    MerchantWebhook[]
   ledger      Ledger[]
   infractions Infraction[]
+  trackings    MerchantTracking[]
+  trackingLogs TrackingLog[]
 
   @@index([userId])
   @@index([kycStatus])
@@ -199,6 +201,7 @@ model Charges {
   expiresIn      Int     @default(86400) @map("expires_in")
   idempotencyKey String? @map("idempotency_key")
   metadata       Json?
+  tracking       Json?    // UTM params, fbclid, fbc, fbp, sourceUrl, clientIp, userAgent
 
   paidAt     DateTime?
   canceledAt DateTime?
@@ -298,6 +301,55 @@ model WebhookLog {
   @@index([merchantId, createdAt])
   @@index([webhookId])
   @@map("webhook_logs")
+}
+
+// ── Tracking Plugins (UTMify, Meta Pixel, etc.) ─────────────
+
+model MerchantTracking {
+  id       String @id @default(uuid())
+
+  provider String   // "utmify" | "meta_pixel"
+  enabled  Boolean  @default(true)
+
+  // Credenciais do plugin (JSON flexível por provedor)
+  // UTMify:     { "apiToken": "xxx" }
+  // Meta Pixel: { "pixelId": "123456", "accessToken": "EAAx..." }
+  credentials Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  merchantId String @map("merchant_id")
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  logs TrackingLog[]
+
+  @@unique([merchantId, provider])
+  @@index([merchantId, enabled])
+  @@map("merchant_trackings")
+}
+
+model TrackingLog {
+  id       String @id @default(uuid())
+
+  provider String   // "utmify" | "meta_pixel"
+  event    String   // "purchase" | "refund"
+  status   String   // "success" | "failed" | "pending"
+
+  chargeId String?  @map("charge_id")
+  error    String?  // Mensagem de erro se falhou
+
+  createdAt DateTime @default(now())
+
+  merchantId String @map("merchant_id")
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  trackingId String?          @map("tracking_id")
+  tracking   MerchantTracking? @relation(fields: [trackingId], references: [id], onDelete: SetNull)
+
+  @@index([merchantId, createdAt])
+  @@index([merchantId, provider])
+  @@map("tracking_logs")
 }
 
 // ── Infrações PIX (MED — Mecanismo Especial de Devolução) ────

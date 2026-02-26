@@ -58,6 +58,16 @@ export type MerchantWebhook = Prisma.MerchantWebhookModel
  */
 export type WebhookLog = Prisma.WebhookLogModel
 /**
+ * Model MerchantTracking
+ * 
+ */
+export type MerchantTracking = Prisma.MerchantTrackingModel
+/**
+ * Model TrackingLog
+ * 
+ */
+export type TrackingLog = Prisma.TrackingLogModel
+/**
  * Model Infraction
  * 
  */

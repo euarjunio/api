@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "4b41b0d0-6b5c-4a45-8a16-0e88e8d9c1d0",
     "name": "LIQUERA API",
-    "description": "Collection (v2.1) alinhada com as rotas em `src/app.ts` e `src/routes/**`.\n\nAuth:\n- `Authorization: Bearer <JWT>` (login) OU `Authorization: Bearer <API_KEY>` (prefixo `lk_`) nas rotas híbridas.\n- Admin: `Authorization: Bearer <JWT role=ADMIN>`.\n\nVariáveis principais:\n- baseUrl (ex: http://localhost:80)\n- userEmail/userPassword, adminEmail/adminPassword\n- token/adminToken/authToken\n- merchantId/apiKey/apiKeyId/chargeId/txid/infractionId/webhookId\n- transfeeraWebhookSecret (opcional; se vazio, /v1/webhooks/transfeera aceita sem assinatura).\n\nWebhooks multi-endpoint:\n- Cada merchant pode ter N webhooks, cada um inscrito em eventos específicos.\n- GET /v1/webhooks/merchant/events para ver eventos disponíveis.\n- POST /v1/webhooks/merchant cria webhook com url, name e events.\n- PATCH /v1/webhooks/merchant/:id atualiza webhook.\n- DELETE /v1/webhooks/merchant/:id remove webhook.\n- events=[] é wildcard (recebe todos os eventos).\n\nInfrações PIX (MED):\n- Webhook Transfeera envia evento `Infraction` → salvo no banco\n- Merchant analisa: POST /v1/merchants/me/infractions/:id/analyze → AWAITING_APPROVAL\n- Admin aprova e envia ao adquirente: POST /v1/admin/infractions/:id/approve\n- Admin pode sincronizar via: POST /v1/admin/infractions/sync",
+    "description": "Collection (v2.1) alinhada com as rotas em `src/app.ts` e `src/routes/**`.\n\nAuth:\n- `Authorization: Bearer <JWT>` (login) OU `Authorization: Bearer <API_KEY>` (prefixo `lk_`) nas rotas híbridas.\n- Admin: `Authorization: Bearer <JWT role=ADMIN>`.\n\nVariáveis principais:\n- baseUrl (ex: http://localhost:80)\n- userEmail/userPassword, adminEmail/adminPassword\n- token/adminToken/authToken\n- merchantId/apiKey/apiKeyId/chargeId/txid/infractionId/webhookId\n- transfeeraWebhookSecret (opcional; se vazio, /v1/webhooks/transfeera aceita sem assinatura).\n\nWebhooks multi-endpoint:\n- Cada merchant pode ter N webhooks, cada um inscrito em eventos específicos.\n- GET /v1/webhooks/merchant/events para ver eventos disponíveis.\n- POST /v1/webhooks/merchant cria webhook com url, name e events.\n- PATCH /v1/webhooks/merchant/:id atualiza webhook.\n- DELETE /v1/webhooks/merchant/:id remove webhook.\n- events=[] é wildcard (recebe todos os eventos).\n\nInfrações PIX (MED):\n- Webhook Transfeera envia evento `Infraction` → salvo no banco\n- Merchant analisa: POST /v1/merchants/me/infractions/:id/analyze → AWAITING_APPROVAL\n- Admin aprova e envia ao adquirente: POST /v1/admin/infractions/:id/approve\n- Admin pode sincronizar via: POST /v1/admin/infractions/sync\n\nTracking Plugins (UTMify / Meta Pixel):\n- POST /v1/merchants/me/tracking → configura plugin (provider + credentials)\n- GET /v1/merchants/me/tracking → lista plugins + disponíveis\n- PATCH /v1/merchants/me/tracking/:provider → atualiza credenciais / enabled\n- DELETE /v1/merchants/me/tracking/:provider → remove plugin\n- GET /v1/merchants/me/tracking/logs → histórico paginado de eventos\n- Ao criar charge, enviar campo `tracking` com UTMs / fbclid / fbc / fbp.\n- Eventos `purchase` e `refund` são disparados automaticamente via BullMQ.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -338,6 +338,135 @@
               }
             }
           ]
+        },
+        {
+          "name": "Tracking Plugins",
+          "item": [
+            {
+              "name": "GET /v1/merchants/me/tracking (listar plugins)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/tracking"
+              }
+            },
+            {
+              "name": "POST /v1/merchants/me/tracking (UTMify)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const json = pm.response.json();",
+                      "if (json?.tracking?.id) pm.environment.set('trackingId', json.tracking.id);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"utmify\",\n  \"credentials\": {\n    \"apiToken\": \"{{utmifyApiToken}}\"\n  }\n}"
+                },
+                "url": "{{baseUrl}}/v1/merchants/me/tracking"
+              }
+            },
+            {
+              "name": "POST /v1/merchants/me/tracking (Meta Pixel)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const json = pm.response.json();",
+                      "if (json?.tracking?.id) pm.environment.set('trackingId', json.tracking.id);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"meta_pixel\",\n  \"credentials\": {\n    \"pixelId\": \"{{metaPixelId}}\",\n    \"accessToken\": \"{{metaAccessToken}}\"\n  }\n}"
+                },
+                "url": "{{baseUrl}}/v1/merchants/me/tracking"
+              }
+            },
+            {
+              "name": "PATCH /v1/merchants/me/tracking/:provider (toggle enabled)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enabled\": false\n}"
+                },
+                "url": "{{baseUrl}}/v1/merchants/me/tracking/utmify"
+              }
+            },
+            {
+              "name": "PATCH /v1/merchants/me/tracking/:provider (update credentials)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" },
+                  { "key": "Content-Type", "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credentials\": {\n    \"apiToken\": \"novo-token-utmify\"\n  }\n}"
+                },
+                "url": "{{baseUrl}}/v1/merchants/me/tracking/utmify"
+              }
+            },
+            {
+              "name": "DELETE /v1/merchants/me/tracking/:provider",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/tracking/utmify"
+              }
+            },
+            {
+              "name": "GET /v1/merchants/me/tracking/logs",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/tracking/logs?page={{page}}&limit={{limit}}"
+              }
+            },
+            {
+              "name": "GET /v1/merchants/me/tracking/logs (filter by provider)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{authToken}}" }
+                ],
+                "url": "{{baseUrl}}/v1/merchants/me/tracking/logs?provider=utmify&page={{page}}&limit={{limit}}"
+              }
+            }
+          ]
         }
       ]
     },
@@ -380,7 +509,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"amount\": 100,\n  \"description\": \"Cobrança teste\",\n  \"expiresIn\": 86400,\n  \"customer\": {\n    \"name\": \"Cliente Teste\",\n    \"email\": \"cliente@exemplo.com\",\n    \"phone\": \"11999990000\",\n    \"document\": \"11144477735\"\n  }\n}"
+              "raw": "{\n  \"amount\": 100,\n  \"description\": \"Cobrança teste\",\n  \"expiresIn\": 86400,\n  \"customer\": {\n    \"name\": \"Cliente Teste\",\n    \"email\": \"cliente@exemplo.com\",\n    \"phone\": \"11999990000\",\n    \"document\": \"11144477735\"\n  },\n  \"tracking\": {\n    \"utmSource\": \"google\",\n    \"utmMedium\": \"cpc\",\n    \"utmCampaign\": \"black-friday\",\n    \"utmContent\": \"banner-topo\",\n    \"utmTerm\": \"comprar-agora\",\n    \"fbclid\": \"abc123\",\n    \"fbc\": \"fb.1.1234567890.abc123\",\n    \"fbp\": \"fb.1.1234567890.987654321\",\n    \"sourceUrl\": \"https://loja.exemplo.com/checkout\",\n    \"clientIp\": \"177.10.20.30\",\n    \"userAgent\": \"Mozilla/5.0\"\n  }\n}"
             },
             "url": "{{baseUrl}}/v1/charges"
           }

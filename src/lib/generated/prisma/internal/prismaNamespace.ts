@@ -392,6 +392,8 @@ export const ModelName = {
   Ledger: 'Ledger',
   MerchantWebhook: 'MerchantWebhook',
   WebhookLog: 'WebhookLog',
+  MerchantTracking: 'MerchantTracking',
+  TrackingLog: 'TrackingLog',
   Infraction: 'Infraction'
 } as const
 
@@ -408,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "merchant" | "customer" | "charges" | "apikey" | "ledger" | "merchantWebhook" | "webhookLog" | "infraction"
+    modelProps: "user" | "merchant" | "customer" | "charges" | "apikey" | "ledger" | "merchantWebhook" | "webhookLog" | "merchantTracking" | "trackingLog" | "infraction"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1004,6 +1006,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MerchantTracking: {
+      payload: Prisma.$MerchantTrackingPayload<ExtArgs>
+      fields: Prisma.MerchantTrackingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MerchantTrackingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MerchantTrackingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload>
+        }
+        findFirst: {
+          args: Prisma.MerchantTrackingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MerchantTrackingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload>
+        }
+        findMany: {
+          args: Prisma.MerchantTrackingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload>[]
+        }
+        create: {
+          args: Prisma.MerchantTrackingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload>
+        }
+        createMany: {
+          args: Prisma.MerchantTrackingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MerchantTrackingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload>[]
+        }
+        delete: {
+          args: Prisma.MerchantTrackingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload>
+        }
+        update: {
+          args: Prisma.MerchantTrackingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload>
+        }
+        deleteMany: {
+          args: Prisma.MerchantTrackingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MerchantTrackingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MerchantTrackingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload>[]
+        }
+        upsert: {
+          args: Prisma.MerchantTrackingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MerchantTrackingPayload>
+        }
+        aggregate: {
+          args: Prisma.MerchantTrackingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMerchantTracking>
+        }
+        groupBy: {
+          args: Prisma.MerchantTrackingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantTrackingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MerchantTrackingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MerchantTrackingCountAggregateOutputType> | number
+        }
+      }
+    }
+    TrackingLog: {
+      payload: Prisma.$TrackingLogPayload<ExtArgs>
+      fields: Prisma.TrackingLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TrackingLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TrackingLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload>
+        }
+        findFirst: {
+          args: Prisma.TrackingLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TrackingLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload>
+        }
+        findMany: {
+          args: Prisma.TrackingLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload>[]
+        }
+        create: {
+          args: Prisma.TrackingLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload>
+        }
+        createMany: {
+          args: Prisma.TrackingLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TrackingLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload>[]
+        }
+        delete: {
+          args: Prisma.TrackingLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload>
+        }
+        update: {
+          args: Prisma.TrackingLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.TrackingLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TrackingLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TrackingLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.TrackingLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingLogPayload>
+        }
+        aggregate: {
+          args: Prisma.TrackingLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTrackingLog>
+        }
+        groupBy: {
+          args: Prisma.TrackingLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrackingLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TrackingLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrackingLogCountAggregateOutputType> | number
+        }
+      }
+    }
     Infraction: {
       payload: Prisma.$InfractionPayload<ExtArgs>
       fields: Prisma.InfractionFieldRefs
@@ -1187,6 +1337,7 @@ export const ChargesScalarFieldEnum = {
   expiresIn: 'expiresIn',
   idempotencyKey: 'idempotencyKey',
   metadata: 'metadata',
+  tracking: 'tracking',
   paidAt: 'paidAt',
   canceledAt: 'canceledAt',
   merchantId: 'merchantId',
@@ -1260,6 +1411,34 @@ export const WebhookLogScalarFieldEnum = {
 } as const
 
 export type WebhookLogScalarFieldEnum = (typeof WebhookLogScalarFieldEnum)[keyof typeof WebhookLogScalarFieldEnum]
+
+
+export const MerchantTrackingScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  enabled: 'enabled',
+  credentials: 'credentials',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  merchantId: 'merchantId'
+} as const
+
+export type MerchantTrackingScalarFieldEnum = (typeof MerchantTrackingScalarFieldEnum)[keyof typeof MerchantTrackingScalarFieldEnum]
+
+
+export const TrackingLogScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  event: 'event',
+  status: 'status',
+  chargeId: 'chargeId',
+  error: 'error',
+  createdAt: 'createdAt',
+  merchantId: 'merchantId',
+  trackingId: 'trackingId'
+} as const
+
+export type TrackingLogScalarFieldEnum = (typeof TrackingLogScalarFieldEnum)[keyof typeof TrackingLogScalarFieldEnum]
 
 
 export const InfractionScalarFieldEnum = {
@@ -1750,6 +1929,8 @@ export type GlobalOmitConfig = {
   ledger?: Prisma.LedgerOmit
   merchantWebhook?: Prisma.MerchantWebhookOmit
   webhookLog?: Prisma.WebhookLogOmit
+  merchantTracking?: Prisma.MerchantTrackingOmit
+  trackingLog?: Prisma.TrackingLogOmit
   infraction?: Prisma.InfractionOmit
 }
 

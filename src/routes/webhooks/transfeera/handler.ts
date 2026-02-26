@@ -14,6 +14,7 @@ import { settlementQueue } from "../../../lib/queues/settlement-queue.ts";
 import { ledgerService } from "../../../services/ledger.service.ts";
 import { findOrCreateCustomerFromPayer, notifyMerchant } from "./helpers.ts";
 import { invalidateMerchantCaches } from "../../../lib/cache.ts";
+import { dispatchTrackingEvent } from "../../../plugins/tracker.service.ts";
 
 const REPLAY_TOLERANCE_MS = 5 * 60 * 1000; // 5 minutos
 
@@ -216,6 +217,21 @@ async function handleCashIn(data: any, eventId: string, request: any) {
     paidAt: new Date().toISOString(),
     payer,
   }, request);
+
+  // Disparar eventos de tracking (UTMify, Meta Pixel, etc.)
+  try {
+    const trackingData = (charge.tracking as Record<string, any>) ?? {};
+    await dispatchTrackingEvent(charge.merchantId, "purchase", {
+      chargeId: charge.id,
+      txid,
+      amount: charge.amount,
+      paidAt: new Date().toISOString(),
+      customer: payer ? { name: payer.name, document: payer.document } : undefined,
+      tracking: Object.keys(trackingData).length > 0 ? trackingData : undefined,
+    });
+  } catch (err: any) {
+    request.log.error(`🔌 [TRACKING] Erro ao disparar tracking: ${err?.message}`);
+  }
 }
 
 // ── Transfer Handler ────────────────────────────────────────────────
@@ -438,6 +454,22 @@ async function handleCashInRefund(data: any, eventId: string, accountId: string,
     reason: reason ?? null,
     end2endId: end2end_id ?? null,
   }, request);
+
+  // Disparar evento de refund no tracking (UTMify)
+  if (charge) {
+    try {
+      const trackingData = (charge.tracking as Record<string, any>) ?? {};
+      await dispatchTrackingEvent(merchant.id, "refund", {
+        chargeId: charge.id,
+        txid: txid ?? charge.id,
+        amount: Math.round((parseFloat(value) || 0) * 100),
+        paidAt: new Date().toISOString(),
+        tracking: Object.keys(trackingData).length > 0 ? trackingData : undefined,
+      });
+    } catch (err: any) {
+      request.log.error(`🔌 [TRACKING] Erro ao disparar tracking refund: ${err?.message}`);
+    }
+  }
 }
 
 // ── TransferRefund Handler (Devolução de transferência/saque) ────────

@@ -9,6 +9,7 @@ import { pixKeysRoutes } from "./pix-keys/index.ts";
 import { balanceRoutes } from "./balance/index.ts";
 import { withdrawalsRoutes } from "./withdrawals/index.ts";
 import { merchantInfractionsRoutes } from "./infractions/index.ts";
+import { trackingRoutes } from "./tracking/index.ts";
 
 export const merchantsRoutes: FastifyPluginAsyncZod = async (app) => {
   // Todas as rotas de merchants precisam de autenticação
@@ -29,4 +30,5 @@ export const merchantsRoutes: FastifyPluginAsyncZod = async (app) => {
   app.register(balanceRoutes, { prefix: "/me/balance" });
   app.register(withdrawalsRoutes, { prefix: "/me/withdrawals" });
   app.register(merchantInfractionsRoutes, { prefix: "/me/infractions" });
+  app.register(trackingRoutes, { prefix: "/me/tracking" });
 };

@@ -86,6 +86,7 @@ export type ChargesCountAggregateOutputType = {
   expiresIn: number
   idempotencyKey: number
   metadata: number
+  tracking: number
   paidAt: number
   canceledAt: number
   merchantId: number
@@ -156,6 +157,7 @@ export type ChargesCountAggregateInputType = {
   expiresIn?: true
   idempotencyKey?: true
   metadata?: true
+  tracking?: true
   paidAt?: true
   canceledAt?: true
   merchantId?: true
@@ -263,6 +265,7 @@ export type ChargesGroupByOutputType = {
   expiresIn: number
   idempotencyKey: string | null
   metadata: runtime.JsonValue | null
+  tracking: runtime.JsonValue | null
   paidAt: Date | null
   canceledAt: Date | null
   merchantId: string
@@ -306,6 +309,7 @@ export type ChargesWhereInput = {
   expiresIn?: Prisma.IntFilter<"Charges"> | number
   idempotencyKey?: Prisma.StringNullableFilter<"Charges"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Charges">
+  tracking?: Prisma.JsonNullableFilter<"Charges">
   paidAt?: Prisma.DateTimeNullableFilter<"Charges"> | Date | string | null
   canceledAt?: Prisma.DateTimeNullableFilter<"Charges"> | Date | string | null
   merchantId?: Prisma.StringFilter<"Charges"> | string
@@ -328,6 +332,7 @@ export type ChargesOrderByWithRelationInput = {
   expiresIn?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  tracking?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   canceledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   merchantId?: Prisma.SortOrder
@@ -354,6 +359,7 @@ export type ChargesWhereUniqueInput = Prisma.AtLeast<{
   expiresIn?: Prisma.IntFilter<"Charges"> | number
   idempotencyKey?: Prisma.StringNullableFilter<"Charges"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Charges">
+  tracking?: Prisma.JsonNullableFilter<"Charges">
   paidAt?: Prisma.DateTimeNullableFilter<"Charges"> | Date | string | null
   canceledAt?: Prisma.DateTimeNullableFilter<"Charges"> | Date | string | null
   merchantId?: Prisma.StringFilter<"Charges"> | string
@@ -376,6 +382,7 @@ export type ChargesOrderByWithAggregationInput = {
   expiresIn?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  tracking?: Prisma.SortOrderInput | Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   canceledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   merchantId?: Prisma.SortOrder
@@ -404,6 +411,7 @@ export type ChargesScalarWhereWithAggregatesInput = {
   expiresIn?: Prisma.IntWithAggregatesFilter<"Charges"> | number
   idempotencyKey?: Prisma.StringNullableWithAggregatesFilter<"Charges"> | string | null
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"Charges">
+  tracking?: Prisma.JsonNullableWithAggregatesFilter<"Charges">
   paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Charges"> | Date | string | null
   canceledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Charges"> | Date | string | null
   merchantId?: Prisma.StringWithAggregatesFilter<"Charges"> | string
@@ -424,6 +432,7 @@ export type ChargesCreateInput = {
   expiresIn?: number
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Date | string | null
   canceledAt?: Date | string | null
   createdAt?: Date | string
@@ -444,6 +453,7 @@ export type ChargesUncheckedCreateInput = {
   expiresIn?: number
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Date | string | null
   canceledAt?: Date | string | null
   merchantId: string
@@ -464,6 +474,7 @@ export type ChargesUpdateInput = {
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -484,6 +495,7 @@ export type ChargesUncheckedUpdateInput = {
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -504,6 +516,7 @@ export type ChargesCreateManyInput = {
   expiresIn?: number
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Date | string | null
   canceledAt?: Date | string | null
   merchantId: string
@@ -524,6 +537,7 @@ export type ChargesUpdateManyMutationInput = {
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -542,6 +556,7 @@ export type ChargesUncheckedUpdateManyInput = {
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -577,6 +592,7 @@ export type ChargesCountOrderByAggregateInput = {
   expiresIn?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
+  tracking?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   canceledAt?: Prisma.SortOrder
   merchantId?: Prisma.SortOrder
@@ -733,6 +749,7 @@ export type ChargesCreateWithoutMerchantInput = {
   expiresIn?: number
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Date | string | null
   canceledAt?: Date | string | null
   createdAt?: Date | string
@@ -752,6 +769,7 @@ export type ChargesUncheckedCreateWithoutMerchantInput = {
   expiresIn?: number
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Date | string | null
   canceledAt?: Date | string | null
   customerId?: string | null
@@ -800,6 +818,7 @@ export type ChargesScalarWhereInput = {
   expiresIn?: Prisma.IntFilter<"Charges"> | number
   idempotencyKey?: Prisma.StringNullableFilter<"Charges"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Charges">
+  tracking?: Prisma.JsonNullableFilter<"Charges">
   paidAt?: Prisma.DateTimeNullableFilter<"Charges"> | Date | string | null
   canceledAt?: Prisma.DateTimeNullableFilter<"Charges"> | Date | string | null
   merchantId?: Prisma.StringFilter<"Charges"> | string
@@ -820,6 +839,7 @@ export type ChargesCreateWithoutCustomerInput = {
   expiresIn?: number
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Date | string | null
   canceledAt?: Date | string | null
   createdAt?: Date | string
@@ -839,6 +859,7 @@ export type ChargesUncheckedCreateWithoutCustomerInput = {
   expiresIn?: number
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Date | string | null
   canceledAt?: Date | string | null
   merchantId: string
@@ -884,6 +905,7 @@ export type ChargesCreateManyMerchantInput = {
   expiresIn?: number
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Date | string | null
   canceledAt?: Date | string | null
   customerId?: string | null
@@ -903,6 +925,7 @@ export type ChargesUpdateWithoutMerchantInput = {
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -922,6 +945,7 @@ export type ChargesUncheckedUpdateWithoutMerchantInput = {
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -941,6 +965,7 @@ export type ChargesUncheckedUpdateManyWithoutMerchantInput = {
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -960,6 +985,7 @@ export type ChargesCreateManyCustomerInput = {
   expiresIn?: number
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Date | string | null
   canceledAt?: Date | string | null
   merchantId: string
@@ -979,6 +1005,7 @@ export type ChargesUpdateWithoutCustomerInput = {
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -998,6 +1025,7 @@ export type ChargesUncheckedUpdateWithoutCustomerInput = {
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1017,6 +1045,7 @@ export type ChargesUncheckedUpdateManyWithoutCustomerInput = {
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   merchantId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1038,6 +1067,7 @@ export type ChargesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   expiresIn?: boolean
   idempotencyKey?: boolean
   metadata?: boolean
+  tracking?: boolean
   paidAt?: boolean
   canceledAt?: boolean
   merchantId?: boolean
@@ -1060,6 +1090,7 @@ export type ChargesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   expiresIn?: boolean
   idempotencyKey?: boolean
   metadata?: boolean
+  tracking?: boolean
   paidAt?: boolean
   canceledAt?: boolean
   merchantId?: boolean
@@ -1082,6 +1113,7 @@ export type ChargesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   expiresIn?: boolean
   idempotencyKey?: boolean
   metadata?: boolean
+  tracking?: boolean
   paidAt?: boolean
   canceledAt?: boolean
   merchantId?: boolean
@@ -1104,6 +1136,7 @@ export type ChargesSelectScalar = {
   expiresIn?: boolean
   idempotencyKey?: boolean
   metadata?: boolean
+  tracking?: boolean
   paidAt?: boolean
   canceledAt?: boolean
   merchantId?: boolean
@@ -1112,7 +1145,7 @@ export type ChargesSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ChargesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "description" | "status" | "acquirer" | "paymentMethod" | "txid" | "qrCode" | "expiresIn" | "idempotencyKey" | "metadata" | "paidAt" | "canceledAt" | "merchantId" | "customerId" | "createdAt" | "updatedAt", ExtArgs["result"]["charges"]>
+export type ChargesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "description" | "status" | "acquirer" | "paymentMethod" | "txid" | "qrCode" | "expiresIn" | "idempotencyKey" | "metadata" | "tracking" | "paidAt" | "canceledAt" | "merchantId" | "customerId" | "createdAt" | "updatedAt", ExtArgs["result"]["charges"]>
 export type ChargesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.Charges$customerArgs<ExtArgs>
@@ -1144,6 +1177,7 @@ export type $ChargesPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     expiresIn: number
     idempotencyKey: string | null
     metadata: runtime.JsonValue | null
+    tracking: runtime.JsonValue | null
     paidAt: Date | null
     canceledAt: Date | null
     merchantId: string
@@ -1586,6 +1620,7 @@ export interface ChargesFieldRefs {
   readonly expiresIn: Prisma.FieldRef<"Charges", 'Int'>
   readonly idempotencyKey: Prisma.FieldRef<"Charges", 'String'>
   readonly metadata: Prisma.FieldRef<"Charges", 'Json'>
+  readonly tracking: Prisma.FieldRef<"Charges", 'Json'>
   readonly paidAt: Prisma.FieldRef<"Charges", 'DateTime'>
   readonly canceledAt: Prisma.FieldRef<"Charges", 'DateTime'>
   readonly merchantId: Prisma.FieldRef<"Charges", 'String'>

@@ -59,6 +59,8 @@ export const ModelName = {
   Ledger: 'Ledger',
   MerchantWebhook: 'MerchantWebhook',
   WebhookLog: 'WebhookLog',
+  MerchantTracking: 'MerchantTracking',
+  TrackingLog: 'TrackingLog',
   Infraction: 'Infraction'
 } as const
 
@@ -148,6 +150,7 @@ export const ChargesScalarFieldEnum = {
   expiresIn: 'expiresIn',
   idempotencyKey: 'idempotencyKey',
   metadata: 'metadata',
+  tracking: 'tracking',
   paidAt: 'paidAt',
   canceledAt: 'canceledAt',
   merchantId: 'merchantId',
@@ -221,6 +224,34 @@ export const WebhookLogScalarFieldEnum = {
 } as const
 
 export type WebhookLogScalarFieldEnum = (typeof WebhookLogScalarFieldEnum)[keyof typeof WebhookLogScalarFieldEnum]
+
+
+export const MerchantTrackingScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  enabled: 'enabled',
+  credentials: 'credentials',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  merchantId: 'merchantId'
+} as const
+
+export type MerchantTrackingScalarFieldEnum = (typeof MerchantTrackingScalarFieldEnum)[keyof typeof MerchantTrackingScalarFieldEnum]
+
+
+export const TrackingLogScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  event: 'event',
+  status: 'status',
+  chargeId: 'chargeId',
+  error: 'error',
+  createdAt: 'createdAt',
+  merchantId: 'merchantId',
+  trackingId: 'trackingId'
+} as const
+
+export type TrackingLogScalarFieldEnum = (typeof TrackingLogScalarFieldEnum)[keyof typeof TrackingLogScalarFieldEnum]
 
 
 export const InfractionScalarFieldEnum = {
