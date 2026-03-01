@@ -11,6 +11,7 @@ import { setupAcquirerRoute } from "./setup-acquirer.ts";
 import { blockMerchantRoute } from "./block.ts";
 import { unblockMerchantRoute } from "./unblock.ts";
 import { acquirerBalanceRoute } from "./acquirer-balance.ts";
+import { adminDisable2faRoute } from "./disable-2fa.ts";
 
 export const adminMerchantsRoutes: FastifyPluginAsyncZod = async (app) => {
   // Todas as rotas de admin exigem ADMIN
@@ -45,4 +46,7 @@ export const adminMerchantsRoutes: FastifyPluginAsyncZod = async (app) => {
 
   // GET    /v1/admin/merchants/:id/acquirer-balance
   app.register(acquirerBalanceRoute);
+
+  // POST   /v1/admin/merchants/:id/disable-2fa
+  app.register(adminDisable2faRoute);
 };

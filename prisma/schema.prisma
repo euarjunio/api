@@ -105,18 +105,74 @@ enum RefundAnalysisStatus {
   REFUND_REJECTED     // Rejeitado
 }
 
+enum CodeType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+enum NotificationType {
+  CHARGE_PAID
+  CHARGE_REFUNDED
+  WITHDRAW_COMPLETED
+  WITHDRAW_FAILED
+  INFRACTION_RECEIVED
+  PIX_KEY_UPDATED
+  SYSTEM
+}
+
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
-  passwordHash String
-  role         UserRole @default(USER)
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String
+  role          UserRole @default(USER)
+  emailVerified Boolean  @default(false) @map("email_verified")
+
+  // ── 2FA (TOTP) ──
+  twoFactorEnabled    Boolean  @default(false) @map("two_factor_enabled")
+  twoFactorSecret     String?  @map("two_factor_secret")       // encriptado AES-256-GCM
+  twoFactorBackupCodes String[] @default([]) @map("two_factor_backup_codes") // hasheados argon2
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  merchant Merchant?
+  merchant          Merchant?
+  verificationCodes VerificationCode[]
 
   @@map("users")
+}
+
+model Notification {
+  id      String           @id @default(uuid())
+  type    NotificationType
+  title   String
+  message String
+  data    Json?            // payload extra (chargeId, amount, etc.)
+  read    Boolean          @default(false)
+  readAt  DateTime?        @map("read_at")
+
+  merchantId String   @map("merchant_id")
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([merchantId, read, createdAt])
+  @@map("notifications")
+}
+
+model VerificationCode {
+  id        String   @id @default(uuid())
+  code      String   // código 6 dígitos (hash com argon2)
+  type      CodeType
+  expiresAt DateTime @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, type])
+  @@map("verification_codes")
 }
 
 model Merchant {
@@ -157,13 +213,14 @@ model Merchant {
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  apikey      Apikey[]
-  charges     Charges[]
-  webhooks    MerchantWebhook[]
-  ledger      Ledger[]
-  infractions Infraction[]
-  trackings    MerchantTracking[]
-  trackingLogs TrackingLog[]
+  apikey        Apikey[]
+  charges       Charges[]
+  webhooks      MerchantWebhook[]
+  ledger        Ledger[]
+  infractions   Infraction[]
+  trackings     MerchantTracking[]
+  trackingLogs  TrackingLog[]
+  notifications Notification[]
 
   @@index([userId])
   @@index([kycStatus])
@@ -431,4 +488,23 @@ model Infraction {
   @@index([txid])
   @@index([transactionId])
   @@map("infractions")
+}
+
+// ── Audit Log ─────────────────────────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  action    String                          // "LOGIN", "2FA_ENABLED", "CHARGE_CREATED", etc.
+  actor     String                          // userId ou "system" ou "admin:userId"
+  target    String?                         // recurso afetado (merchantId, chargeId, etc.)
+  metadata  Json?                           // payload extra
+  ip        String?
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now())
+
+  @@index([actor])
+  @@index([target])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
 }

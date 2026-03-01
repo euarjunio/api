@@ -7,6 +7,7 @@ import { env } from "../../../config/env.ts";
 import { ledgerService } from "../../../services/ledger.service.ts";
 import { getProviderForMerchant } from "../../../providers/acquirer.registry.ts";
 import { invalidateMerchantCaches } from "../../../lib/cache.ts";
+import { logAction, getRequestContext } from "../../../lib/audit.ts";
 
 const PIX_KEY_TYPES = ["CPF", "CNPJ", "EMAIL", "PHONE", "CHAVE_ALEATORIA"] as const;
 
@@ -159,6 +160,8 @@ export const createWithdrawalRoute: FastifyPluginAsyncZod = async (app) => {
 
       throw err;
     }
+
+    logAction({ action: "WITHDRAW_REQUESTED", actor: userId, target: ledgerEntry.id, metadata: { merchantId: merchant.id, amount, pixKey, batchId }, ...getRequestContext(request) });
 
     // Invalidar caches do merchant
     await invalidateMerchantCaches(merchant.id);

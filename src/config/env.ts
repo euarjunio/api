@@ -14,6 +14,9 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(1, "JWT_SECRET é obrigatório"),
   JWT_EXPIRES_IN: z.string().default("7d"),
 
+  // ── 2FA (TOTP) ──────────────────────────────────────────────────────
+  TOTP_ENCRYPTION_KEY: z.string().optional(),  // 32 bytes hex — obrigatório em produção
+
   // ── CORS ────────────────────────────────────────────────────────────
   ALLOWED_ORIGINS: z.string().default("*"),  // Comma-separated origins (ex: "https://app.liquera.com.br,https://admin.liquera.com.br")
 
@@ -55,6 +58,17 @@ const envSchema = z.object({
     .enum(["true", "false"])
     .default("true")
     .transform((v) => v === "true"),           // Swagger habilitado por padrão em sandbox
+
+  // ── Email (SMTP Hostinger) ─────────────────────────────────────────
+  SMTP_HOST: z.string().default("smtp.hostinger.com"),
+  SMTP_PORT: z.coerce.number().default(465),
+  SMTP_USER: z.string(),           // noreply@liquera.com.br
+  SMTP_PASS: z.string(),
+  SMTP_FROM: z.string().default("Liquera <noreply@liquera.com.br>"),
+
+  // ── Verification Codes ────────────────────────────────────────────
+  CODE_EXPIRY_MINUTES: z.coerce.number().default(15),    // código expira em 15 min
+  CODE_COOLDOWN_SECONDS: z.coerce.number().default(60),  // anti-spam: 1 reenvio/min
 });
 
 function validateEnv() {
@@ -86,6 +100,9 @@ function validateEnv() {
     }
     if (!data.API_BASE_URL) {
       errors.push("API_BASE_URL é obrigatório em produção");
+    }
+    if (!data.TOTP_ENCRYPTION_KEY || data.TOTP_ENCRYPTION_KEY.length < 64) {
+      errors.push("TOTP_ENCRYPTION_KEY deve ter pelo menos 64 chars hex (32 bytes) em produção");
     }
 
     if (errors.length > 0) {

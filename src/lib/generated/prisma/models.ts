@@ -9,6 +9,8 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User.ts'
+export type * from './models/Notification.ts'
+export type * from './models/VerificationCode.ts'
 export type * from './models/Merchant.ts'
 export type * from './models/Customer.ts'
 export type * from './models/Charges.ts'
@@ -19,4 +21,5 @@ export type * from './models/WebhookLog.ts'
 export type * from './models/MerchantTracking.ts'
 export type * from './models/TrackingLog.ts'
 export type * from './models/Infraction.ts'
+export type * from './models/AuditLog.ts'
 export type * from './commonInputTypes.ts'

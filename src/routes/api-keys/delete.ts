@@ -4,6 +4,7 @@ import { z } from "zod";
 import { verifyJwt } from "../hooks/verify-jwt.ts";
 import { checkUserRequest } from "../../utils/check-user-request.ts";
 import { prisma } from "../../lib/prisma.ts";
+import { logAction, getRequestContext } from "../../lib/audit.ts";
 
 export const deleteApiKeyRoute: FastifyPluginAsyncZod = async (app) => {
   app.addHook("onRequest", verifyJwt).delete("/:id", {
@@ -47,6 +48,7 @@ export const deleteApiKeyRoute: FastifyPluginAsyncZod = async (app) => {
     await prisma.apikey.delete({ where: { id: keyId } });
 
     request.log.info({ keyId, merchantId: existingMerchant.id }, "API key deleted successfully");
+    logAction({ action: "API_KEY_DELETED", actor: userId, target: keyId, metadata: { merchantId: existingMerchant.id }, ...getRequestContext(request) });
 
     return reply.status(200).send({ message: "API key deletada com sucesso" });
   });

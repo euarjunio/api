@@ -33,6 +33,7 @@ export const getMerchantDetailRoute: FastifyPluginAsyncZod = async (app) => {
             pixKeyStatus: z.string().nullable(),
             acquirer: z.string(),
             acquirerAccountId: z.string().nullable(),
+            twoFactorEnabled: z.boolean(),
             docFrontUrl: z.string().nullable(),
             docBackUrl: z.string().nullable(),
             docSelfieUrl: z.string().nullable(),
@@ -55,7 +56,10 @@ export const getMerchantDetailRoute: FastifyPluginAsyncZod = async (app) => {
   }, async (request, reply) => {
     const { id } = request.params;
 
-    const merchant = await prisma.merchant.findUnique({ where: { id } });
+    const merchant = await prisma.merchant.findUnique({
+      where: { id },
+      include: { user: { select: { twoFactorEnabled: true } } },
+    });
     if (!merchant) return reply.status(404).send({ message: "Merchant não encontrado" });
 
     const [balance, totalCharges, paidCharges] = await Promise.all([
@@ -83,6 +87,7 @@ export const getMerchantDetailRoute: FastifyPluginAsyncZod = async (app) => {
         pixKeyStatus: normalizePixKeyStatus(merchant.pixKeyStatus),
         acquirer: merchant.acquirer,
         acquirerAccountId: merchant.acquirerAccountId,
+        twoFactorEnabled: merchant.user.twoFactorEnabled,
         docFrontUrl: merchant.docFrontUrl ? await storageService.getFileUrl(merchant.docFrontUrl) : null,
         docBackUrl: merchant.docBackUrl ? await storageService.getFileUrl(merchant.docBackUrl) : null,
         docSelfieUrl: merchant.docSelfieUrl ? await storageService.getFileUrl(merchant.docSelfieUrl) : null,

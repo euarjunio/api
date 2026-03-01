@@ -1,6 +1,7 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { prisma } from "../../../lib/prisma.ts";
+import { logAction, getRequestContext } from "../../../lib/audit.ts";
 
 export const blockMerchantRoute: FastifyPluginAsyncZod = async (app) => {
   // POST /v1/admin/merchants/:id/block
@@ -49,6 +50,7 @@ export const blockMerchantRoute: FastifyPluginAsyncZod = async (app) => {
     });
 
     request.log.info(`🚫  [ADMIN] Merchant bloqueado | id: ${id} | motivo: ${reason}`);
+    logAction({ action: "MERCHANT_BLOCKED", actor: `admin:${request.user.id}`, target: id, metadata: { reason }, ...getRequestContext(request) });
 
     return reply.status(200).send({ message: "Merchant bloqueado com sucesso." });
   });

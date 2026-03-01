@@ -27,7 +27,7 @@
     "@fastify/swagger": "^9.6.1",
     "@fastify/swagger-ui": "^5.2.4",
     "@prisma/adapter-pg": "^7.2.0",
-    "@prisma/client": "^7.4.1",
+    "@prisma/client": "^7.4.2",
     "@sentry/node": "^10.39.0",
     "argon2": "^0.44.0",
     "bullmq": "^5.70.0",
@@ -37,16 +37,19 @@
     "fastify-type-provider-zod": "^6.1.0",
     "ioredis": "^5.9.3",
     "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^6.9.0",
+    "otpauth": "^9.5.0",
     "pg": "^8.16.3",
     "pino-pretty": "^13.1.3",
-    "prisma": "^7.4.1",
     "tsx": "^4.21.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.3",
+    "@types/nodemailer": "^6.4.0",
     "eslint": "^8.57.1",
+    "prisma": "^7.4.2",
     "typescript": "^5.9.3"
   }
 }

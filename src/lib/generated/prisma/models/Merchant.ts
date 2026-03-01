@@ -380,6 +380,7 @@ export type MerchantWhereInput = {
   infractions?: Prisma.InfractionListRelationFilter
   trackings?: Prisma.MerchantTrackingListRelationFilter
   trackingLogs?: Prisma.TrackingLogListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }
 
 export type MerchantOrderByWithRelationInput = {
@@ -416,6 +417,7 @@ export type MerchantOrderByWithRelationInput = {
   infractions?: Prisma.InfractionOrderByRelationAggregateInput
   trackings?: Prisma.MerchantTrackingOrderByRelationAggregateInput
   trackingLogs?: Prisma.TrackingLogOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
 export type MerchantWhereUniqueInput = Prisma.AtLeast<{
@@ -455,6 +457,7 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   infractions?: Prisma.InfractionListRelationFilter
   trackings?: Prisma.MerchantTrackingListRelationFilter
   trackingLogs?: Prisma.TrackingLogListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }, "id" | "document" | "acquirerAccountId" | "pixKeyId" | "userId">
 
 export type MerchantOrderByWithAggregationInput = {
@@ -554,6 +557,7 @@ export type MerchantCreateInput = {
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateInput = {
@@ -589,6 +593,7 @@ export type MerchantUncheckedCreateInput = {
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogUncheckedCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUpdateInput = {
@@ -624,6 +629,7 @@ export type MerchantUpdateInput = {
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateInput = {
@@ -659,6 +665,7 @@ export type MerchantUncheckedUpdateInput = {
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUncheckedUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateManyInput = {
@@ -747,6 +754,11 @@ export type MerchantUncheckedUpdateManyInput = {
 export type MerchantNullableScalarRelationFilter = {
   is?: Prisma.MerchantWhereInput | null
   isNot?: Prisma.MerchantWhereInput | null
+}
+
+export type MerchantScalarRelationFilter = {
+  is?: Prisma.MerchantWhereInput
+  isNot?: Prisma.MerchantWhereInput
 }
 
 export type MerchantCountOrderByAggregateInput = {
@@ -839,11 +851,6 @@ export type MerchantSumOrderByAggregateInput = {
   feeAmount?: Prisma.SortOrder
 }
 
-export type MerchantScalarRelationFilter = {
-  is?: Prisma.MerchantWhereInput
-  isNot?: Prisma.MerchantWhereInput
-}
-
 export type MerchantCreateNestedOneWithoutUserInput = {
   create?: Prisma.XOR<Prisma.MerchantCreateWithoutUserInput, Prisma.MerchantUncheckedCreateWithoutUserInput>
   connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutUserInput
@@ -876,6 +883,20 @@ export type MerchantUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MerchantUpdateToOneWithWhereWithoutUserInput, Prisma.MerchantUpdateWithoutUserInput>, Prisma.MerchantUncheckedUpdateWithoutUserInput>
 }
 
+export type MerchantCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.MerchantCreateWithoutNotificationsInput, Prisma.MerchantUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.MerchantWhereUniqueInput
+}
+
+export type MerchantUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.MerchantCreateWithoutNotificationsInput, Prisma.MerchantUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.MerchantUpsertWithoutNotificationsInput
+  connect?: Prisma.MerchantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MerchantUpdateToOneWithWhereWithoutNotificationsInput, Prisma.MerchantUpdateWithoutNotificationsInput>, Prisma.MerchantUncheckedUpdateWithoutNotificationsInput>
+}
+
 export type EnumDocumentTypeFieldUpdateOperationsInput = {
   set?: $Enums.DocumentType
 }
@@ -886,14 +907,6 @@ export type EnumMerchantStatusFieldUpdateOperationsInput = {
 
 export type EnumKycStatusFieldUpdateOperationsInput = {
   set?: $Enums.KycStatus
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
 }
 
 export type EnumFeeModeFieldUpdateOperationsInput = {
@@ -1038,6 +1051,7 @@ export type MerchantCreateWithoutUserInput = {
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutUserInput = {
@@ -1072,6 +1086,7 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogUncheckedCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutUserInput = {
@@ -1122,6 +1137,7 @@ export type MerchantUpdateWithoutUserInput = {
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutUserInput = {
@@ -1149,6 +1165,163 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
+  charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+  webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
+  infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
+  trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
+  trackingLogs?: Prisma.TrackingLogUncheckedUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutMerchantNestedInput
+}
+
+export type MerchantCreateWithoutNotificationsInput = {
+  id?: string
+  name: string
+  email: string
+  phone: string
+  document: string
+  documentType?: $Enums.DocumentType
+  status?: $Enums.MerchantStatus
+  kycStatus?: $Enums.KycStatus
+  docFrontUrl?: string | null
+  docBackUrl?: string | null
+  docSelfieUrl?: string | null
+  kycNotes?: string | null
+  kycAnalyzedAt?: Date | string | null
+  acquirer?: string
+  acquirerAccountId?: string | null
+  pixKeyId?: string | null
+  pixKey?: string | null
+  pixKeyType?: string | null
+  pixKeyStatus?: string | null
+  feeMode?: $Enums.FeeMode
+  feeAmount?: number
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutMerchantInput
+  apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
+  charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
+  infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
+  trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
+  trackingLogs?: Prisma.TrackingLogCreateNestedManyWithoutMerchantInput
+}
+
+export type MerchantUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  name: string
+  email: string
+  phone: string
+  document: string
+  documentType?: $Enums.DocumentType
+  status?: $Enums.MerchantStatus
+  kycStatus?: $Enums.KycStatus
+  docFrontUrl?: string | null
+  docBackUrl?: string | null
+  docSelfieUrl?: string | null
+  kycNotes?: string | null
+  kycAnalyzedAt?: Date | string | null
+  acquirer?: string
+  acquirerAccountId?: string | null
+  pixKeyId?: string | null
+  pixKey?: string | null
+  pixKeyType?: string | null
+  pixKeyStatus?: string | null
+  feeMode?: $Enums.FeeMode
+  feeAmount?: number
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userId: string
+  apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
+  charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
+  infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
+  trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
+  trackingLogs?: Prisma.TrackingLogUncheckedCreateNestedManyWithoutMerchantInput
+}
+
+export type MerchantCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.MerchantWhereUniqueInput
+  create: Prisma.XOR<Prisma.MerchantCreateWithoutNotificationsInput, Prisma.MerchantUncheckedCreateWithoutNotificationsInput>
+}
+
+export type MerchantUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.MerchantUpdateWithoutNotificationsInput, Prisma.MerchantUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.MerchantCreateWithoutNotificationsInput, Prisma.MerchantUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.MerchantWhereInput
+}
+
+export type MerchantUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.MerchantWhereInput
+  data: Prisma.XOR<Prisma.MerchantUpdateWithoutNotificationsInput, Prisma.MerchantUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type MerchantUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  document?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  docFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acquirer?: Prisma.StringFieldUpdateOperationsInput | string
+  acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
+  apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
+  charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
+  infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
+  trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
+  trackingLogs?: Prisma.TrackingLogUpdateManyWithoutMerchantNestedInput
+}
+
+export type MerchantUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  document?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  docFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acquirer?: Prisma.StringFieldUpdateOperationsInput | string
+  acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1190,6 +1363,7 @@ export type MerchantCreateWithoutChargesInput = {
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutChargesInput = {
@@ -1224,6 +1398,7 @@ export type MerchantUncheckedCreateWithoutChargesInput = {
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogUncheckedCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutChargesInput = {
@@ -1274,6 +1449,7 @@ export type MerchantUpdateWithoutChargesInput = {
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutChargesInput = {
@@ -1308,6 +1484,7 @@ export type MerchantUncheckedUpdateWithoutChargesInput = {
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUncheckedUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutApikeyInput = {
@@ -1342,6 +1519,7 @@ export type MerchantCreateWithoutApikeyInput = {
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutApikeyInput = {
@@ -1376,6 +1554,7 @@ export type MerchantUncheckedCreateWithoutApikeyInput = {
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogUncheckedCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutApikeyInput = {
@@ -1426,6 +1605,7 @@ export type MerchantUpdateWithoutApikeyInput = {
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutApikeyInput = {
@@ -1460,6 +1640,7 @@ export type MerchantUncheckedUpdateWithoutApikeyInput = {
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUncheckedUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutLedgerInput = {
@@ -1494,6 +1675,7 @@ export type MerchantCreateWithoutLedgerInput = {
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutLedgerInput = {
@@ -1528,6 +1710,7 @@ export type MerchantUncheckedCreateWithoutLedgerInput = {
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogUncheckedCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutLedgerInput = {
@@ -1578,6 +1761,7 @@ export type MerchantUpdateWithoutLedgerInput = {
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutLedgerInput = {
@@ -1612,6 +1796,7 @@ export type MerchantUncheckedUpdateWithoutLedgerInput = {
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUncheckedUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutWebhooksInput = {
@@ -1646,6 +1831,7 @@ export type MerchantCreateWithoutWebhooksInput = {
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutWebhooksInput = {
@@ -1680,6 +1866,7 @@ export type MerchantUncheckedCreateWithoutWebhooksInput = {
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogUncheckedCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutWebhooksInput = {
@@ -1730,6 +1917,7 @@ export type MerchantUpdateWithoutWebhooksInput = {
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutWebhooksInput = {
@@ -1764,6 +1952,7 @@ export type MerchantUncheckedUpdateWithoutWebhooksInput = {
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUncheckedUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutTrackingsInput = {
@@ -1798,6 +1987,7 @@ export type MerchantCreateWithoutTrackingsInput = {
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutTrackingsInput = {
@@ -1832,6 +2022,7 @@ export type MerchantUncheckedCreateWithoutTrackingsInput = {
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogUncheckedCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutTrackingsInput = {
@@ -1882,6 +2073,7 @@ export type MerchantUpdateWithoutTrackingsInput = {
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutTrackingsInput = {
@@ -1916,6 +2108,7 @@ export type MerchantUncheckedUpdateWithoutTrackingsInput = {
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUncheckedUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutTrackingLogsInput = {
@@ -1950,6 +2143,7 @@ export type MerchantCreateWithoutTrackingLogsInput = {
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutTrackingLogsInput = {
@@ -1984,6 +2178,7 @@ export type MerchantUncheckedCreateWithoutTrackingLogsInput = {
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutTrackingLogsInput = {
@@ -2034,6 +2229,7 @@ export type MerchantUpdateWithoutTrackingLogsInput = {
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutTrackingLogsInput = {
@@ -2068,6 +2264,7 @@ export type MerchantUncheckedUpdateWithoutTrackingLogsInput = {
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutInfractionsInput = {
@@ -2102,6 +2299,7 @@ export type MerchantCreateWithoutInfractionsInput = {
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantUncheckedCreateWithoutInfractionsInput = {
@@ -2136,6 +2334,7 @@ export type MerchantUncheckedCreateWithoutInfractionsInput = {
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
   trackingLogs?: Prisma.TrackingLogUncheckedCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type MerchantCreateOrConnectWithoutInfractionsInput = {
@@ -2186,6 +2385,7 @@ export type MerchantUpdateWithoutInfractionsInput = {
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantUncheckedUpdateWithoutInfractionsInput = {
@@ -2220,6 +2420,7 @@ export type MerchantUncheckedUpdateWithoutInfractionsInput = {
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUncheckedUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 
@@ -2235,6 +2436,7 @@ export type MerchantCountOutputType = {
   infractions: number
   trackings: number
   trackingLogs: number
+  notifications: number
 }
 
 export type MerchantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2245,6 +2447,7 @@ export type MerchantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   infractions?: boolean | MerchantCountOutputTypeCountInfractionsArgs
   trackings?: boolean | MerchantCountOutputTypeCountTrackingsArgs
   trackingLogs?: boolean | MerchantCountOutputTypeCountTrackingLogsArgs
+  notifications?: boolean | MerchantCountOutputTypeCountNotificationsArgs
 }
 
 /**
@@ -2306,6 +2509,13 @@ export type MerchantCountOutputTypeCountTrackingLogsArgs<ExtArgs extends runtime
   where?: Prisma.TrackingLogWhereInput
 }
 
+/**
+ * MerchantCountOutputType without action
+ */
+export type MerchantCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
 
 export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2341,6 +2551,7 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   infractions?: boolean | Prisma.Merchant$infractionsArgs<ExtArgs>
   trackings?: boolean | Prisma.Merchant$trackingsArgs<ExtArgs>
   trackingLogs?: boolean | Prisma.Merchant$trackingLogsArgs<ExtArgs>
+  notifications?: boolean | Prisma.Merchant$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.MerchantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["merchant"]>
 
@@ -2440,6 +2651,7 @@ export type MerchantInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   infractions?: boolean | Prisma.Merchant$infractionsArgs<ExtArgs>
   trackings?: boolean | Prisma.Merchant$trackingsArgs<ExtArgs>
   trackingLogs?: boolean | Prisma.Merchant$trackingLogsArgs<ExtArgs>
+  notifications?: boolean | Prisma.Merchant$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.MerchantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MerchantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2460,6 +2672,7 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     infractions: Prisma.$InfractionPayload<ExtArgs>[]
     trackings: Prisma.$MerchantTrackingPayload<ExtArgs>[]
     trackingLogs: Prisma.$TrackingLogPayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2889,6 +3102,7 @@ export interface Prisma__MerchantClient<T, Null = never, ExtArgs extends runtime
   infractions<T extends Prisma.Merchant$infractionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$infractionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InfractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   trackings<T extends Prisma.Merchant$trackingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$trackingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MerchantTrackingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   trackingLogs<T extends Prisma.Merchant$trackingLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$trackingLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TrackingLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.Merchant$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3504,6 +3718,30 @@ export type Merchant$trackingLogsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.TrackingLogScalarFieldEnum | Prisma.TrackingLogScalarFieldEnum[]
+}
+
+/**
+ * Merchant.notifications
+ */
+export type Merchant$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**

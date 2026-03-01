@@ -148,3 +148,24 @@ export const RefundAnalysisStatus = {
 } as const
 
 export type RefundAnalysisStatus = (typeof RefundAnalysisStatus)[keyof typeof RefundAnalysisStatus]
+
+
+export const CodeType = {
+  EMAIL_VERIFICATION: 'EMAIL_VERIFICATION',
+  PASSWORD_RESET: 'PASSWORD_RESET'
+} as const
+
+export type CodeType = (typeof CodeType)[keyof typeof CodeType]
+
+
+export const NotificationType = {
+  CHARGE_PAID: 'CHARGE_PAID',
+  CHARGE_REFUNDED: 'CHARGE_REFUNDED',
+  WITHDRAW_COMPLETED: 'WITHDRAW_COMPLETED',
+  WITHDRAW_FAILED: 'WITHDRAW_FAILED',
+  INFRACTION_RECEIVED: 'INFRACTION_RECEIVED',
+  PIX_KEY_UPDATED: 'PIX_KEY_UPDATED',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]

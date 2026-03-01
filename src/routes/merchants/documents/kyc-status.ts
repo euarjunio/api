@@ -14,7 +14,7 @@ export const kycStatusRoute: FastifyPluginAsyncZod = async (app) => {
         200: z.object({
           kycStatus: z.string(),
           kycNotes: z.string().nullable(),
-          kycAnalyzedAt: z.date().nullable(),
+          kycAnalyzedAt: z.string().datetime().nullable(),
         }),
         404: z.object({ message: z.string() }),
       },
@@ -32,7 +32,7 @@ export const kycStatusRoute: FastifyPluginAsyncZod = async (app) => {
     return reply.status(200).send({
       kycStatus: merchant.kycStatus,
       kycNotes: merchant.kycNotes,
-      kycAnalyzedAt: merchant.kycAnalyzedAt,
+      kycAnalyzedAt: merchant.kycAnalyzedAt?.toISOString() ?? null,
     });
   });
 };

@@ -43,6 +43,23 @@ export const getMerchantProfileRoute: FastifyPluginAsyncZod = async (app) => {
       async () => {
         const merchant = await prisma.merchant.findUnique({
           where: { userId: id },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            document: true,
+            documentType: true,
+            status: true,
+            kycStatus: true,
+            feeMode: true,
+            feeAmount: true,
+            acquirer: true,
+            acquirerAccountId: true,
+            pixKey: true,
+            pixKeyStatus: true,
+            createdAt: true,
+          },
         });
 
         if (!merchant) return null;

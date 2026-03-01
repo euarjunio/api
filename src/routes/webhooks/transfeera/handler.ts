@@ -13,7 +13,7 @@ import {
 import { settlementQueue } from "../../../lib/queues/settlement-queue.ts";
 import { ledgerService } from "../../../services/ledger.service.ts";
 import { findOrCreateCustomerFromPayer, notifyMerchant } from "./helpers.ts";
-import { invalidateMerchantCaches } from "../../../lib/cache.ts";
+import { invalidateMerchantCaches, invalidate, CacheKeys } from "../../../lib/cache.ts";
 import { dispatchTrackingEvent } from "../../../plugins/tracker.service.ts";
 
 const REPLAY_TOLERANCE_MS = 5 * 60 * 1000; // 5 minutos
@@ -126,7 +126,17 @@ async function handleCashIn(data: any, eventId: string, request: any) {
   // Buscar cobrança
   const charge = await prisma.charges.findUnique({
     where: { txid },
-    include: { merchant: true },
+    include: {
+      merchant: true,
+      customer: {
+        select: {
+          name: true,
+          email: true,
+          phone: true,
+          document: true,
+        },
+      },
+    },
   });
 
   if (!charge) {
@@ -218,15 +228,34 @@ async function handleCashIn(data: any, eventId: string, request: any) {
     payer,
   }, request);
 
+  // Push notification para o merchant
+  try {
+    const { notifications } = await import("../../../lib/notifications.ts");
+    await notifications.chargePaid(charge.merchantId, {
+      chargeId: charge.id,
+      amount: charge.amount,
+      txid,
+      payerName: payer?.name,
+    });
+  } catch (err: any) {
+    request.log.error(`🔔 [NOTIFICATION] Erro ao enviar notificação push: ${err?.message}`);
+  }
+
   // Disparar eventos de tracking (UTMify, Meta Pixel, etc.)
   try {
     const trackingData = (charge.tracking as Record<string, any>) ?? {};
+    const trackingCustomer = {
+      name: charge.customer?.name ?? payer?.name ?? undefined,
+      email: charge.customer?.email ?? undefined,
+      phone: charge.customer?.phone ?? undefined,
+      document: charge.customer?.document ?? payer?.document ?? undefined,
+    };
     await dispatchTrackingEvent(charge.merchantId, "purchase", {
       chargeId: charge.id,
       txid,
       amount: charge.amount,
       paidAt: new Date().toISOString(),
-      customer: payer ? { name: payer.name, document: payer.document } : undefined,
+      customer: Object.values(trackingCustomer).some(Boolean) ? trackingCustomer : undefined,
       tracking: Object.keys(trackingData).length > 0 ? trackingData : undefined,
     });
   } catch (err: any) {

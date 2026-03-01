@@ -1,6 +1,7 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { prisma } from "../../../lib/prisma.ts";
+import { logAction, getRequestContext } from "../../../lib/audit.ts";
 
 export const rejectMerchantRoute: FastifyPluginAsyncZod = async (app) => {
   // POST /v1/admin/merchants/:id/reject
@@ -33,6 +34,8 @@ export const rejectMerchantRoute: FastifyPluginAsyncZod = async (app) => {
         kycAnalyzedAt: new Date(),
       },
     });
+
+    logAction({ action: "MERCHANT_REJECTED", actor: `admin:${request.user.id}`, target: id, metadata: { reason }, ...getRequestContext(request) });
 
     return reply.status(200).send({ message: "Merchant rejeitado." });
   });

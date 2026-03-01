@@ -30,13 +30,26 @@ export class UtmifyPlugin implements TrackerPlugin {
     if (event === "purchase") body.approvedDate = data.paidAt;
     if (event === "refund") body.refundedDate = data.paidAt;
 
-    // Customer
-    if (data.customer) {
+    const customerEmail = data.customer?.email?.trim();
+    const customerPhone = data.customer?.phone?.replace(/\D/g, "");
+    const customerDocument = data.customer?.document?.replace(/\D/g, "");
+
+    // Customer é opcional na criação da cobrança; para purchase no UTMify, sem email/phone
+    // o payload é inválido (HTTP 400). Nesse caso, fazemos skip para evitar retries inúteis.
+    if (event === "purchase" && (!customerEmail || !customerPhone)) {
+      console.warn(
+        `🔌 [UTMIFY] Skip purchase sem customer.email/phone | chargeId: ${data.chargeId}`,
+      );
+      return;
+    }
+
+    // Só envia customer quando temos os campos mínimos exigidos pelo UTMify.
+    if (customerEmail && customerPhone) {
       body.customer = {
-        name: data.customer.name ?? undefined,
-        email: data.customer.email ?? undefined,
-        phone: data.customer.phone ?? undefined,
-        document: data.customer.document ?? undefined,
+        name: data.customer?.name ?? undefined,
+        email: customerEmail,
+        phone: customerPhone,
+        document: customerDocument ?? undefined,
       };
     }
 

@@ -8,6 +8,7 @@ import { getProviderForMerchant } from "../../providers/acquirer.registry.ts";
 import { getDocumentType, normalizeDocument } from "../../utils/br-document.ts";
 import { isPixKeyActive } from "../../providers/transfeera/transfeera.maps.ts";
 import { invalidatePattern } from "../../lib/cache.ts";
+import { logAction, getRequestContext } from "../../lib/audit.ts";
 
 export const createChargeRoute: FastifyPluginAsyncZod = async (app) => {
   app.addHook("onRequest", authenticate).post("/", {
@@ -232,6 +233,7 @@ export const createChargeRoute: FastifyPluginAsyncZod = async (app) => {
     });
 
     request.log.info({ chargeId: charge.id, txid: charge.txid, merchantId: merchant.id }, "Charge created");
+    logAction({ action: "CHARGE_CREATED", actor: request.user.id, target: charge.id, metadata: { merchantId: merchant.id, amount, txid: charge.txid }, ...getRequestContext(request) });
 
     // Invalidar cache de listagem de charges
     await invalidatePattern(`cache:charges:${merchant.id}:*`);

@@ -5,6 +5,7 @@ import { verifyJwt } from "../hooks/verify-jwt.ts";
 import { checkUserRequest } from "../../utils/check-user-request.ts";
 import { prisma } from "../../lib/prisma.ts";
 import { generateApiKey } from "../../utils/api-keys.ts";
+import { logAction, getRequestContext } from "../../lib/audit.ts";
 
 export const createApiKeyRoute: FastifyPluginAsyncZod = async (app) => {
   app.addHook("onRequest", verifyJwt).post("/", {
@@ -59,6 +60,7 @@ export const createApiKeyRoute: FastifyPluginAsyncZod = async (app) => {
     });
 
     request.log.info({ apiKeyId: apiKey.id, merchantId: existingMerchant.id }, "API key created successfully");
+    logAction({ action: "API_KEY_CREATED", actor: id, target: apiKey.id, metadata: { merchantId: existingMerchant.id, name }, ...getRequestContext(request) });
 
     return reply.status(201).send({
       apiKey: {

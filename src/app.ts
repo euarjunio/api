@@ -8,6 +8,7 @@ import { fastifySwaggerUi } from "@fastify/swagger-ui";
 import rawBody from "fastify-raw-body";
 import {
     hasZodFastifySchemaValidationErrors,
+    isResponseSerializationError,
     jsonSchemaTransform,
     serializerCompiler,
     validatorCompiler,
@@ -32,6 +33,7 @@ import { chargesRoutes } from "./routes/charges/index.ts";
 import { apiKeysRoutes } from "./routes/api-keys/index.ts";
 import { adminRoutes } from "./routes/admin/index.ts";
 import { webhooksRoutes } from "./routes/webhooks/index.ts";
+import { notificationsRoutes } from "./routes/notifications/index.ts";
 
 // ── Headers sensíveis que NÃO devem aparecer nos logs ────────────────
 const REDACTED_HEADERS = new Set([
@@ -269,6 +271,7 @@ server.register(chargesRoutes, { prefix: "/v1/charges" });
 server.register(apiKeysRoutes, { prefix: "/v1/api-keys" });
 server.register(adminRoutes, { prefix: "/v1/admin" });
 server.register(webhooksRoutes, { prefix: "/v1/webhooks" });
+server.register(notificationsRoutes, { prefix: "/v1/notifications" });
 
 server.setErrorHandler((error: any, request, reply) => {
     if (hasZodFastifySchemaValidationErrors(error)) {
@@ -281,6 +284,24 @@ server.setErrorHandler((error: any, request, reply) => {
             error: "VALIDATION_ERROR",
             statusCode: 400,
             details: { issues: error.validation, method: request.method, url: request.url },
+        });
+    }
+
+    if (isResponseSerializationError(error)) {
+        request.log.error(
+            {
+                url: request.url,
+                method: request.method,
+                issues: error.cause?.issues,
+            },
+            "Response doesn't match the schema",
+        );
+        captureError(error, {
+            url: request.url,
+            method: request.method,
+        });
+        return reply.status(500).send({
+            message: "Internal Server Error",
         });
     }
 
@@ -320,7 +341,7 @@ server.setErrorHandler((error: any, request, reply) => {
     );
     return reply.status(500).send({
         message: "Internal Server Error",
-        error: error?.message ?? "Internal Server Error",
+        ...(isDevelopment ? { error: error?.message } : {}),
     });
 });
 

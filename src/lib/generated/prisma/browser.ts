@@ -23,6 +23,16 @@ export * from './enums.ts';
  */
 export type User = Prisma.UserModel
 /**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model VerificationCode
+ * 
+ */
+export type VerificationCode = Prisma.VerificationCodeModel
+/**
  * Model Merchant
  * 
  */
@@ -72,3 +82,8 @@ export type TrackingLog = Prisma.TrackingLogModel
  * 
  */
 export type Infraction = Prisma.InfractionModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel

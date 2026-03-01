@@ -1,6 +1,7 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { prisma } from "../../../lib/prisma.ts";
+import { logAction, getRequestContext } from "../../../lib/audit.ts";
 
 export const setFeeRoute: FastifyPluginAsyncZod = async (app) => {
   // POST /v1/admin/merchants/:id/set-fee
@@ -40,6 +41,7 @@ export const setFeeRoute: FastifyPluginAsyncZod = async (app) => {
     });
 
     request.log.info({ merchantId: id, feeMode, feeAmount }, "Fee configurada");
+    logAction({ action: "FEE_CHANGED", actor: `admin:${request.user.id}`, target: id, metadata: { feeMode, feeAmount, oldFeeMode: merchant.feeMode, oldFeeAmount: merchant.feeAmount }, ...getRequestContext(request) });
 
     return reply.status(200).send({
       message: "Taxa configurada com sucesso.",

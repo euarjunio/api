@@ -2,6 +2,7 @@ import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { prisma } from "../../../lib/prisma.ts";
 import { acquirerService } from "../../../services/acquirer.service.ts";
+import { logAction, getRequestContext } from "../../../lib/audit.ts";
 
 export const approveMerchantRoute: FastifyPluginAsyncZod = async (app) => {
   // POST /v1/admin/merchants/:id/approve
@@ -35,6 +36,8 @@ export const approveMerchantRoute: FastifyPluginAsyncZod = async (app) => {
       where: { id },
       data: { kycStatus: "APPROVED", kycAnalyzedAt: new Date() },
     });
+
+    logAction({ action: "MERCHANT_APPROVED", actor: `admin:${request.user.id}`, target: id, ...getRequestContext(request) });
 
     try {
       const result = await acquirerService.setupMerchantAccount(id);

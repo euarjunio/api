@@ -2,6 +2,7 @@ import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { prisma } from "../../../lib/prisma.ts";
 import { getProviderForMerchant } from "../../../providers/acquirer.registry.ts";
+import { AcquirerError } from "../../../providers/acquirer.error.ts";
 import { ledgerService } from "../../../services/ledger.service.ts";
 
 export const acquirerBalanceRoute: FastifyPluginAsyncZod = async (app) => {
@@ -53,19 +54,29 @@ export const acquirerBalanceRoute: FastifyPluginAsyncZod = async (app) => {
       return reply.status(400).send({ message: "Conta no adquirente possui ID inválido (não é UUID). Reconfigure com /setup-acquirer." });
     }
 
-    const provider = await getProviderForMerchant(id);
-    const token = await provider.getMerchantToken(merchant.acquirerAccountId);
+    try {
+      const provider = await getProviderForMerchant(id);
+      const token = await provider.getMerchantToken(merchant.acquirerAccountId);
 
-    const [acquirerBalance, ledger] = await Promise.all([
-      provider.getAccountBalance(token),
-      ledgerService.getBalance(id),
-    ]);
+      const [acquirerBalance, ledger] = await Promise.all([
+        provider.getAccountBalance(token),
+        ledgerService.getBalance(id),
+      ]);
 
-    return reply.status(200).send({
-      merchantId: merchant.id,
-      merchantName: merchant.name,
-      acquirer: acquirerBalance,
-      ledger,
-    });
+      return reply.status(200).send({
+        merchantId: merchant.id,
+        merchantName: merchant.name,
+        acquirer: acquirerBalance,
+        ledger,
+      });
+    } catch (error) {
+      if (error instanceof AcquirerError) {
+        return reply.status(error.statusCode as any).send({
+          message: error.message,
+          error: "ACQUIRER_ERROR",
+        });
+      }
+      throw error;
+    }
   });
 };

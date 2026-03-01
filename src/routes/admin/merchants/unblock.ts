@@ -1,6 +1,7 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { prisma } from "../../../lib/prisma.ts";
+import { logAction, getRequestContext } from "../../../lib/audit.ts";
 
 export const unblockMerchantRoute: FastifyPluginAsyncZod = async (app) => {
   // POST /v1/admin/merchants/:id/unblock
@@ -38,6 +39,7 @@ export const unblockMerchantRoute: FastifyPluginAsyncZod = async (app) => {
     });
 
     request.log.info(`✅  [ADMIN] Merchant desbloqueado | id: ${id}`);
+    logAction({ action: "MERCHANT_UNBLOCKED", actor: `admin:${request.user.id}`, target: id, ...getRequestContext(request) });
 
     return reply.status(200).send({ message: "Merchant desbloqueado com sucesso." });
   });
