@@ -6,6 +6,11 @@ import type { NotificationType } from "./generated/prisma/enums.ts";
 // Redis publisher dedicado (não usar o mesmo do BullMQ para pub/sub)
 const publisher = new Redis(env.REDIS_URL);
 
+/** Fecha a conexão do publisher no graceful shutdown */
+export async function closeNotificationsPublisher(): Promise<void> {
+  await publisher.quit();
+}
+
 export interface CreateNotificationInput {
   merchantId: string;
   type: NotificationType;

@@ -33,7 +33,11 @@ export const transfeeraHandlerRoute: FastifyPluginAsyncZod = async (app) => {
     const provider = getProvider("transfeera");
 
     // ── 1. Verificação da assinatura (HMAC-SHA256) ──────────────
-    if (secret) {
+    if (env.TRANSFEERA_WEBHOOK_BYPASS) {
+      request.log.warn("⚠️  [WEBHOOK] TRANSFEERA_WEBHOOK_BYPASS ativo — verificação de assinatura desabilitada");
+    }
+
+    if (secret && !env.TRANSFEERA_WEBHOOK_BYPASS) {
       if (!signatureHeader) {
         request.log.warn("⚠️  [WEBHOOK] Requisição sem header Transfeera-Signature");
         return reply.status(401).send({ message: "Missing signature" });
