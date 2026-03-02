@@ -274,6 +274,8 @@ server.register(webhooksRoutes, { prefix: "/v1/webhooks" });
 server.register(notificationsRoutes, { prefix: "/v1/notifications" });
 
 server.setErrorHandler((error: any, request, reply) => {
+    console.error(error);
+
     if (hasZodFastifySchemaValidationErrors(error)) {
         request.log.warn(
             { url: request.url, method: request.method, issues: error.validation },
