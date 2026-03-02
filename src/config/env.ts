@@ -29,10 +29,6 @@ const envSchema = z.object({
   PLATFORM_PIX_KEY: z.string(),
   PLATFORM_PIX_KEY_TYPE: z.enum(["EMAIL", "CPF", "CNPJ", "PHONE", "CHAVE_ALEATORIA"]),
   TRANSFEERA_WEBHOOK_SECRET: z.string().optional(),
-  TRANSFEERA_WEBHOOK_BYPASS: z
-    .enum(["true", "false"])
-    .default("false")
-    .transform((v) => v === "true"),  // Pula verificação de assinatura — NUNCA usar em produção
 
   // ── Webhooks ────────────────────────────────────────────────────────
   MERCHANT_WEBHOOK_TIMEOUT_MS: z.coerce.number().int().min(1000).default(5000),
@@ -92,9 +88,6 @@ function validateEnv() {
 
     if (!data.TRANSFEERA_WEBHOOK_SECRET) {
       errors.push("TRANSFEERA_WEBHOOK_SECRET é obrigatório em produção");
-    }
-    if (data.TRANSFEERA_WEBHOOK_BYPASS) {
-      errors.push("TRANSFEERA_WEBHOOK_BYPASS não pode ser true em produção");
     }
     if (!data.SENTRY_DSN) {
       errors.push("SENTRY_DSN é obrigatório em produção");
