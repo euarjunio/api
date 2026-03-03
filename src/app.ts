@@ -34,6 +34,7 @@ import { apiKeysRoutes } from "./routes/api-keys/index.ts";
 import { adminRoutes } from "./routes/admin/index.ts";
 import { webhooksRoutes } from "./routes/webhooks/index.ts";
 import { notificationsRoutes } from "./routes/notifications/index.ts";
+import { customersRoutes } from "./routes/customers/index.ts";
 
 // ── Headers sensíveis que NÃO devem aparecer nos logs ────────────────
 const REDACTED_HEADERS = new Set([
@@ -272,6 +273,7 @@ server.register(apiKeysRoutes, { prefix: "/v1/api-keys" });
 server.register(adminRoutes, { prefix: "/v1/admin" });
 server.register(webhooksRoutes, { prefix: "/v1/webhooks" });
 server.register(notificationsRoutes, { prefix: "/v1/notifications" });
+server.register(customersRoutes, { prefix: "/v1/customers" });
 
 server.setErrorHandler((error: any, request, reply) => {
     console.error(error);

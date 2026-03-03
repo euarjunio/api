@@ -28,26 +28,6 @@ export class TransfeeraProvider implements AcquirerProvider {
   private apiUrl = env.URL_TRANSFEERA;
   private authUrl = env.URL_TRANSFEERA_AUTH;
 
-  // ── Retry helper (para falhas transitórias de rede/DNS) ────────────
-  private async fetchWithRetry(url: string, options: RequestInit, retries = 3): Promise<Response> {
-    for (let attempt = 0; attempt < retries; attempt++) {
-      try {
-        return await fetch(url, options);
-      } catch (err: any) {
-        const isLast = attempt === retries - 1;
-        const cause = err?.cause as Record<string, unknown> | undefined;
-        const isNetworkError =
-          err instanceof TypeError &&
-          (err.message === "fetch failed" || cause?.code === "ENOTFOUND" || cause?.code === "ECONNREFUSED");
-        if (isLast || !isNetworkError) throw err;
-        const delay = 500 * Math.pow(2, attempt); // 500ms, 1s, 2s
-        console.warn(`⚠️  [TRANSFEERA] Falha de rede na tentativa ${attempt + 1}/${retries}. Tentando novamente em ${delay}ms...`);
-        await new Promise((r) => setTimeout(r, delay));
-      }
-    }
-    throw new Error("fetchWithRetry: não deveria chegar aqui");
-  }
-
   // ── Error helper ───────────────────────────────────────────────────
   private async handleError(operation: string, response: Response): Promise<never> {
     let body: any;
@@ -67,7 +47,7 @@ export class TransfeeraProvider implements AcquirerProvider {
   // ── Auth ────────────────────────────────────────────────────────────
 
   async getAdminToken(): Promise<string> {
-    const response = await this.fetchWithRetry(`${this.authUrl}/authorization`, {
+    const response = await fetch(`${this.authUrl}/authorization`, {
       method: "POST",
       headers: {
         "User-Agent": USER_AGENT,
@@ -88,7 +68,7 @@ export class TransfeeraProvider implements AcquirerProvider {
   }
 
   async getMerchantToken(accountId: string): Promise<string> {
-    const response = await this.fetchWithRetry(`${this.authUrl}/authorization`, {
+    const response = await fetch(`${this.authUrl}/authorization`, {
       method: "POST",
       headers: {
         "User-Agent": USER_AGENT,
