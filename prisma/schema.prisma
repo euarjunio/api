@@ -206,6 +206,9 @@ model Merchant {
   feeMode   FeeMode @default(FIXADO) @map("fee_mode")
   feeAmount Int     @default(80) @map("fee_amount") // 80 CENTAVOS (R$ 0.80)
 
+  // Preferências de notificação
+  emailNotificationsEnabled Boolean @default(true) @map("email_notifications_enabled")
+
   metadata  Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -3,6 +3,8 @@ import { z } from "zod";
 import { prisma } from "../../../lib/prisma.ts";
 import { acquirerService } from "../../../services/acquirer.service.ts";
 import { logAction, getRequestContext } from "../../../lib/audit.ts";
+import { queueEmail } from "../../../lib/queues/email-queue.ts";
+import { merchantApprovedEmail } from "../../../lib/email-templates.ts";
 
 export const approveMerchantRoute: FastifyPluginAsyncZod = async (app) => {
   // POST /v1/admin/merchants/:id/approve
@@ -25,7 +27,10 @@ export const approveMerchantRoute: FastifyPluginAsyncZod = async (app) => {
   }, async (request, reply) => {
     const { id } = request.params;
 
-    const merchant = await prisma.merchant.findUnique({ where: { id } });
+    const merchant = await prisma.merchant.findUnique({
+      where: { id },
+      include: { user: { select: { email: true } } },
+    });
     if (!merchant) return reply.status(404).send({ message: "Merchant não encontrado" });
 
     if (merchant.kycStatus === "APPROVED") {
@@ -38,6 +43,13 @@ export const approveMerchantRoute: FastifyPluginAsyncZod = async (app) => {
     });
 
     logAction({ action: "MERCHANT_APPROVED", actor: `admin:${request.user.id}`, target: id, ...getRequestContext(request) });
+
+    // Enviar email de aprovação ao merchant (comunicação crítica, não depende de preferência)
+    try {
+      await queueEmail({ to: merchant.user.email, ...merchantApprovedEmail(merchant.name) });
+    } catch (emailErr: any) {
+      request.log.warn({ error: emailErr?.message, merchantId: id }, "⚠️  [APPROVE] Falha ao enfileirar email de aprovação");
+    }
 
     try {
       const result = await acquirerService.setupMerchantAccount(id);

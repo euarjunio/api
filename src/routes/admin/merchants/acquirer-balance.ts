@@ -30,6 +30,7 @@ export const acquirerBalanceRoute: FastifyPluginAsyncZod = async (app) => {
         }),
         400: z.object({ message: z.string() }),
         404: z.object({ message: z.string() }),
+        503: z.object({ message: z.string(), error: z.string() }),
       },
     },
   }, async (request, reply) => {
@@ -74,6 +75,16 @@ export const acquirerBalanceRoute: FastifyPluginAsyncZod = async (app) => {
         return reply.status(error.statusCode as any).send({
           message: error.message,
           error: "ACQUIRER_ERROR",
+        });
+      }
+      // Falha de rede / DNS (ex: ENOTFOUND auth.transfeera.com)
+      const isFetchError = error instanceof TypeError && error.message === "fetch failed";
+      if (isFetchError) {
+        const cause = (error as any)?.cause;
+        const hostname = cause?.hostname ?? "serviço externo";
+        return reply.status(503).send({
+          message: `Serviço Transfeera indisponível. Falha ao conectar com ${hostname}. Tente novamente em instantes.`,
+          error: "SERVICE_UNAVAILABLE",
         });
       }
       throw error;

@@ -149,6 +149,7 @@ export const MerchantScalarFieldEnum = {
   pixKeyStatus: 'pixKeyStatus',
   feeMode: 'feeMode',
   feeAmount: 'feeAmount',
+  emailNotificationsEnabled: 'emailNotificationsEnabled',
   metadata: 'metadata',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

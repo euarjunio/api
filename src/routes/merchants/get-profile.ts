@@ -28,6 +28,7 @@ export const getMerchantProfileRoute: FastifyPluginAsyncZod = async (app) => {
             acquirerAccountId: z.string().nullable(),
             pixKey: z.string().nullable(),
             pixKeyStatus: z.string().nullable(),
+            emailNotificationsEnabled: z.boolean(),
             createdAt: z.string().datetime(),
           }).nullable(),
         }),
@@ -58,6 +59,7 @@ export const getMerchantProfileRoute: FastifyPluginAsyncZod = async (app) => {
             acquirerAccountId: true,
             pixKey: true,
             pixKeyStatus: true,
+            emailNotificationsEnabled: true,
             createdAt: true,
           },
         });
@@ -79,6 +81,7 @@ export const getMerchantProfileRoute: FastifyPluginAsyncZod = async (app) => {
           acquirerAccountId: merchant.acquirerAccountId,
           pixKey: merchant.pixKey,
           pixKeyStatus: normalizePixKeyStatus(merchant.pixKeyStatus),
+          emailNotificationsEnabled: merchant.emailNotificationsEnabled,
           createdAt: merchant.createdAt.toISOString(),
         };
       },

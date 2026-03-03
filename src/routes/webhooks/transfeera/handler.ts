@@ -15,6 +15,8 @@ import { ledgerService } from "../../../services/ledger.service.ts";
 import { findOrCreateCustomerFromPayer, notifyMerchant } from "./helpers.ts";
 import { invalidateMerchantCaches, invalidate, CacheKeys } from "../../../lib/cache.ts";
 import { dispatchTrackingEvent } from "../../../plugins/tracker.service.ts";
+import { queueEmail } from "../../../lib/queues/email-queue.ts";
+import { chargePaidEmail } from "../../../lib/email-templates.ts";
 
 const REPLAY_TOLERANCE_MS = 5 * 60 * 1000; // 5 minutos
 
@@ -127,7 +129,11 @@ async function handleCashIn(data: any, eventId: string, request: any) {
   const charge = await prisma.charges.findUnique({
     where: { txid },
     include: {
-      merchant: true,
+      merchant: {
+        include: {
+          user: { select: { email: true } },
+        },
+      },
       customer: {
         select: {
           name: true,
@@ -239,6 +245,23 @@ async function handleCashIn(data: any, eventId: string, request: any) {
     });
   } catch (err: any) {
     request.log.error(`🔔 [NOTIFICATION] Erro ao enviar notificação push: ${err?.message}`);
+  }
+
+  // Email ao merchant se emailNotificationsEnabled
+  if (charge.merchant.emailNotificationsEnabled) {
+    try {
+      await queueEmail({
+        to: charge.merchant.user.email,
+        ...chargePaidEmail({
+          merchantName: charge.merchant.name,
+          amount: charge.amount,
+          payerName: payer?.name,
+          chargeId: charge.id,
+        }),
+      });
+    } catch (err: any) {
+      request.log.error(`📧 [EMAIL] Erro ao enfileirar email de pagamento: ${err?.message}`);
+    }
   }
 
   // Disparar eventos de tracking (UTMify, Meta Pixel, etc.)
