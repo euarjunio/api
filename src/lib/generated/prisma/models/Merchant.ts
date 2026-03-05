@@ -28,10 +28,14 @@ export type AggregateMerchant = {
 
 export type MerchantAvgAggregateOutputType = {
   feeAmount: number | null
+  maxWithdrawAmount: number | null
+  dailyWithdrawLimit: number | null
 }
 
 export type MerchantSumAggregateOutputType = {
   feeAmount: number | null
+  maxWithdrawAmount: number | null
+  dailyWithdrawLimit: number | null
 }
 
 export type MerchantMinAggregateOutputType = {
@@ -56,6 +60,8 @@ export type MerchantMinAggregateOutputType = {
   pixKeyStatus: string | null
   feeMode: $Enums.FeeMode | null
   feeAmount: number | null
+  maxWithdrawAmount: number | null
+  dailyWithdrawLimit: number | null
   emailNotificationsEnabled: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -84,6 +90,8 @@ export type MerchantMaxAggregateOutputType = {
   pixKeyStatus: string | null
   feeMode: $Enums.FeeMode | null
   feeAmount: number | null
+  maxWithdrawAmount: number | null
+  dailyWithdrawLimit: number | null
   emailNotificationsEnabled: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -112,6 +120,8 @@ export type MerchantCountAggregateOutputType = {
   pixKeyStatus: number
   feeMode: number
   feeAmount: number
+  maxWithdrawAmount: number
+  dailyWithdrawLimit: number
   emailNotificationsEnabled: number
   metadata: number
   createdAt: number
@@ -123,10 +133,14 @@ export type MerchantCountAggregateOutputType = {
 
 export type MerchantAvgAggregateInputType = {
   feeAmount?: true
+  maxWithdrawAmount?: true
+  dailyWithdrawLimit?: true
 }
 
 export type MerchantSumAggregateInputType = {
   feeAmount?: true
+  maxWithdrawAmount?: true
+  dailyWithdrawLimit?: true
 }
 
 export type MerchantMinAggregateInputType = {
@@ -151,6 +165,8 @@ export type MerchantMinAggregateInputType = {
   pixKeyStatus?: true
   feeMode?: true
   feeAmount?: true
+  maxWithdrawAmount?: true
+  dailyWithdrawLimit?: true
   emailNotificationsEnabled?: true
   createdAt?: true
   updatedAt?: true
@@ -179,6 +195,8 @@ export type MerchantMaxAggregateInputType = {
   pixKeyStatus?: true
   feeMode?: true
   feeAmount?: true
+  maxWithdrawAmount?: true
+  dailyWithdrawLimit?: true
   emailNotificationsEnabled?: true
   createdAt?: true
   updatedAt?: true
@@ -207,6 +225,8 @@ export type MerchantCountAggregateInputType = {
   pixKeyStatus?: true
   feeMode?: true
   feeAmount?: true
+  maxWithdrawAmount?: true
+  dailyWithdrawLimit?: true
   emailNotificationsEnabled?: true
   metadata?: true
   createdAt?: true
@@ -323,6 +343,8 @@ export type MerchantGroupByOutputType = {
   pixKeyStatus: string | null
   feeMode: $Enums.FeeMode
   feeAmount: number
+  maxWithdrawAmount: number
+  dailyWithdrawLimit: number
   emailNotificationsEnabled: boolean
   metadata: runtime.JsonValue | null
   createdAt: Date
@@ -375,6 +397,8 @@ export type MerchantWhereInput = {
   pixKeyStatus?: Prisma.StringNullableFilter<"Merchant"> | string | null
   feeMode?: Prisma.EnumFeeModeFilter<"Merchant"> | $Enums.FeeMode
   feeAmount?: Prisma.IntFilter<"Merchant"> | number
+  maxWithdrawAmount?: Prisma.IntFilter<"Merchant"> | number
+  dailyWithdrawLimit?: Prisma.IntFilter<"Merchant"> | number
   emailNotificationsEnabled?: Prisma.BoolFilter<"Merchant"> | boolean
   metadata?: Prisma.JsonNullableFilter<"Merchant">
   createdAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
@@ -413,6 +437,8 @@ export type MerchantOrderByWithRelationInput = {
   pixKeyStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   feeMode?: Prisma.SortOrder
   feeAmount?: Prisma.SortOrder
+  maxWithdrawAmount?: Prisma.SortOrder
+  dailyWithdrawLimit?: Prisma.SortOrder
   emailNotificationsEnabled?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -455,6 +481,8 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   pixKeyStatus?: Prisma.StringNullableFilter<"Merchant"> | string | null
   feeMode?: Prisma.EnumFeeModeFilter<"Merchant"> | $Enums.FeeMode
   feeAmount?: Prisma.IntFilter<"Merchant"> | number
+  maxWithdrawAmount?: Prisma.IntFilter<"Merchant"> | number
+  dailyWithdrawLimit?: Prisma.IntFilter<"Merchant"> | number
   emailNotificationsEnabled?: Prisma.BoolFilter<"Merchant"> | boolean
   metadata?: Prisma.JsonNullableFilter<"Merchant">
   createdAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
@@ -492,6 +520,8 @@ export type MerchantOrderByWithAggregationInput = {
   pixKeyStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   feeMode?: Prisma.SortOrder
   feeAmount?: Prisma.SortOrder
+  maxWithdrawAmount?: Prisma.SortOrder
+  dailyWithdrawLimit?: Prisma.SortOrder
   emailNotificationsEnabled?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -529,6 +559,8 @@ export type MerchantScalarWhereWithAggregatesInput = {
   pixKeyStatus?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
   feeMode?: Prisma.EnumFeeModeWithAggregatesFilter<"Merchant"> | $Enums.FeeMode
   feeAmount?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
+  maxWithdrawAmount?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
+  dailyWithdrawLimit?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
   emailNotificationsEnabled?: Prisma.BoolWithAggregatesFilter<"Merchant"> | boolean
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"Merchant">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Merchant"> | Date | string
@@ -558,6 +590,8 @@ export type MerchantCreateInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -595,6 +629,8 @@ export type MerchantUncheckedCreateInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -632,6 +668,8 @@ export type MerchantUpdateInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -669,6 +707,8 @@ export type MerchantUncheckedUpdateInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -706,6 +746,8 @@ export type MerchantCreateManyInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -735,6 +777,8 @@ export type MerchantUpdateManyMutationInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -763,6 +807,8 @@ export type MerchantUncheckedUpdateManyInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -802,6 +848,8 @@ export type MerchantCountOrderByAggregateInput = {
   pixKeyStatus?: Prisma.SortOrder
   feeMode?: Prisma.SortOrder
   feeAmount?: Prisma.SortOrder
+  maxWithdrawAmount?: Prisma.SortOrder
+  dailyWithdrawLimit?: Prisma.SortOrder
   emailNotificationsEnabled?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -811,6 +859,8 @@ export type MerchantCountOrderByAggregateInput = {
 
 export type MerchantAvgOrderByAggregateInput = {
   feeAmount?: Prisma.SortOrder
+  maxWithdrawAmount?: Prisma.SortOrder
+  dailyWithdrawLimit?: Prisma.SortOrder
 }
 
 export type MerchantMaxOrderByAggregateInput = {
@@ -835,6 +885,8 @@ export type MerchantMaxOrderByAggregateInput = {
   pixKeyStatus?: Prisma.SortOrder
   feeMode?: Prisma.SortOrder
   feeAmount?: Prisma.SortOrder
+  maxWithdrawAmount?: Prisma.SortOrder
+  dailyWithdrawLimit?: Prisma.SortOrder
   emailNotificationsEnabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -863,6 +915,8 @@ export type MerchantMinOrderByAggregateInput = {
   pixKeyStatus?: Prisma.SortOrder
   feeMode?: Prisma.SortOrder
   feeAmount?: Prisma.SortOrder
+  maxWithdrawAmount?: Prisma.SortOrder
+  dailyWithdrawLimit?: Prisma.SortOrder
   emailNotificationsEnabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -871,6 +925,8 @@ export type MerchantMinOrderByAggregateInput = {
 
 export type MerchantSumOrderByAggregateInput = {
   feeAmount?: Prisma.SortOrder
+  maxWithdrawAmount?: Prisma.SortOrder
+  dailyWithdrawLimit?: Prisma.SortOrder
 }
 
 export type MerchantCreateNestedOneWithoutUserInput = {
@@ -1063,6 +1119,8 @@ export type MerchantCreateWithoutUserInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1099,6 +1157,8 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1151,6 +1211,8 @@ export type MerchantUpdateWithoutUserInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1187,6 +1249,8 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1223,6 +1287,8 @@ export type MerchantCreateWithoutNotificationsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1259,6 +1325,8 @@ export type MerchantUncheckedCreateWithoutNotificationsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1311,6 +1379,8 @@ export type MerchantUpdateWithoutNotificationsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1347,6 +1417,8 @@ export type MerchantUncheckedUpdateWithoutNotificationsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1383,6 +1455,8 @@ export type MerchantCreateWithoutChargesInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1419,6 +1493,8 @@ export type MerchantUncheckedCreateWithoutChargesInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1471,6 +1547,8 @@ export type MerchantUpdateWithoutChargesInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1507,6 +1585,8 @@ export type MerchantUncheckedUpdateWithoutChargesInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1543,6 +1623,8 @@ export type MerchantCreateWithoutApikeyInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1579,6 +1661,8 @@ export type MerchantUncheckedCreateWithoutApikeyInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1631,6 +1715,8 @@ export type MerchantUpdateWithoutApikeyInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1667,6 +1753,8 @@ export type MerchantUncheckedUpdateWithoutApikeyInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1703,6 +1791,8 @@ export type MerchantCreateWithoutLedgerInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1739,6 +1829,8 @@ export type MerchantUncheckedCreateWithoutLedgerInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1791,6 +1883,8 @@ export type MerchantUpdateWithoutLedgerInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1827,6 +1921,8 @@ export type MerchantUncheckedUpdateWithoutLedgerInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1863,6 +1959,8 @@ export type MerchantCreateWithoutWebhooksInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1899,6 +1997,8 @@ export type MerchantUncheckedCreateWithoutWebhooksInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1951,6 +2051,8 @@ export type MerchantUpdateWithoutWebhooksInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1987,6 +2089,8 @@ export type MerchantUncheckedUpdateWithoutWebhooksInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2023,6 +2127,8 @@ export type MerchantCreateWithoutTrackingsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2059,6 +2165,8 @@ export type MerchantUncheckedCreateWithoutTrackingsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2111,6 +2219,8 @@ export type MerchantUpdateWithoutTrackingsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2147,6 +2257,8 @@ export type MerchantUncheckedUpdateWithoutTrackingsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2183,6 +2295,8 @@ export type MerchantCreateWithoutTrackingLogsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2219,6 +2333,8 @@ export type MerchantUncheckedCreateWithoutTrackingLogsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2271,6 +2387,8 @@ export type MerchantUpdateWithoutTrackingLogsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2307,6 +2425,8 @@ export type MerchantUncheckedUpdateWithoutTrackingLogsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2343,6 +2463,8 @@ export type MerchantCreateWithoutInfractionsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2379,6 +2501,8 @@ export type MerchantUncheckedCreateWithoutInfractionsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2431,6 +2555,8 @@ export type MerchantUpdateWithoutInfractionsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2467,6 +2593,8 @@ export type MerchantUncheckedUpdateWithoutInfractionsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2597,6 +2725,8 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   pixKeyStatus?: boolean
   feeMode?: boolean
   feeAmount?: boolean
+  maxWithdrawAmount?: boolean
+  dailyWithdrawLimit?: boolean
   emailNotificationsEnabled?: boolean
   metadata?: boolean
   createdAt?: boolean
@@ -2636,6 +2766,8 @@ export type MerchantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   pixKeyStatus?: boolean
   feeMode?: boolean
   feeAmount?: boolean
+  maxWithdrawAmount?: boolean
+  dailyWithdrawLimit?: boolean
   emailNotificationsEnabled?: boolean
   metadata?: boolean
   createdAt?: boolean
@@ -2666,6 +2798,8 @@ export type MerchantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   pixKeyStatus?: boolean
   feeMode?: boolean
   feeAmount?: boolean
+  maxWithdrawAmount?: boolean
+  dailyWithdrawLimit?: boolean
   emailNotificationsEnabled?: boolean
   metadata?: boolean
   createdAt?: boolean
@@ -2696,6 +2830,8 @@ export type MerchantSelectScalar = {
   pixKeyStatus?: boolean
   feeMode?: boolean
   feeAmount?: boolean
+  maxWithdrawAmount?: boolean
+  dailyWithdrawLimit?: boolean
   emailNotificationsEnabled?: boolean
   metadata?: boolean
   createdAt?: boolean
@@ -2703,7 +2839,7 @@ export type MerchantSelectScalar = {
   userId?: boolean
 }
 
-export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "document" | "documentType" | "status" | "kycStatus" | "docFrontUrl" | "docBackUrl" | "docSelfieUrl" | "kycNotes" | "kycAnalyzedAt" | "acquirer" | "acquirerAccountId" | "pixKeyId" | "pixKey" | "pixKeyType" | "pixKeyStatus" | "feeMode" | "feeAmount" | "emailNotificationsEnabled" | "metadata" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["merchant"]>
+export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "document" | "documentType" | "status" | "kycStatus" | "docFrontUrl" | "docBackUrl" | "docSelfieUrl" | "kycNotes" | "kycAnalyzedAt" | "acquirer" | "acquirerAccountId" | "pixKeyId" | "pixKey" | "pixKeyType" | "pixKeyStatus" | "feeMode" | "feeAmount" | "maxWithdrawAmount" | "dailyWithdrawLimit" | "emailNotificationsEnabled" | "metadata" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["merchant"]>
 export type MerchantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   apikey?: boolean | Prisma.Merchant$apikeyArgs<ExtArgs>
@@ -2758,6 +2894,8 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     pixKeyStatus: string | null
     feeMode: $Enums.FeeMode
     feeAmount: number
+    maxWithdrawAmount: number
+    dailyWithdrawLimit: number
     emailNotificationsEnabled: boolean
     metadata: runtime.JsonValue | null
     createdAt: Date
@@ -3216,6 +3354,8 @@ export interface MerchantFieldRefs {
   readonly pixKeyStatus: Prisma.FieldRef<"Merchant", 'String'>
   readonly feeMode: Prisma.FieldRef<"Merchant", 'FeeMode'>
   readonly feeAmount: Prisma.FieldRef<"Merchant", 'Int'>
+  readonly maxWithdrawAmount: Prisma.FieldRef<"Merchant", 'Int'>
+  readonly dailyWithdrawLimit: Prisma.FieldRef<"Merchant", 'Int'>
   readonly emailNotificationsEnabled: Prisma.FieldRef<"Merchant", 'Boolean'>
   readonly metadata: Prisma.FieldRef<"Merchant", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Merchant", 'DateTime'>

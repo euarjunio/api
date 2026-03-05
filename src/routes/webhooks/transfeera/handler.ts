@@ -1,5 +1,6 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { prisma } from "../../../lib/prisma.ts";
+import { redis } from "../../../lib/redis.ts";
 import { env } from "../../../config/env.ts";
 import { getProvider } from "../../../providers/acquirer.registry.ts";
 import {
@@ -73,46 +74,135 @@ export const transfeeraHandlerRoute: FastifyPluginAsyncZod = async (app) => {
 
     request.log.info(`📩  [WEBHOOK] Evento recebido: ${object} | eventId: ${eventId} | account: ${account_id}`);
 
-    switch (object) {
-      case "CashIn": {
-        await handleCashIn(data, eventId, request);
-        break;
+    // Verificar Redis antes de processar — se offline, salvar para reprocessamento
+    try {
+      await redis.ping();
+    } catch (redisErr: any) {
+      request.log.error(`🔴  [WEBHOOK] Redis offline — salvando evento para reprocessamento | eventId: ${eventId} | erro: ${redisErr?.message}`);
+
+      await prisma.pendingWebhook.upsert({
+        where: { eventId: eventId ?? `${object}-${Date.now()}` },
+        update: { attempts: { increment: 1 }, updatedAt: new Date() },
+        create: {
+          eventId: eventId ?? undefined,
+          object,
+          payload: body,
+          status: "PENDING",
+        },
+      });
+
+      return reply.status(503).send({ message: "Service temporarily unavailable — event queued for retry" });
+    }
+
+    try {
+      switch (object) {
+        case "CashIn": {
+          await handleCashIn(data, eventId, request);
+          break;
+        }
+
+        case "Transfer": {
+          await handleTransfer(data, eventId, request);
+          break;
+        }
+
+        case "PixKey": {
+          await handlePixKey(data, eventId, account_id, request);
+          break;
+        }
+
+        case "CashInRefund": {
+          await handleCashInRefund(data, eventId, account_id, request);
+          break;
+        }
+
+        case "TransferRefund": {
+          await handleTransferRefund(data, eventId, request);
+          break;
+        }
+
+        case "Infraction": {
+          await handleInfraction(data, eventId, account_id, request);
+          break;
+        }
+
+        default: {
+          request.log.warn(`❓  [WEBHOOK] Evento desconhecido: "${object}" | eventId: ${eventId}`);
+          break;
+        }
+      }
+    } catch (err: any) {
+      // Se o Redis cair durante o processamento (ex: ao enfileirar settlement), salvar para retry
+      if (isRedisError(err)) {
+        request.log.error(`🔴  [WEBHOOK] Redis caiu durante processamento — salvando para reprocessamento | eventId: ${eventId} | erro: ${err?.message}`);
+
+        await prisma.pendingWebhook.upsert({
+          where: { eventId: eventId ?? `${object}-${Date.now()}` },
+          update: { attempts: { increment: 1 }, error: err.message, updatedAt: new Date() },
+          create: {
+            eventId: eventId ?? undefined,
+            object,
+            payload: body,
+            status: "PENDING",
+            error: err.message,
+          },
+        });
+
+        return reply.status(503).send({ message: "Service temporarily unavailable — event queued for retry" });
       }
 
-      case "Transfer": {
-        await handleTransfer(data, eventId, request);
-        break;
-      }
-
-      case "PixKey": {
-        await handlePixKey(data, eventId, account_id, request);
-        break;
-      }
-
-      case "CashInRefund": {
-        await handleCashInRefund(data, eventId, account_id, request);
-        break;
-      }
-
-      case "TransferRefund": {
-        await handleTransferRefund(data, eventId, request);
-        break;
-      }
-
-      case "Infraction": {
-        await handleInfraction(data, eventId, account_id, request);
-        break;
-      }
-
-      default: {
-        request.log.warn(`❓  [WEBHOOK] Evento desconhecido: "${object}" | eventId: ${eventId}`);
-        break;
-      }
+      throw err;
     }
 
     return reply.status(200).send({ received: true });
   });
 };
+
+/**
+ * Processa um evento do Transfeera a partir do payload bruto.
+ * Pode ser chamado tanto pelo route handler quanto pelo recovery worker.
+ *
+ * @param body - Payload completo do webhook (object, data, account_id, id)
+ * @param log  - Logger compatível com { info, warn, error }
+ */
+export async function processWebhookEvent(body: any, log: { info: (m: string) => void; warn: (m: string) => void; error: (m: string) => void }) {
+  const { object, data, account_id, id: eventId } = body;
+  const fakeRequest = { log };
+
+  switch (object) {
+    case "CashIn":
+      await handleCashIn(data, eventId, fakeRequest as any);
+      break;
+    case "Transfer":
+      await handleTransfer(data, eventId, fakeRequest as any);
+      break;
+    case "PixKey":
+      await handlePixKey(data, eventId, account_id, fakeRequest as any);
+      break;
+    case "CashInRefund":
+      await handleCashInRefund(data, eventId, account_id, fakeRequest as any);
+      break;
+    case "TransferRefund":
+      await handleTransferRefund(data, eventId, fakeRequest as any);
+      break;
+    case "Infraction":
+      await handleInfraction(data, eventId, account_id, fakeRequest as any);
+      break;
+    default:
+      log.warn(`[WEBHOOK] Evento desconhecido: "${object}" | eventId: ${eventId}`);
+  }
+}
+
+function isRedisError(err: any): boolean {
+  const msg = err?.message ?? "";
+  return (
+    msg.includes("ECONNREFUSED") ||
+    msg.includes("Connection is closed") ||
+    msg.includes("connect ETIMEDOUT") ||
+    msg.includes("Stream isn't writeable") ||
+    err?.name === "ReplyError" && msg.includes("LOADING")
+  );
+}
 
 // ── CashIn Handler ──────────────────────────────────────────────────
 async function handleCashIn(data: any, eventId: string, request: any) {

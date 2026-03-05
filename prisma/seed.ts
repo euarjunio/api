@@ -16,13 +16,13 @@ async function seed() {
     const admin = await prisma.user.upsert({
         where: { email: adminEmail },
         update: { passwordHash: adminHash, role: "ADMIN" },
-        create: { email: adminEmail, passwordHash: adminHash, role: "ADMIN" },
+        create: { email: adminEmail, passwordHash: adminHash, role: "ADMIN", emailVerified: true },
     });
 
     const user = await prisma.user.upsert({
         where: { email: userEmail },
         update: { passwordHash: userHash, role: "USER" },
-        create: { email: userEmail, passwordHash: userHash, role: "USER" },
+        create: { email: userEmail, passwordHash: userHash, role: "USER", emailVerified: true },
     });
 
     const merchantDocument = process.env.SEED_MERCHANT_DOCUMENT ?? "11144477735"; // CPF válido de exemplo

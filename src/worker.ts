@@ -3,8 +3,9 @@ import { startWebhookWorker } from "./lib/queues/webhook-queue.ts";
 import { startSettlementWorker } from "./lib/queues/settlement-queue.ts";
 import { startTrackingWorker } from "./plugins/tracker.queue.ts";
 import { startEmailWorker } from "./lib/queues/email-queue.ts";
+import { startWebhookRecoveryWorker } from "./lib/queues/webhook-recovery.ts";
 import { registerShutdown } from "./lib/shutdown.ts";
-import { verifyEmailConnection } from "./lib/email.ts"; // Adicionar import
+import { verifyEmailConnection } from "./lib/email.ts";
 
 console.log(`🔧 [WORKER] Iniciando workers (${env.NODE_ENV})...`);
 
@@ -17,6 +18,7 @@ const webhookWorker = startWebhookWorker();
 const settlementWorker = startSettlementWorker();
 const trackingWorker = startTrackingWorker();
 const emailWorker = startEmailWorker();
+const recoveryWorker = startWebhookRecoveryWorker();
 
 console.log("✅ [WORKER] Todos os workers iniciados");
 
@@ -26,4 +28,5 @@ registerShutdown("WORKER-SHUTDOWN", [
   { name: "Settlement worker", close: () => settlementWorker.close() },
   { name: "Tracking worker", close: () => trackingWorker.close() },
   { name: "Email worker", close: () => emailWorker.close() },
+  { name: "Recovery worker", close: () => recoveryWorker.close() },
 ]);

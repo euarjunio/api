@@ -2,8 +2,12 @@ import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { adminMerchantsRoutes } from "./merchants/index.ts";
 import { adminInfractionsRoutes } from "./infractions/index.ts";
 import { adminAuditLogsRoute } from "./audit-logs.ts";
+import { adminDashboardRoute } from "./dashboard.ts";
 
 export const adminRoutes: FastifyPluginAsyncZod = async (app) => {
+  // /v1/admin/dashboard
+  app.register(adminDashboardRoute, { prefix: "/dashboard" });
+
   // /v1/admin/merchants
   app.register(adminMerchantsRoutes, { prefix: "/merchants" });
 

@@ -1,5 +1,16 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+import { existsSync } from "fs";
 import { z } from "zod";
+
+// Carregamento em camadas:
+// 1. .env.{NODE_ENV} — valores específicos do ambiente (development/production)
+// 2. .env — overrides locais e segredos (nunca commitado, tem precedência)
+const nodeEnv = process.env.NODE_ENV ?? "development";
+const specificFile = `.env.${nodeEnv}`;
+if (existsSync(specificFile)) {
+  dotenv.config({ path: specificFile });
+}
+dotenv.config({ override: true }); // .env sobrescreve tudo (override local)
 
 const envSchema = z.object({
   // ── Core ────────────────────────────────────────────────────────────

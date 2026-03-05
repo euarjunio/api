@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsx src/server.ts",
-    "start:worker": "tsx src/worker.ts",
-    "dev": "tsx watch src/server.ts",
-    "dev:worker": "tsx watch src/worker.ts",
+    "start": "cross-env NODE_ENV=production tsx src/server.ts",
+    "start:worker": "cross-env NODE_ENV=production tsx src/worker.ts",
+    "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
+    "dev:worker": "cross-env NODE_ENV=development tsx watch src/worker.ts",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
@@ -48,6 +48,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.3",
     "@types/nodemailer": "^6.4.0",
+    "cross-env": "^10.1.0",
     "eslint": "^8.57.1",
     "prisma": "^7.4.2",
     "typescript": "^5.9.3"

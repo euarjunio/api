@@ -65,6 +65,8 @@ export const createWithdrawalRoute: FastifyPluginAsyncZod = async (app) => {
         status: true,
         acquirer: true,
         acquirerAccountId: true,
+        maxWithdrawAmount: true,
+        dailyWithdrawLimit: true,
       },
     });
 
@@ -82,6 +84,37 @@ export const createWithdrawalRoute: FastifyPluginAsyncZod = async (app) => {
 
     if (!merchant.acquirerAccountId) {
       return reply.status(400).send({ message: "Conta do adquirente não configurada. Contate o suporte." });
+    }
+
+    // Validação do limite por transação
+    if (merchant.maxWithdrawAmount > 0 && amount > merchant.maxWithdrawAmount) {
+      return reply.status(400).send({
+        message: `Valor máximo por saque: R$ ${(merchant.maxWithdrawAmount / 100).toFixed(2)}`,
+      });
+    }
+
+    // Validação do limite diário acumulado
+    if (merchant.dailyWithdrawLimit > 0) {
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0);
+
+      const todayTotal = await prisma.ledger.aggregate({
+        where: {
+          merchantId: merchant.id,
+          type: "WITHDRAW",
+          createdAt: { gte: startOfDay },
+        },
+        _sum: { amount: true },
+      });
+
+      const usedToday = Math.abs(todayTotal._sum.amount ?? 0);
+
+      if (usedToday + amount > merchant.dailyWithdrawLimit) {
+        const remaining = Math.max(0, merchant.dailyWithdrawLimit - usedToday);
+        return reply.status(400).send({
+          message: `Limite diário de saques atingido. Restante hoje: R$ ${(remaining / 100).toFixed(2)}`,
+        });
+      }
     }
 
     // 1. Criar entrada no ledger (deduz saldo imediatamente)

@@ -90,6 +90,7 @@ export class LedgerService {
 
   /**
    * Retorna o histórico de transações do merchant com paginação.
+   * Para entradas CASH_IN, inclui feeAmount e netAmount com base na entrada FEE do mesmo chargeId.
    */
   async getTransactions(merchantId: string, opts: { page: number; limit: number; type?: LedgerType; status?: LedgerStatus }) {
     const { page, limit, type, status } = opts;
@@ -110,7 +111,39 @@ export class LedgerService {
       }),
     ]);
 
-    return { total, transactions };
+    // Buscar as taxas (FEE) para as entradas CASH_IN retornadas
+    const cashInChargeIds = transactions
+      .filter((t) => t.type === "CASH_IN" && t.chargeId)
+      .map((t) => t.chargeId as string);
+
+    let feesByChargeId: Record<string, number> = {};
+
+    if (cashInChargeIds.length > 0) {
+      const fees = await prisma.ledger.findMany({
+        where: {
+          merchantId,
+          type: "FEE",
+          chargeId: { in: cashInChargeIds },
+        },
+        select: { chargeId: true, amount: true },
+      });
+
+      for (const fee of fees) {
+        if (fee.chargeId) {
+          feesByChargeId[fee.chargeId] = Math.abs(fee.amount);
+        }
+      }
+    }
+
+    const enrichedTransactions = transactions.map((t) => {
+      if (t.type === "CASH_IN" && t.chargeId && feesByChargeId[t.chargeId] !== undefined) {
+        const feeAmount = feesByChargeId[t.chargeId];
+        return { ...t, feeAmount, netAmount: t.amount - feeAmount };
+      }
+      return { ...t, feeAmount: null, netAmount: null };
+    });
+
+    return { total, transactions: enrichedTransactions };
   }
 
   /**

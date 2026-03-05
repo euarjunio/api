@@ -206,6 +206,10 @@ model Merchant {
   feeMode   FeeMode @default(FIXADO) @map("fee_mode")
   feeAmount Int     @default(80) @map("fee_amount") // 80 CENTAVOS (R$ 0.80)
 
+  // Limites de saque
+  maxWithdrawAmount  Int @default(0) @map("max_withdraw_amount")  // centavos; 0 = sem limite por transação
+  dailyWithdrawLimit Int @default(0) @map("daily_withdraw_limit") // centavos; 0 = sem limite diário
+
   // Preferências de notificação
   emailNotificationsEnabled Boolean @default(true) @map("email_notifications_enabled")
 
@@ -491,6 +495,24 @@ model Infraction {
   @@index([txid])
   @@index([transactionId])
   @@map("infractions")
+}
+
+// ── Webhooks pendentes (fallback Redis offline) ───────────────
+
+model PendingWebhook {
+  id          String    @id @default(uuid())
+  eventId     String?   @unique @map("event_id")
+  object      String
+  payload     Json
+  status      String    @default("PENDING") // PENDING | PROCESSING | DONE | FAILED
+  error       String?
+  attempts    Int       @default(0)
+  processedAt DateTime? @map("processed_at")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status, createdAt])
+  @@map("pending_webhooks")
 }
 
 // ── Audit Log ─────────────────────────────────────────────────

@@ -31,6 +31,8 @@ export const listTransactionsRoute: FastifyPluginAsyncZod = async (app) => {
             status: z.string(),
             description: z.string().nullable(),
             chargeId: z.string().nullable(),
+            feeAmount: z.number().nullable(),
+            netAmount: z.number().nullable(),
             createdAt: z.string().datetime(),
           })),
         }),
@@ -64,6 +66,8 @@ export const listTransactionsRoute: FastifyPluginAsyncZod = async (app) => {
             status: t.status,
             description: t.description,
             chargeId: t.chargeId,
+            feeAmount: t.feeAmount,
+            netAmount: t.netAmount,
             createdAt: t.createdAt.toISOString(),
           })),
         };

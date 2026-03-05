@@ -83,6 +83,11 @@ export type TrackingLog = Prisma.TrackingLogModel
  */
 export type Infraction = Prisma.InfractionModel
 /**
+ * Model PendingWebhook
+ * 
+ */
+export type PendingWebhook = Prisma.PendingWebhookModel
+/**
  * Model AuditLog
  * 
  */

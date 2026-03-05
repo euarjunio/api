@@ -397,6 +397,7 @@ export const ModelName = {
   MerchantTracking: 'MerchantTracking',
   TrackingLog: 'TrackingLog',
   Infraction: 'Infraction',
+  PendingWebhook: 'PendingWebhook',
   AuditLog: 'AuditLog'
 } as const
 
@@ -413,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "notification" | "verificationCode" | "merchant" | "customer" | "charges" | "apikey" | "ledger" | "merchantWebhook" | "webhookLog" | "merchantTracking" | "trackingLog" | "infraction" | "auditLog"
+    modelProps: "user" | "notification" | "verificationCode" | "merchant" | "customer" | "charges" | "apikey" | "ledger" | "merchantWebhook" | "webhookLog" | "merchantTracking" | "trackingLog" | "infraction" | "pendingWebhook" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1379,6 +1380,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PendingWebhook: {
+      payload: Prisma.$PendingWebhookPayload<ExtArgs>
+      fields: Prisma.PendingWebhookFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PendingWebhookFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PendingWebhookFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload>
+        }
+        findFirst: {
+          args: Prisma.PendingWebhookFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PendingWebhookFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload>
+        }
+        findMany: {
+          args: Prisma.PendingWebhookFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload>[]
+        }
+        create: {
+          args: Prisma.PendingWebhookCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload>
+        }
+        createMany: {
+          args: Prisma.PendingWebhookCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PendingWebhookCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload>[]
+        }
+        delete: {
+          args: Prisma.PendingWebhookDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload>
+        }
+        update: {
+          args: Prisma.PendingWebhookUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload>
+        }
+        deleteMany: {
+          args: Prisma.PendingWebhookDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PendingWebhookUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PendingWebhookUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload>[]
+        }
+        upsert: {
+          args: Prisma.PendingWebhookUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PendingWebhookPayload>
+        }
+        aggregate: {
+          args: Prisma.PendingWebhookAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePendingWebhook>
+        }
+        groupBy: {
+          args: Prisma.PendingWebhookGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PendingWebhookGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PendingWebhookCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PendingWebhookCountAggregateOutputType> | number
+        }
+      }
+    }
     AuditLog: {
       payload: Prisma.$AuditLogPayload<ExtArgs>
       fields: Prisma.AuditLogFieldRefs
@@ -1558,6 +1633,8 @@ export const MerchantScalarFieldEnum = {
   pixKeyStatus: 'pixKeyStatus',
   feeMode: 'feeMode',
   feeAmount: 'feeAmount',
+  maxWithdrawAmount: 'maxWithdrawAmount',
+  dailyWithdrawLimit: 'dailyWithdrawLimit',
   emailNotificationsEnabled: 'emailNotificationsEnabled',
   metadata: 'metadata',
   createdAt: 'createdAt',
@@ -1742,6 +1819,22 @@ export const InfractionScalarFieldEnum = {
 } as const
 
 export type InfractionScalarFieldEnum = (typeof InfractionScalarFieldEnum)[keyof typeof InfractionScalarFieldEnum]
+
+
+export const PendingWebhookScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  object: 'object',
+  payload: 'payload',
+  status: 'status',
+  error: 'error',
+  attempts: 'attempts',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PendingWebhookScalarFieldEnum = (typeof PendingWebhookScalarFieldEnum)[keyof typeof PendingWebhookScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {
@@ -2234,6 +2327,7 @@ export type GlobalOmitConfig = {
   merchantTracking?: Prisma.MerchantTrackingOmit
   trackingLog?: Prisma.TrackingLogOmit
   infraction?: Prisma.InfractionOmit
+  pendingWebhook?: Prisma.PendingWebhookOmit
   auditLog?: Prisma.AuditLogOmit
 }
 

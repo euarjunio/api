@@ -8,12 +8,14 @@ export const setFeeRoute: FastifyPluginAsyncZod = async (app) => {
   app.post("/:id/set-fee", {
     schema: {
       tags: ["Admin"],
-      summary: "Configurar taxa do merchant",
-      description: "Define o modo e valor da taxa cobrada pela plataforma (split)",
+      summary: "Configurar taxa e limites de saque do merchant",
+      description: "Define a taxa de cobrança (split), o valor máximo por saque e o limite diário de saques",
       params: z.object({ id: z.uuid() }),
       body: z.object({
-        feeMode: z.enum(["PERCENTUAL", "FIXADO"]),
-        feeAmount: z.number().min(0, "Taxa não pode ser negativa"),
+        feeMode: z.enum(["PERCENTUAL", "FIXADO"]).optional(),
+        feeAmount: z.number().int().min(0, "Taxa não pode ser negativa").optional(),
+        maxWithdrawAmount: z.number().int().min(0, "Limite por transação não pode ser negativo").optional(),
+        dailyWithdrawLimit: z.number().int().min(0, "Limite diário não pode ser negativo").optional(),
       }),
       response: {
         200: z.object({
@@ -23,6 +25,8 @@ export const setFeeRoute: FastifyPluginAsyncZod = async (app) => {
             name: z.string(),
             feeMode: z.string(),
             feeAmount: z.number(),
+            maxWithdrawAmount: z.number(),
+            dailyWithdrawLimit: z.number(),
           }),
         }),
         404: z.object({ message: z.string() }),
@@ -30,26 +34,45 @@ export const setFeeRoute: FastifyPluginAsyncZod = async (app) => {
     },
   }, async (request, reply) => {
     const { id } = request.params;
-    const { feeMode, feeAmount } = request.body;
+    const { feeMode, feeAmount, maxWithdrawAmount, dailyWithdrawLimit } = request.body;
 
     const merchant = await prisma.merchant.findUnique({ where: { id } });
     if (!merchant) return reply.status(404).send({ message: "Merchant não encontrado" });
 
     const updated = await prisma.merchant.update({
       where: { id },
-      data: { feeMode, feeAmount },
+      data: {
+        ...(feeMode !== undefined && { feeMode }),
+        ...(feeAmount !== undefined && { feeAmount }),
+        ...(maxWithdrawAmount !== undefined && { maxWithdrawAmount }),
+        ...(dailyWithdrawLimit !== undefined && { dailyWithdrawLimit }),
+      },
     });
 
-    request.log.info({ merchantId: id, feeMode, feeAmount }, "Fee configurada");
-    logAction({ action: "FEE_CHANGED", actor: `admin:${request.user.id}`, target: id, metadata: { feeMode, feeAmount, oldFeeMode: merchant.feeMode, oldFeeAmount: merchant.feeAmount }, ...getRequestContext(request) });
+    request.log.info({ merchantId: id, feeMode, feeAmount, maxWithdrawAmount, dailyWithdrawLimit }, "Configurações financeiras atualizadas");
+    logAction({
+      action: "FEE_CHANGED",
+      actor: `admin:${request.user.id}`,
+      target: id,
+      metadata: {
+        feeMode, feeAmount, maxWithdrawAmount, dailyWithdrawLimit,
+        oldFeeMode: merchant.feeMode,
+        oldFeeAmount: merchant.feeAmount,
+        oldMaxWithdrawAmount: merchant.maxWithdrawAmount,
+        oldDailyWithdrawLimit: merchant.dailyWithdrawLimit,
+      },
+      ...getRequestContext(request),
+    });
 
     return reply.status(200).send({
-      message: "Taxa configurada com sucesso.",
+      message: "Configurações atualizadas com sucesso.",
       merchant: {
         id: updated.id,
         name: updated.name,
         feeMode: updated.feeMode,
         feeAmount: updated.feeAmount,
+        maxWithdrawAmount: updated.maxWithdrawAmount,
+        dailyWithdrawLimit: updated.dailyWithdrawLimit,
       },
     });
   });

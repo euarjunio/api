@@ -64,6 +64,7 @@ export const ModelName = {
   MerchantTracking: 'MerchantTracking',
   TrackingLog: 'TrackingLog',
   Infraction: 'Infraction',
+  PendingWebhook: 'PendingWebhook',
   AuditLog: 'AuditLog'
 } as const
 
@@ -149,6 +150,8 @@ export const MerchantScalarFieldEnum = {
   pixKeyStatus: 'pixKeyStatus',
   feeMode: 'feeMode',
   feeAmount: 'feeAmount',
+  maxWithdrawAmount: 'maxWithdrawAmount',
+  dailyWithdrawLimit: 'dailyWithdrawLimit',
   emailNotificationsEnabled: 'emailNotificationsEnabled',
   metadata: 'metadata',
   createdAt: 'createdAt',
@@ -333,6 +336,22 @@ export const InfractionScalarFieldEnum = {
 } as const
 
 export type InfractionScalarFieldEnum = (typeof InfractionScalarFieldEnum)[keyof typeof InfractionScalarFieldEnum]
+
+
+export const PendingWebhookScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  object: 'object',
+  payload: 'payload',
+  status: 'status',
+  error: 'error',
+  attempts: 'attempts',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PendingWebhookScalarFieldEnum = (typeof PendingWebhookScalarFieldEnum)[keyof typeof PendingWebhookScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {

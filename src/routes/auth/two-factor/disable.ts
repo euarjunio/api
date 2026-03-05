@@ -40,8 +40,13 @@ export const disable2faRoute: FastifyPluginAsyncZod = async (app) => {
         return reply.status(400).send({ message: "2FA não está ativo." });
       }
 
-      const secret = decryptSecret(user.twoFactorSecret);
-      const valid = verifyToken(secret, code);
+      let valid = false;
+      try {
+        const secret = decryptSecret(user.twoFactorSecret);
+        valid = verifyToken(secret, code);
+      } catch {
+        return reply.status(400).send({ message: "Erro ao validar o código. Contate o suporte." });
+      }
 
       if (!valid) {
         return reply.status(400).send({ message: "Código inválido." });
