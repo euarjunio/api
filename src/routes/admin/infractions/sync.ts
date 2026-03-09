@@ -47,23 +47,42 @@ export const syncInfractionsRoute: FastifyPluginAsyncZod = async (app) => {
       let created = 0;
       let updated = 0;
 
+      // Pre-fetch charges by txid to avoid N+1
+      const txids = result.items.map((i: any) => i.txid).filter(Boolean) as string[];
+      const chargesByTxid = new Map<string, { id: string; merchantId: string }>();
+      if (txids.length > 0) {
+        const charges = await prisma.charges.findMany({
+          where: { txid: { in: txids } },
+          select: { id: true, merchantId: true, txid: true },
+        });
+        for (const c of charges) {
+          if (c.txid) chargesByTxid.set(c.txid, { id: c.id, merchantId: c.merchantId });
+        }
+      }
+
+      // Pre-fetch existing infractions to avoid N+1
+      const acquirerIds = result.items.map((i: any) => i.id).filter(Boolean) as string[];
+      const existingInfractions = new Map<string, any>();
+      if (acquirerIds.length > 0) {
+        const infractions = await prisma.infraction.findMany({
+          where: { acquirerInfractionId: { in: acquirerIds } },
+        });
+        for (const inf of infractions) {
+          existingInfractions.set(inf.acquirerInfractionId, inf);
+        }
+      }
+
       for (const item of result.items) {
-        // Tentar encontrar o merchant pela transaction_id (e2e) ou por outras informações
         let merchantId: string | null = null;
         let chargeId: string | null = null;
 
-        if (item.txid) {
-          const charge = await prisma.charges.findUnique({
-            where: { txid: item.txid },
-            select: { id: true, merchantId: true },
-          });
-          if (charge) {
-            merchantId = charge.merchantId;
-            chargeId = charge.id;
-          }
+        if (item.txid && chargesByTxid.has(item.txid)) {
+          const match = chargesByTxid.get(item.txid)!;
+          merchantId = match.merchantId;
+          chargeId = match.id;
         }
 
-        // Se não encontrou por txid, tenta pelo transaction_id (e2e) no metadata das charges
+        // Fallback: search by end2end_id in metadata (can't batch this easily)
         if (!merchantId && item.transaction_id) {
           const charge = await prisma.charges.findFirst({
             where: {
@@ -84,9 +103,7 @@ export const syncInfractionsRoute: FastifyPluginAsyncZod = async (app) => {
           continue;
         }
 
-        const existing = await prisma.infraction.findUnique({
-          where: { acquirerInfractionId: item.id },
-        });
+        const existing = existingInfractions.get(item.id) ?? null;
 
         const data: any = {
           status: statusMap[item.status] ?? "PENDING",

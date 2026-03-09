@@ -86,6 +86,8 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  name: 'name',
+  phone: 'phone',
   email: 'email',
   passwordHash: 'passwordHash',
   role: 'role',
@@ -142,6 +144,13 @@ export const MerchantScalarFieldEnum = {
   docSelfieUrl: 'docSelfieUrl',
   kycNotes: 'kycNotes',
   kycAnalyzedAt: 'kycAnalyzedAt',
+  partnerName: 'partnerName',
+  partnerDocument: 'partnerDocument',
+  socialContractUrl: 'socialContractUrl',
+  cnpjCardUrl: 'cnpjCardUrl',
+  partnerDocFrontUrl: 'partnerDocFrontUrl',
+  partnerDocBackUrl: 'partnerDocBackUrl',
+  partnerDocSelfieUrl: 'partnerDocSelfieUrl',
   acquirer: 'acquirer',
   acquirerAccountId: 'acquirerAccountId',
   pixKeyId: 'pixKeyId',
@@ -150,8 +159,13 @@ export const MerchantScalarFieldEnum = {
   pixKeyStatus: 'pixKeyStatus',
   feeMode: 'feeMode',
   feeAmount: 'feeAmount',
+  withdrawFee: 'withdrawFee',
   maxWithdrawAmount: 'maxWithdrawAmount',
   dailyWithdrawLimit: 'dailyWithdrawLimit',
+  monthlyWithdrawLimit: 'monthlyWithdrawLimit',
+  nightWithdrawLimit: 'nightWithdrawLimit',
+  minTicketAmount: 'minTicketAmount',
+  maxTicketAmount: 'maxTicketAmount',
   emailNotificationsEnabled: 'emailNotificationsEnabled',
   metadata: 'metadata',
   createdAt: 'createdAt',
@@ -171,7 +185,8 @@ export const CustomerScalarFieldEnum = {
   documentType: 'documentType',
   metadata: 'metadata',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  merchantId: 'merchantId'
 } as const
 
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
@@ -204,7 +219,9 @@ export type ChargesScalarFieldEnum = (typeof ChargesScalarFieldEnum)[keyof typeo
 export const ApikeyScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  value: 'value',
+  keyHash: 'keyHash',
+  keyPrefix: 'keyPrefix',
+  keyEncrypted: 'keyEncrypted',
   description: 'description',
   status: 'status',
   createdAt: 'createdAt',

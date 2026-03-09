@@ -33,6 +33,7 @@ export type CustomerMinAggregateOutputType = {
   documentType: $Enums.DocumentType | null
   createdAt: Date | null
   updatedAt: Date | null
+  merchantId: string | null
 }
 
 export type CustomerMaxAggregateOutputType = {
@@ -44,6 +45,7 @@ export type CustomerMaxAggregateOutputType = {
   documentType: $Enums.DocumentType | null
   createdAt: Date | null
   updatedAt: Date | null
+  merchantId: string | null
 }
 
 export type CustomerCountAggregateOutputType = {
@@ -56,6 +58,7 @@ export type CustomerCountAggregateOutputType = {
   metadata: number
   createdAt: number
   updatedAt: number
+  merchantId: number
   _all: number
 }
 
@@ -69,6 +72,7 @@ export type CustomerMinAggregateInputType = {
   documentType?: true
   createdAt?: true
   updatedAt?: true
+  merchantId?: true
 }
 
 export type CustomerMaxAggregateInputType = {
@@ -80,6 +84,7 @@ export type CustomerMaxAggregateInputType = {
   documentType?: true
   createdAt?: true
   updatedAt?: true
+  merchantId?: true
 }
 
 export type CustomerCountAggregateInputType = {
@@ -92,6 +97,7 @@ export type CustomerCountAggregateInputType = {
   metadata?: true
   createdAt?: true
   updatedAt?: true
+  merchantId?: true
   _all?: true
 }
 
@@ -177,6 +183,7 @@ export type CustomerGroupByOutputType = {
   metadata: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
+  merchantId: string | null
   _count: CustomerCountAggregateOutputType | null
   _min: CustomerMinAggregateOutputType | null
   _max: CustomerMaxAggregateOutputType | null
@@ -210,6 +217,8 @@ export type CustomerWhereInput = {
   metadata?: Prisma.JsonNullableFilter<"Customer">
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
+  merchantId?: Prisma.StringNullableFilter<"Customer"> | string | null
+  merchant?: Prisma.XOR<Prisma.MerchantNullableScalarRelationFilter, Prisma.MerchantWhereInput> | null
   charges?: Prisma.ChargesListRelationFilter
 }
 
@@ -223,24 +232,29 @@ export type CustomerOrderByWithRelationInput = {
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  merchantId?: Prisma.SortOrderInput | Prisma.SortOrder
+  merchant?: Prisma.MerchantOrderByWithRelationInput
   charges?: Prisma.ChargesOrderByRelationAggregateInput
 }
 
 export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  email?: string
-  document?: string
+  merchantId_document?: Prisma.CustomerMerchantIdDocumentCompoundUniqueInput
   AND?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   OR?: Prisma.CustomerWhereInput[]
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   name?: Prisma.StringFilter<"Customer"> | string
+  email?: Prisma.StringNullableFilter<"Customer"> | string | null
   phone?: Prisma.StringNullableFilter<"Customer"> | string | null
+  document?: Prisma.StringFilter<"Customer"> | string
   documentType?: Prisma.EnumDocumentTypeFilter<"Customer"> | $Enums.DocumentType
   metadata?: Prisma.JsonNullableFilter<"Customer">
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
+  merchantId?: Prisma.StringNullableFilter<"Customer"> | string | null
+  merchant?: Prisma.XOR<Prisma.MerchantNullableScalarRelationFilter, Prisma.MerchantWhereInput> | null
   charges?: Prisma.ChargesListRelationFilter
-}, "id" | "email" | "document">
+}, "id" | "merchantId_document">
 
 export type CustomerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -252,6 +266,7 @@ export type CustomerOrderByWithAggregationInput = {
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  merchantId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CustomerCountOrderByAggregateInput
   _max?: Prisma.CustomerMaxOrderByAggregateInput
   _min?: Prisma.CustomerMinOrderByAggregateInput
@@ -270,6 +285,7 @@ export type CustomerScalarWhereWithAggregatesInput = {
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"Customer">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
+  merchantId?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
 }
 
 export type CustomerCreateInput = {
@@ -282,6 +298,7 @@ export type CustomerCreateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  merchant?: Prisma.MerchantCreateNestedOneWithoutCustomersInput
   charges?: Prisma.ChargesCreateNestedManyWithoutCustomerInput
 }
 
@@ -295,6 +312,7 @@ export type CustomerUncheckedCreateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  merchantId?: string | null
   charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutCustomerInput
 }
 
@@ -308,6 +326,7 @@ export type CustomerUpdateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  merchant?: Prisma.MerchantUpdateOneWithoutCustomersNestedInput
   charges?: Prisma.ChargesUpdateManyWithoutCustomerNestedInput
 }
 
@@ -321,6 +340,7 @@ export type CustomerUncheckedUpdateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  merchantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   charges?: Prisma.ChargesUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
@@ -334,6 +354,7 @@ export type CustomerCreateManyInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  merchantId?: string | null
 }
 
 export type CustomerUpdateManyMutationInput = {
@@ -358,6 +379,22 @@ export type CustomerUncheckedUpdateManyInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  merchantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type CustomerListRelationFilter = {
+  every?: Prisma.CustomerWhereInput
+  some?: Prisma.CustomerWhereInput
+  none?: Prisma.CustomerWhereInput
+}
+
+export type CustomerOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type CustomerMerchantIdDocumentCompoundUniqueInput = {
+  merchantId: string
+  document: string
 }
 
 export type CustomerCountOrderByAggregateInput = {
@@ -370,6 +407,7 @@ export type CustomerCountOrderByAggregateInput = {
   metadata?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  merchantId?: Prisma.SortOrder
 }
 
 export type CustomerMaxOrderByAggregateInput = {
@@ -381,6 +419,7 @@ export type CustomerMaxOrderByAggregateInput = {
   documentType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  merchantId?: Prisma.SortOrder
 }
 
 export type CustomerMinOrderByAggregateInput = {
@@ -392,11 +431,54 @@ export type CustomerMinOrderByAggregateInput = {
   documentType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  merchantId?: Prisma.SortOrder
 }
 
 export type CustomerNullableScalarRelationFilter = {
   is?: Prisma.CustomerWhereInput | null
   isNot?: Prisma.CustomerWhereInput | null
+}
+
+export type CustomerCreateNestedManyWithoutMerchantInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutMerchantInput, Prisma.CustomerUncheckedCreateWithoutMerchantInput> | Prisma.CustomerCreateWithoutMerchantInput[] | Prisma.CustomerUncheckedCreateWithoutMerchantInput[]
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutMerchantInput | Prisma.CustomerCreateOrConnectWithoutMerchantInput[]
+  createMany?: Prisma.CustomerCreateManyMerchantInputEnvelope
+  connect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
+}
+
+export type CustomerUncheckedCreateNestedManyWithoutMerchantInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutMerchantInput, Prisma.CustomerUncheckedCreateWithoutMerchantInput> | Prisma.CustomerCreateWithoutMerchantInput[] | Prisma.CustomerUncheckedCreateWithoutMerchantInput[]
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutMerchantInput | Prisma.CustomerCreateOrConnectWithoutMerchantInput[]
+  createMany?: Prisma.CustomerCreateManyMerchantInputEnvelope
+  connect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
+}
+
+export type CustomerUpdateManyWithoutMerchantNestedInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutMerchantInput, Prisma.CustomerUncheckedCreateWithoutMerchantInput> | Prisma.CustomerCreateWithoutMerchantInput[] | Prisma.CustomerUncheckedCreateWithoutMerchantInput[]
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutMerchantInput | Prisma.CustomerCreateOrConnectWithoutMerchantInput[]
+  upsert?: Prisma.CustomerUpsertWithWhereUniqueWithoutMerchantInput | Prisma.CustomerUpsertWithWhereUniqueWithoutMerchantInput[]
+  createMany?: Prisma.CustomerCreateManyMerchantInputEnvelope
+  set?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
+  disconnect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
+  delete?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
+  connect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
+  update?: Prisma.CustomerUpdateWithWhereUniqueWithoutMerchantInput | Prisma.CustomerUpdateWithWhereUniqueWithoutMerchantInput[]
+  updateMany?: Prisma.CustomerUpdateManyWithWhereWithoutMerchantInput | Prisma.CustomerUpdateManyWithWhereWithoutMerchantInput[]
+  deleteMany?: Prisma.CustomerScalarWhereInput | Prisma.CustomerScalarWhereInput[]
+}
+
+export type CustomerUncheckedUpdateManyWithoutMerchantNestedInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutMerchantInput, Prisma.CustomerUncheckedCreateWithoutMerchantInput> | Prisma.CustomerCreateWithoutMerchantInput[] | Prisma.CustomerUncheckedCreateWithoutMerchantInput[]
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutMerchantInput | Prisma.CustomerCreateOrConnectWithoutMerchantInput[]
+  upsert?: Prisma.CustomerUpsertWithWhereUniqueWithoutMerchantInput | Prisma.CustomerUpsertWithWhereUniqueWithoutMerchantInput[]
+  createMany?: Prisma.CustomerCreateManyMerchantInputEnvelope
+  set?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
+  disconnect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
+  delete?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
+  connect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
+  update?: Prisma.CustomerUpdateWithWhereUniqueWithoutMerchantInput | Prisma.CustomerUpdateWithWhereUniqueWithoutMerchantInput[]
+  updateMany?: Prisma.CustomerUpdateManyWithWhereWithoutMerchantInput | Prisma.CustomerUpdateManyWithWhereWithoutMerchantInput[]
+  deleteMany?: Prisma.CustomerScalarWhereInput | Prisma.CustomerScalarWhereInput[]
 }
 
 export type CustomerCreateNestedOneWithoutChargesInput = {
@@ -415,6 +497,74 @@ export type CustomerUpdateOneWithoutChargesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutChargesInput, Prisma.CustomerUpdateWithoutChargesInput>, Prisma.CustomerUncheckedUpdateWithoutChargesInput>
 }
 
+export type CustomerCreateWithoutMerchantInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone?: string | null
+  document: string
+  documentType: $Enums.DocumentType
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  charges?: Prisma.ChargesCreateNestedManyWithoutCustomerInput
+}
+
+export type CustomerUncheckedCreateWithoutMerchantInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone?: string | null
+  document: string
+  documentType: $Enums.DocumentType
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutCustomerInput
+}
+
+export type CustomerCreateOrConnectWithoutMerchantInput = {
+  where: Prisma.CustomerWhereUniqueInput
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutMerchantInput, Prisma.CustomerUncheckedCreateWithoutMerchantInput>
+}
+
+export type CustomerCreateManyMerchantInputEnvelope = {
+  data: Prisma.CustomerCreateManyMerchantInput | Prisma.CustomerCreateManyMerchantInput[]
+  skipDuplicates?: boolean
+}
+
+export type CustomerUpsertWithWhereUniqueWithoutMerchantInput = {
+  where: Prisma.CustomerWhereUniqueInput
+  update: Prisma.XOR<Prisma.CustomerUpdateWithoutMerchantInput, Prisma.CustomerUncheckedUpdateWithoutMerchantInput>
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutMerchantInput, Prisma.CustomerUncheckedCreateWithoutMerchantInput>
+}
+
+export type CustomerUpdateWithWhereUniqueWithoutMerchantInput = {
+  where: Prisma.CustomerWhereUniqueInput
+  data: Prisma.XOR<Prisma.CustomerUpdateWithoutMerchantInput, Prisma.CustomerUncheckedUpdateWithoutMerchantInput>
+}
+
+export type CustomerUpdateManyWithWhereWithoutMerchantInput = {
+  where: Prisma.CustomerScalarWhereInput
+  data: Prisma.XOR<Prisma.CustomerUpdateManyMutationInput, Prisma.CustomerUncheckedUpdateManyWithoutMerchantInput>
+}
+
+export type CustomerScalarWhereInput = {
+  AND?: Prisma.CustomerScalarWhereInput | Prisma.CustomerScalarWhereInput[]
+  OR?: Prisma.CustomerScalarWhereInput[]
+  NOT?: Prisma.CustomerScalarWhereInput | Prisma.CustomerScalarWhereInput[]
+  id?: Prisma.StringFilter<"Customer"> | string
+  name?: Prisma.StringFilter<"Customer"> | string
+  email?: Prisma.StringNullableFilter<"Customer"> | string | null
+  phone?: Prisma.StringNullableFilter<"Customer"> | string | null
+  document?: Prisma.StringFilter<"Customer"> | string
+  documentType?: Prisma.EnumDocumentTypeFilter<"Customer"> | $Enums.DocumentType
+  metadata?: Prisma.JsonNullableFilter<"Customer">
+  createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
+  merchantId?: Prisma.StringNullableFilter<"Customer"> | string | null
+}
+
 export type CustomerCreateWithoutChargesInput = {
   id?: string
   name: string
@@ -425,6 +575,7 @@ export type CustomerCreateWithoutChargesInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  merchant?: Prisma.MerchantCreateNestedOneWithoutCustomersInput
 }
 
 export type CustomerUncheckedCreateWithoutChargesInput = {
@@ -437,6 +588,7 @@ export type CustomerUncheckedCreateWithoutChargesInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  merchantId?: string | null
 }
 
 export type CustomerCreateOrConnectWithoutChargesInput = {
@@ -465,9 +617,61 @@ export type CustomerUpdateWithoutChargesInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  merchant?: Prisma.MerchantUpdateOneWithoutCustomersNestedInput
 }
 
 export type CustomerUncheckedUpdateWithoutChargesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  document?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  merchantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type CustomerCreateManyMerchantInput = {
+  id?: string
+  name: string
+  email?: string | null
+  phone?: string | null
+  document: string
+  documentType: $Enums.DocumentType
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CustomerUpdateWithoutMerchantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  document?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  charges?: Prisma.ChargesUpdateManyWithoutCustomerNestedInput
+}
+
+export type CustomerUncheckedUpdateWithoutMerchantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  document?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  charges?: Prisma.ChargesUncheckedUpdateManyWithoutCustomerNestedInput
+}
+
+export type CustomerUncheckedUpdateManyWithoutMerchantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -520,6 +724,8 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  merchantId?: boolean
+  merchant?: boolean | Prisma.Customer$merchantArgs<ExtArgs>
   charges?: boolean | Prisma.Customer$chargesArgs<ExtArgs>
   _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
@@ -534,6 +740,8 @@ export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  merchantId?: boolean
+  merchant?: boolean | Prisma.Customer$merchantArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
 
 export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -546,6 +754,8 @@ export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  merchantId?: boolean
+  merchant?: boolean | Prisma.Customer$merchantArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
 
 export type CustomerSelectScalar = {
@@ -558,19 +768,26 @@ export type CustomerSelectScalar = {
   metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  merchantId?: boolean
 }
 
-export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "document" | "documentType" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
+export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "document" | "documentType" | "metadata" | "createdAt" | "updatedAt" | "merchantId", ExtArgs["result"]["customer"]>
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  merchant?: boolean | Prisma.Customer$merchantArgs<ExtArgs>
   charges?: boolean | Prisma.Customer$chargesArgs<ExtArgs>
   _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type CustomerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type CustomerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type CustomerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  merchant?: boolean | Prisma.Customer$merchantArgs<ExtArgs>
+}
+export type CustomerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  merchant?: boolean | Prisma.Customer$merchantArgs<ExtArgs>
+}
 
 export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Customer"
   objects: {
+    merchant: Prisma.$MerchantPayload<ExtArgs> | null
     charges: Prisma.$ChargesPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -583,6 +800,7 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     metadata: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
+    merchantId: string | null
   }, ExtArgs["result"]["customer"]>
   composites: {}
 }
@@ -977,6 +1195,7 @@ readonly fields: CustomerFieldRefs;
  */
 export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  merchant<T extends Prisma.Customer$merchantArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$merchantArgs<ExtArgs>>): Prisma.Prisma__MerchantClient<runtime.Types.Result.GetResult<Prisma.$MerchantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   charges<T extends Prisma.Customer$chargesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$chargesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChargesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1016,6 +1235,7 @@ export interface CustomerFieldRefs {
   readonly metadata: Prisma.FieldRef<"Customer", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Customer", 'DateTime'>
+  readonly merchantId: Prisma.FieldRef<"Customer", 'String'>
 }
     
 
@@ -1265,6 +1485,10 @@ export type CustomerCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    */
   data: Prisma.CustomerCreateManyInput | Prisma.CustomerCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomerIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1335,6 +1559,10 @@ export type CustomerUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many Customers to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomerIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1401,6 +1629,25 @@ export type CustomerDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Customers to delete.
    */
   limit?: number
+}
+
+/**
+ * Customer.merchant
+ */
+export type Customer$merchantArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Merchant
+   */
+  select?: Prisma.MerchantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Merchant
+   */
+  omit?: Prisma.MerchantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MerchantInclude<ExtArgs> | null
+  where?: Prisma.MerchantWhereInput
 }
 
 /**

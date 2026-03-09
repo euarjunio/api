@@ -11,6 +11,7 @@ import { enable2faRoute } from "./two-factor/enable.ts";
 import { disable2faRoute } from "./two-factor/disable.ts";
 import { verify2faRoute } from "./two-factor/verify.ts";
 import { status2faRoute } from "./two-factor/status.ts";
+import { sendSensitiveCodeRoute } from "./send-sensitive-code.ts";
 
 export const authRoutes: FastifyPluginAsyncZod = async (app) => {
   app.register(registerRoute);
@@ -25,4 +26,5 @@ export const authRoutes: FastifyPluginAsyncZod = async (app) => {
   app.register(disable2faRoute);
   app.register(verify2faRoute);
   app.register(status2faRoute);
+  app.register(sendSensitiveCodeRoute);
 };

@@ -7,8 +7,7 @@ import { redis } from "../../../lib/redis.ts";
 import { decryptSecret, verifyToken, verifyBackupCode } from "../../../lib/totp.ts";
 import { logAction, getRequestContext } from "../../../lib/audit.ts";
 
-const MAX_2FA_ATTEMPTS = 5;
-const LOCKOUT_TTL_SECONDS = 15 * 60; // 15 minutos
+import { MAX_2FA_ATTEMPTS, LOCKOUT_TTL_SECONDS } from "../../../config/constants.ts";
 
 function attemptsKey(userId: string) {
   return `2fa_attempts:${userId}`;
@@ -33,6 +32,7 @@ export const verify2faRoute: FastifyPluginAsyncZod = async (app) => {
             token: z.string(),
             user: z.object({
               id: z.string(),
+              name: z.string(),
               email: z.string(),
               role: z.string(),
             }),
@@ -80,6 +80,7 @@ export const verify2faRoute: FastifyPluginAsyncZod = async (app) => {
         where: { id: payload.id },
         select: {
           id: true,
+          name: true,
           email: true,
           role: true,
           twoFactorEnabled: true,
@@ -93,6 +94,7 @@ export const verify2faRoute: FastifyPluginAsyncZod = async (app) => {
       }
 
       const secret = decryptSecret(user.twoFactorSecret);
+      const displayName = user.name ?? user.email.split("@")[0];
 
       // Tentar verificação TOTP normal
       if (verifyToken(secret, code)) {
@@ -109,7 +111,7 @@ export const verify2faRoute: FastifyPluginAsyncZod = async (app) => {
 
         return reply.status(200).send({
           token: finalToken,
-          user: { id: user.id, email: user.email, role: user.role },
+          user: { id: user.id, name: displayName, email: user.email, role: user.role },
         });
       }
 
@@ -137,7 +139,7 @@ export const verify2faRoute: FastifyPluginAsyncZod = async (app) => {
 
         return reply.status(200).send({
           token: finalToken,
-          user: { id: user.id, email: user.email, role: user.role },
+          user: { id: user.id, name: displayName, email: user.email, role: user.role },
         });
       }
 

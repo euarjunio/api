@@ -67,10 +67,14 @@ export const listAdminInfractionsRoute: FastifyPluginAsyncZod = async (app) => {
           orderBy: { createdAt: "desc" },
           skip: (page - 1) * limit,
           take: limit,
-          include: {
-            merchant: {
-              select: { id: true, name: true, document: true },
-            },
+          select: {
+            id: true, acquirerInfractionId: true, status: true,
+            analysisStatus: true, situationType: true, amount: true,
+            txid: true, transactionId: true, payerName: true, payerTaxId: true,
+            infractionDate: true, analysisDueDate: true,
+            merchantAnalysis: true, merchantDescription: true, merchantAnalyzedAt: true,
+            createdAt: true,
+            merchant: { select: { id: true, name: true, document: true } },
           },
         }),
         prisma.infraction.count({ where }),

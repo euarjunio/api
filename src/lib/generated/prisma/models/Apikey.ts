@@ -27,7 +27,9 @@ export type AggregateApikey = {
 export type ApikeyMinAggregateOutputType = {
   id: string | null
   name: string | null
-  value: string | null
+  keyHash: string | null
+  keyPrefix: string | null
+  keyEncrypted: string | null
   description: string | null
   status: $Enums.ApiKeyStatus | null
   createdAt: Date | null
@@ -38,7 +40,9 @@ export type ApikeyMinAggregateOutputType = {
 export type ApikeyMaxAggregateOutputType = {
   id: string | null
   name: string | null
-  value: string | null
+  keyHash: string | null
+  keyPrefix: string | null
+  keyEncrypted: string | null
   description: string | null
   status: $Enums.ApiKeyStatus | null
   createdAt: Date | null
@@ -49,7 +53,9 @@ export type ApikeyMaxAggregateOutputType = {
 export type ApikeyCountAggregateOutputType = {
   id: number
   name: number
-  value: number
+  keyHash: number
+  keyPrefix: number
+  keyEncrypted: number
   description: number
   status: number
   createdAt: number
@@ -62,7 +68,9 @@ export type ApikeyCountAggregateOutputType = {
 export type ApikeyMinAggregateInputType = {
   id?: true
   name?: true
-  value?: true
+  keyHash?: true
+  keyPrefix?: true
+  keyEncrypted?: true
   description?: true
   status?: true
   createdAt?: true
@@ -73,7 +81,9 @@ export type ApikeyMinAggregateInputType = {
 export type ApikeyMaxAggregateInputType = {
   id?: true
   name?: true
-  value?: true
+  keyHash?: true
+  keyPrefix?: true
+  keyEncrypted?: true
   description?: true
   status?: true
   createdAt?: true
@@ -84,7 +94,9 @@ export type ApikeyMaxAggregateInputType = {
 export type ApikeyCountAggregateInputType = {
   id?: true
   name?: true
-  value?: true
+  keyHash?: true
+  keyPrefix?: true
+  keyEncrypted?: true
   description?: true
   status?: true
   createdAt?: true
@@ -168,7 +180,9 @@ export type ApikeyGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type ApikeyGroupByOutputType = {
   id: string
   name: string
-  value: string
+  keyHash: string
+  keyPrefix: string
+  keyEncrypted: string | null
   description: string
   status: $Enums.ApiKeyStatus
   createdAt: Date
@@ -200,7 +214,9 @@ export type ApikeyWhereInput = {
   NOT?: Prisma.ApikeyWhereInput | Prisma.ApikeyWhereInput[]
   id?: Prisma.StringFilter<"Apikey"> | string
   name?: Prisma.StringFilter<"Apikey"> | string
-  value?: Prisma.StringFilter<"Apikey"> | string
+  keyHash?: Prisma.StringFilter<"Apikey"> | string
+  keyPrefix?: Prisma.StringFilter<"Apikey"> | string
+  keyEncrypted?: Prisma.StringNullableFilter<"Apikey"> | string | null
   description?: Prisma.StringFilter<"Apikey"> | string
   status?: Prisma.EnumApiKeyStatusFilter<"Apikey"> | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
@@ -212,7 +228,9 @@ export type ApikeyWhereInput = {
 export type ApikeyOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  value?: Prisma.SortOrder
+  keyHash?: Prisma.SortOrder
+  keyPrefix?: Prisma.SortOrder
+  keyEncrypted?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -223,23 +241,27 @@ export type ApikeyOrderByWithRelationInput = {
 
 export type ApikeyWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  value?: string
+  keyHash?: string
   AND?: Prisma.ApikeyWhereInput | Prisma.ApikeyWhereInput[]
   OR?: Prisma.ApikeyWhereInput[]
   NOT?: Prisma.ApikeyWhereInput | Prisma.ApikeyWhereInput[]
   name?: Prisma.StringFilter<"Apikey"> | string
+  keyPrefix?: Prisma.StringFilter<"Apikey"> | string
+  keyEncrypted?: Prisma.StringNullableFilter<"Apikey"> | string | null
   description?: Prisma.StringFilter<"Apikey"> | string
   status?: Prisma.EnumApiKeyStatusFilter<"Apikey"> | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
   merchantId?: Prisma.StringFilter<"Apikey"> | string
   merchant?: Prisma.XOR<Prisma.MerchantScalarRelationFilter, Prisma.MerchantWhereInput>
-}, "id" | "value">
+}, "id" | "keyHash">
 
 export type ApikeyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  value?: Prisma.SortOrder
+  keyHash?: Prisma.SortOrder
+  keyPrefix?: Prisma.SortOrder
+  keyEncrypted?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -256,7 +278,9 @@ export type ApikeyScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ApikeyScalarWhereWithAggregatesInput | Prisma.ApikeyScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
   name?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
-  value?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
+  keyHash?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
+  keyPrefix?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
+  keyEncrypted?: Prisma.StringNullableWithAggregatesFilter<"Apikey"> | string | null
   description?: Prisma.StringWithAggregatesFilter<"Apikey"> | string
   status?: Prisma.EnumApiKeyStatusWithAggregatesFilter<"Apikey"> | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Apikey"> | Date | string
@@ -267,7 +291,9 @@ export type ApikeyScalarWhereWithAggregatesInput = {
 export type ApikeyCreateInput = {
   id?: string
   name: string
-  value: string
+  keyHash: string
+  keyPrefix?: string
+  keyEncrypted?: string | null
   description: string
   status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
@@ -278,7 +304,9 @@ export type ApikeyCreateInput = {
 export type ApikeyUncheckedCreateInput = {
   id?: string
   name: string
-  value: string
+  keyHash: string
+  keyPrefix?: string
+  keyEncrypted?: string | null
   description: string
   status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
@@ -289,7 +317,9 @@ export type ApikeyUncheckedCreateInput = {
 export type ApikeyUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
+  keyHash?: Prisma.StringFieldUpdateOperationsInput | string
+  keyPrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  keyEncrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -300,7 +330,9 @@ export type ApikeyUpdateInput = {
 export type ApikeyUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
+  keyHash?: Prisma.StringFieldUpdateOperationsInput | string
+  keyPrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  keyEncrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -311,7 +343,9 @@ export type ApikeyUncheckedUpdateInput = {
 export type ApikeyCreateManyInput = {
   id?: string
   name: string
-  value: string
+  keyHash: string
+  keyPrefix?: string
+  keyEncrypted?: string | null
   description: string
   status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
@@ -322,7 +356,9 @@ export type ApikeyCreateManyInput = {
 export type ApikeyUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
+  keyHash?: Prisma.StringFieldUpdateOperationsInput | string
+  keyPrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  keyEncrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -332,7 +368,9 @@ export type ApikeyUpdateManyMutationInput = {
 export type ApikeyUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
+  keyHash?: Prisma.StringFieldUpdateOperationsInput | string
+  keyPrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  keyEncrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -353,7 +391,9 @@ export type ApikeyOrderByRelationAggregateInput = {
 export type ApikeyCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  value?: Prisma.SortOrder
+  keyHash?: Prisma.SortOrder
+  keyPrefix?: Prisma.SortOrder
+  keyEncrypted?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -364,7 +404,9 @@ export type ApikeyCountOrderByAggregateInput = {
 export type ApikeyMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  value?: Prisma.SortOrder
+  keyHash?: Prisma.SortOrder
+  keyPrefix?: Prisma.SortOrder
+  keyEncrypted?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -375,7 +417,9 @@ export type ApikeyMaxOrderByAggregateInput = {
 export type ApikeyMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  value?: Prisma.SortOrder
+  keyHash?: Prisma.SortOrder
+  keyPrefix?: Prisma.SortOrder
+  keyEncrypted?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -432,7 +476,9 @@ export type EnumApiKeyStatusFieldUpdateOperationsInput = {
 export type ApikeyCreateWithoutMerchantInput = {
   id?: string
   name: string
-  value: string
+  keyHash: string
+  keyPrefix?: string
+  keyEncrypted?: string | null
   description: string
   status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
@@ -442,7 +488,9 @@ export type ApikeyCreateWithoutMerchantInput = {
 export type ApikeyUncheckedCreateWithoutMerchantInput = {
   id?: string
   name: string
-  value: string
+  keyHash: string
+  keyPrefix?: string
+  keyEncrypted?: string | null
   description: string
   status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
@@ -481,7 +529,9 @@ export type ApikeyScalarWhereInput = {
   NOT?: Prisma.ApikeyScalarWhereInput | Prisma.ApikeyScalarWhereInput[]
   id?: Prisma.StringFilter<"Apikey"> | string
   name?: Prisma.StringFilter<"Apikey"> | string
-  value?: Prisma.StringFilter<"Apikey"> | string
+  keyHash?: Prisma.StringFilter<"Apikey"> | string
+  keyPrefix?: Prisma.StringFilter<"Apikey"> | string
+  keyEncrypted?: Prisma.StringNullableFilter<"Apikey"> | string | null
   description?: Prisma.StringFilter<"Apikey"> | string
   status?: Prisma.EnumApiKeyStatusFilter<"Apikey"> | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFilter<"Apikey"> | Date | string
@@ -492,7 +542,9 @@ export type ApikeyScalarWhereInput = {
 export type ApikeyCreateManyMerchantInput = {
   id?: string
   name: string
-  value: string
+  keyHash: string
+  keyPrefix?: string
+  keyEncrypted?: string | null
   description: string
   status?: $Enums.ApiKeyStatus
   createdAt?: Date | string
@@ -502,7 +554,9 @@ export type ApikeyCreateManyMerchantInput = {
 export type ApikeyUpdateWithoutMerchantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
+  keyHash?: Prisma.StringFieldUpdateOperationsInput | string
+  keyPrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  keyEncrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -512,7 +566,9 @@ export type ApikeyUpdateWithoutMerchantInput = {
 export type ApikeyUncheckedUpdateWithoutMerchantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
+  keyHash?: Prisma.StringFieldUpdateOperationsInput | string
+  keyPrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  keyEncrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -522,7 +578,9 @@ export type ApikeyUncheckedUpdateWithoutMerchantInput = {
 export type ApikeyUncheckedUpdateManyWithoutMerchantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  value?: Prisma.StringFieldUpdateOperationsInput | string
+  keyHash?: Prisma.StringFieldUpdateOperationsInput | string
+  keyPrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  keyEncrypted?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApiKeyStatusFieldUpdateOperationsInput | $Enums.ApiKeyStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -534,7 +592,9 @@ export type ApikeyUncheckedUpdateManyWithoutMerchantInput = {
 export type ApikeySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  value?: boolean
+  keyHash?: boolean
+  keyPrefix?: boolean
+  keyEncrypted?: boolean
   description?: boolean
   status?: boolean
   createdAt?: boolean
@@ -546,7 +606,9 @@ export type ApikeySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type ApikeySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  value?: boolean
+  keyHash?: boolean
+  keyPrefix?: boolean
+  keyEncrypted?: boolean
   description?: boolean
   status?: boolean
   createdAt?: boolean
@@ -558,7 +620,9 @@ export type ApikeySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type ApikeySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  value?: boolean
+  keyHash?: boolean
+  keyPrefix?: boolean
+  keyEncrypted?: boolean
   description?: boolean
   status?: boolean
   createdAt?: boolean
@@ -570,7 +634,9 @@ export type ApikeySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type ApikeySelectScalar = {
   id?: boolean
   name?: boolean
-  value?: boolean
+  keyHash?: boolean
+  keyPrefix?: boolean
+  keyEncrypted?: boolean
   description?: boolean
   status?: boolean
   createdAt?: boolean
@@ -578,7 +644,7 @@ export type ApikeySelectScalar = {
   merchantId?: boolean
 }
 
-export type ApikeyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "value" | "description" | "status" | "createdAt" | "updatedAt" | "merchantId", ExtArgs["result"]["apikey"]>
+export type ApikeyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "keyHash" | "keyPrefix" | "keyEncrypted" | "description" | "status" | "createdAt" | "updatedAt" | "merchantId", ExtArgs["result"]["apikey"]>
 export type ApikeyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
 }
@@ -597,7 +663,9 @@ export type $ApikeyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    value: string
+    keyHash: string
+    keyPrefix: string
+    keyEncrypted: string | null
     description: string
     status: $Enums.ApiKeyStatus
     createdAt: Date
@@ -1029,7 +1097,9 @@ export interface Prisma__ApikeyClient<T, Null = never, ExtArgs extends runtime.T
 export interface ApikeyFieldRefs {
   readonly id: Prisma.FieldRef<"Apikey", 'String'>
   readonly name: Prisma.FieldRef<"Apikey", 'String'>
-  readonly value: Prisma.FieldRef<"Apikey", 'String'>
+  readonly keyHash: Prisma.FieldRef<"Apikey", 'String'>
+  readonly keyPrefix: Prisma.FieldRef<"Apikey", 'String'>
+  readonly keyEncrypted: Prisma.FieldRef<"Apikey", 'String'>
   readonly description: Prisma.FieldRef<"Apikey", 'String'>
   readonly status: Prisma.FieldRef<"Apikey", 'ApiKeyStatus'>
   readonly createdAt: Prisma.FieldRef<"Apikey", 'DateTime'>

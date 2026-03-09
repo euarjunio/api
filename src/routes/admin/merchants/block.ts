@@ -1,10 +1,9 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
-import { prisma } from "../../../lib/prisma.ts";
 import { logAction, getRequestContext } from "../../../lib/audit.ts";
+import { blockMerchant } from "../../../services/merchant.service.ts";
 
 export const blockMerchantRoute: FastifyPluginAsyncZod = async (app) => {
-  // POST /v1/admin/merchants/:id/block
   app.post("/:id/block", {
     schema: {
       tags: ["Admin"],
@@ -24,34 +23,14 @@ export const blockMerchantRoute: FastifyPluginAsyncZod = async (app) => {
     const { id } = request.params;
     const { reason } = request.body;
 
-    const merchant = await prisma.merchant.findUnique({ where: { id } });
-    if (!merchant) return reply.status(404).send({ message: "Merchant não encontrado" });
-
-    if (merchant.status === "INACTIVE") {
-      return reply.status(400).send({ message: "Merchant já está bloqueado." });
+    const result = await blockMerchant(id, reason);
+    if (!result.ok) {
+      return reply.status(result.status).send({ message: result.message });
     }
 
-    await prisma.merchant.update({
-      where: { id },
-      data: {
-        status: "INACTIVE",
-        metadata: {
-          ...(merchant.metadata as object ?? {}),
-          blockedAt: new Date().toISOString(),
-          blockedReason: reason,
-        },
-      },
-    });
-
-    // Desativar todas as API Keys do merchant
-    await prisma.apikey.updateMany({
-      where: { merchantId: id, status: "ACTIVE" },
-      data: { status: "INACTIVE" },
-    });
-
-    request.log.info(`🚫  [ADMIN] Merchant bloqueado | id: ${id} | motivo: ${reason}`);
+    request.log.info(`[ADMIN] Merchant bloqueado | id: ${id} | motivo: ${reason}`);
     logAction({ action: "MERCHANT_BLOCKED", actor: `admin:${request.user.id}`, target: id, metadata: { reason }, ...getRequestContext(request) });
 
-    return reply.status(200).send({ message: "Merchant bloqueado com sucesso." });
+    return reply.status(200).send({ message: result.message });
   });
 };

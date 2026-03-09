@@ -24,6 +24,7 @@ export const setup2faRoute: FastifyPluginAsyncZod = async (app) => {
             secret: z.string(),
             qrCodeUri: z.string(),
           }),
+          401: z.object({ message: z.string() }),
           409: z.object({ message: z.string() }),
         },
       },

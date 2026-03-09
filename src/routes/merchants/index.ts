@@ -11,6 +11,8 @@ import { withdrawalsRoutes } from "./withdrawals/index.ts";
 import { merchantInfractionsRoutes } from "./infractions/index.ts";
 import { trackingRoutes } from "./tracking/index.ts";
 import { notificationPreferencesRoute } from "./notification-preferences.ts";
+import { updatePartnerRoute } from "./update-partner.ts";
+import { feeSummaryRoute } from "./fee-summary.ts";
 
 export const merchantsRoutes: FastifyPluginAsyncZod = async (app) => {
   // Todas as rotas de merchants precisam de autenticação
@@ -24,6 +26,12 @@ export const merchantsRoutes: FastifyPluginAsyncZod = async (app) => {
 
   // PATCH /v1/merchants/me
   app.register(updateMerchantProfileRoute);
+
+  // PATCH /v1/merchants/me/partner
+  app.register(updatePartnerRoute);
+
+  // GET /v1/merchants/me/fee-summary
+  app.register(feeSummaryRoute);
 
   // Sub-recursos
   app.register(documentsRoutes, { prefix: "/me/documents" });

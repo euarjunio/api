@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma.ts";
 import type { LedgerType, LedgerStatus } from "../lib/generated/prisma/enums.ts";
+import type { LedgerModel } from "../lib/generated/prisma/models/Ledger.ts";
 
 // ── Tipos ────────────────────────────────────────────────────────────
 
@@ -10,7 +11,7 @@ export interface AddTransactionParams {
   status?: LedgerStatus;
   description?: string;
   chargeId?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string | number | boolean | null>;
 }
 
 export interface MerchantBalance {
@@ -22,7 +23,7 @@ export interface MerchantBalance {
 
 export interface WithdrawResult {
   success: boolean;
-  ledgerEntry?: any;
+  ledgerEntry?: LedgerModel;
   message: string;
 }
 
@@ -163,10 +164,8 @@ export class LedgerService {
   }) {
     const { merchantId, chargeId, grossAmount, feeAmount, txid } = params;
 
-    // Usar transação do Prisma para garantir atomicidade
-    const [cashInEntry, feeEntry] = await prisma.$transaction([
-      // 1. Entrada do valor bruto do merchant (o que o cliente pagou)
-      prisma.ledger.create({
+    return prisma.$transaction(async (tx) => {
+      const cashInEntry = await tx.ledger.create({
         data: {
           merchantId,
           amount: grossAmount,
@@ -176,22 +175,25 @@ export class LedgerService {
           chargeId,
           metadata: { txid, grossAmount, feeAmount },
         },
-      }),
-      // 2. Registro da taxa (negativo, saída da conta do merchant)
-      prisma.ledger.create({
-        data: {
-          merchantId,
-          amount: -feeAmount,
-          type: "FEE",
-          status: "PENDING",
-          description: `Taxa da plataforma | txid: ${txid}`,
-          chargeId,
-          metadata: { txid, feeAmount },
-        },
-      }),
-    ]);
+      });
 
-    return { cashInEntry, feeEntry };
+      let feeEntry = null;
+      if (feeAmount > 0) {
+        feeEntry = await tx.ledger.create({
+          data: {
+            merchantId,
+            amount: -feeAmount,
+            type: "FEE",
+            status: "PENDING",
+            description: `Taxa da plataforma | txid: ${txid}`,
+            chargeId,
+            metadata: { txid, feeAmount },
+          },
+        });
+      }
+
+      return { cashInEntry, feeEntry };
+    });
   }
 
   /**
@@ -221,46 +223,82 @@ export class LedgerService {
    */
   async requestWithdraw(params: {
     merchantId: string;
-    amount: number;       // Valor em centavos (positivo)
+    amount: number;       // Valor em centavos (positivo) — valor liquido do merchant
+    withdrawFee?: number; // Taxa de saque em centavos (0 = sem taxa)
     description?: string;
     pixKey?: string;
     pixKeyType?: string;
   }): Promise<WithdrawResult> {
-    const { merchantId, amount, description, pixKey, pixKeyType } = params;
+    const { merchantId, amount, withdrawFee = 0, description, pixKey, pixKeyType } = params;
+    const totalDebit = amount + withdrawFee;
 
-    // 1. Verificar saldo disponível
-    const balance = await this.getBalance(merchantId);
-
-    if (balance.available < amount) {
-      return {
-        success: false,
-        message: `Saldo insuficiente. Disponível: R$ ${(balance.available / 100).toFixed(2)}, Solicitado: R$ ${(amount / 100).toFixed(2)}`,
-      };
-    }
-
-    // 2. Criar entrada WITHDRAW (negativa, status AVAILABLE = deduz imediatamente)
-    const entry = await prisma.ledger.create({
-      data: {
+    return prisma.$transaction(async (tx) => {
+      await tx.$queryRawUnsafe(
+        `SELECT pg_advisory_xact_lock(hashtext($1))`,
         merchantId,
-        amount: -amount,
-        type: "WITHDRAW",
-        status: "AVAILABLE",
-        description: description ?? `Saque solicitado | R$ ${(amount / 100).toFixed(2)}`,
-        metadata: {
-          requestedAmount: amount,
-          withdrawStatus: "REQUESTED",  // REQUESTED → PROCESSING → COMPLETED / FAILED
-          requestedAt: new Date().toISOString(),
-          pixKey,
-          pixKeyType,
-        },
-      },
-    });
+      );
 
-    return {
-      success: true,
-      ledgerEntry: entry,
-      message: "Saque solicitado com sucesso",
-    };
+      const results = await tx.ledger.groupBy({
+        by: ["status"],
+        where: { merchantId },
+        _sum: { amount: true },
+      });
+
+      let available = 0;
+      for (const row of results) {
+        if (row.status === "AVAILABLE") available = row._sum.amount ?? 0;
+      }
+
+      if (available < totalDebit) {
+        const needed = withdrawFee > 0
+          ? `Solicitado: R$ ${(amount / 100).toFixed(2)} + taxa R$ ${(withdrawFee / 100).toFixed(2)}`
+          : `Solicitado: R$ ${(amount / 100).toFixed(2)}`;
+        return {
+          success: false,
+          message: `Saldo insuficiente. Disponível: R$ ${(available / 100).toFixed(2)}, ${needed}`,
+        };
+      }
+
+      const entry = await tx.ledger.create({
+        data: {
+          merchantId,
+          amount: -amount,
+          type: "WITHDRAW",
+          status: "AVAILABLE",
+          description: description ?? `Saque solicitado | R$ ${(amount / 100).toFixed(2)}`,
+          metadata: {
+            requestedAmount: amount,
+            withdrawFee,
+            withdrawStatus: "REQUESTED",
+            requestedAt: new Date().toISOString(),
+            pixKey,
+            pixKeyType,
+          },
+        },
+      });
+
+      if (withdrawFee > 0) {
+        await tx.ledger.create({
+          data: {
+            merchantId,
+            amount: -withdrawFee,
+            type: "FEE",
+            status: "AVAILABLE",
+            description: `Taxa de saque | R$ ${(withdrawFee / 100).toFixed(2)}`,
+            metadata: {
+              relatedWithdrawId: entry.id,
+              feeType: "WITHDRAW_FEE",
+            },
+          },
+        });
+      }
+
+      return {
+        success: true,
+        ledgerEntry: entry,
+        message: "Saque solicitado com sucesso",
+      };
+    });
   }
 
   /**

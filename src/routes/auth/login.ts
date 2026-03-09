@@ -25,8 +25,9 @@ export const loginRoute: FastifyPluginAsyncZod = async (app) => {
               token: z.string(),
               user: z.object({
                 id: z.string(),
+                name: z.string(),
                 email: z.string(),
-                role: z.string(),
+                role: z.string()
               }),
             }),
             z.object({
@@ -90,18 +91,20 @@ export const loginRoute: FastifyPluginAsyncZod = async (app) => {
       }
 
       const token = jwt.sign(
-        { id: user.id, role: user.role },
+        { id: user.id, role: user.role},
         env.JWT_SECRET,
         { expiresIn: env.JWT_EXPIRES_IN as SignOptions["expiresIn"] },
       );
 
       request.log.info({ userId: user.id, email }, 'Login successful');
       logAction({ action: "LOGIN", actor: user.id, metadata: { email }, ...getRequestContext(request) });
+      const displayName = user.name ?? user.email.split("@")[0];
 
       return reply.status(200).send({
         token,
         user: {
           id: user.id,
+          name: displayName,
           email: user.email,
           role: user.role,
         },

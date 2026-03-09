@@ -4,13 +4,20 @@ import { webhookQueue } from "../../../lib/queues/webhook-queue.ts";
 
 /**
  * Busca ou cria um Customer a partir dos dados do pagador do PIX.
+ * Scoped to the merchant to prevent cross-merchant customer pollution.
  */
-export async function findOrCreateCustomerFromPayer(payer: any, request: any): Promise<string> {
+export async function findOrCreateCustomerFromPayer(
+  payer: any,
+  merchantId: string,
+  request: any,
+): Promise<string> {
   const doc = String(payer.document).replace(/\D/g, "");
   const name = payer.name ?? "Desconhecido";
   const docType = doc.length <= 11 ? "CPF" : "CNPJ";
 
-  let customer = await prisma.customer.findUnique({ where: { document: doc } });
+  let customer = await prisma.customer.findFirst({
+    where: { document: doc, merchantId },
+  });
 
   if (customer) {
     if (customer.name !== name) {
@@ -19,7 +26,7 @@ export async function findOrCreateCustomerFromPayer(payer: any, request: any): P
         data: { name },
       });
     }
-    request.log.info(`👤  [CUSTOMER] Existente vinculado | id: ${customer.id} | ${name} (${doc})`);
+    request.log.info(`[CUSTOMER] Existente vinculado | id: ${customer.id} | ${name} (${doc})`);
     return customer.id;
   }
 
@@ -28,21 +35,16 @@ export async function findOrCreateCustomerFromPayer(payer: any, request: any): P
       name,
       document: doc,
       documentType: docType,
+      merchantId,
     },
   });
 
-  request.log.info(`👤  [CUSTOMER] Novo criado | id: ${customer.id} | ${name} (${doc})`);
+  request.log.info(`[CUSTOMER] Novo criado | id: ${customer.id} | ${name} (${doc})`);
   return customer.id;
 }
 
 /**
  * Enfileira notificação de webhook para o merchant via BullMQ.
- *
- * Busca TODOS os webhooks ativos do merchant e filtra por evento:
- * - events = [] (vazio) → wildcard, recebe todos os eventos
- * - events = ["charge.paid", ...] → recebe apenas os selecionados
- *
- * Dispara em paralelo para todos os webhooks que casem com o evento.
  */
 export async function notifyMerchant(merchantId: string, event: string, payload: any, request: any) {
   try {
@@ -54,24 +56,21 @@ export async function notifyMerchant(merchantId: string, event: string, payload:
     });
 
     if (webhooks.length === 0) {
-      request.log.info(`📭  [NOTIFY] Merchant ${merchantId} não tem webhooks configurados — pulando`);
+      request.log.info(`[NOTIFY] Merchant ${merchantId} não tem webhooks configurados — pulando`);
       return;
     }
 
-    // Filtrar webhooks inscritos neste evento
-    // events vazio = wildcard (recebe tudo)
     const matching = webhooks.filter(
       (wh) => wh.events.length === 0 || wh.events.includes(event),
     );
 
     if (matching.length === 0) {
       request.log.info(
-        `📭  [NOTIFY] Merchant ${merchantId} tem ${webhooks.length} webhook(s) mas nenhum escuta "${event}" — pulando`,
+        `[NOTIFY] Merchant ${merchantId} tem ${webhooks.length} webhook(s) mas nenhum escuta "${event}" — pulando`,
       );
       return;
     }
 
-    // Disparar para todos os webhooks que casam
     await Promise.all(
       matching.map(async (webhook) => {
         const deliveryId = randomUUID();
@@ -93,13 +92,13 @@ export async function notifyMerchant(merchantId: string, event: string, payload:
         );
 
         request.log.info(
-          `📤  [NOTIFY] Job enfileirado | event: ${event} | webhook: ${webhook.name ?? webhook.id} | url: ${webhook.url} | deliveryId: ${deliveryId}`,
+          `[NOTIFY] Job enfileirado | event: ${event} | webhook: ${webhook.name ?? webhook.id} | url: ${webhook.url} | deliveryId: ${deliveryId}`,
         );
       }),
     );
   } catch (err: any) {
     request.log.error(
-      `📤  [NOTIFY] Erro ao enfileirar notificação para merchant ${merchantId}: ${err?.message}`,
+      `[NOTIFY] Erro ao enfileirar notificação para merchant ${merchantId}: ${err?.message}`,
     );
   }
 }

@@ -1,13 +1,9 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
-import { prisma } from "../../../lib/prisma.ts";
-import { acquirerService } from "../../../services/acquirer.service.ts";
 import { logAction, getRequestContext } from "../../../lib/audit.ts";
-import { queueEmail } from "../../../lib/queues/email-queue.ts";
-import { merchantApprovedEmail } from "../../../lib/email-templates.ts";
+import { approveMerchant } from "../../../services/merchant.service.ts";
 
 export const approveMerchantRoute: FastifyPluginAsyncZod = async (app) => {
-  // POST /v1/admin/merchants/:id/approve
   app.post("/:id/approve", {
     schema: {
       tags: ["Admin"],
@@ -27,42 +23,17 @@ export const approveMerchantRoute: FastifyPluginAsyncZod = async (app) => {
   }, async (request, reply) => {
     const { id } = request.params;
 
-    const merchant = await prisma.merchant.findUnique({
-      where: { id },
-      include: { user: { select: { email: true } } },
-    });
-    if (!merchant) return reply.status(404).send({ message: "Merchant não encontrado" });
-
-    if (merchant.kycStatus === "APPROVED") {
-      return reply.status(400).send({ message: "Merchant já aprovado." });
+    const result = await approveMerchant(id, request.log);
+    if (!result.ok) {
+      return reply.status(result.status).send({ message: result.message });
     }
-
-    await prisma.merchant.update({
-      where: { id },
-      data: { kycStatus: "APPROVED", kycAnalyzedAt: new Date() },
-    });
 
     logAction({ action: "MERCHANT_APPROVED", actor: `admin:${request.user.id}`, target: id, ...getRequestContext(request) });
 
-    // Enviar email de aprovação ao merchant (comunicação crítica, não depende de preferência)
-    try {
-      await queueEmail({ to: merchant.user.email, ...merchantApprovedEmail(merchant.name) });
-    } catch (emailErr: any) {
-      request.log.warn({ error: emailErr?.message, merchantId: id }, "⚠️  [APPROVE] Falha ao enfileirar email de aprovação");
-    }
-
-    try {
-      const result = await acquirerService.setupMerchantAccount(id);
-      return reply.status(200).send({
-        message: "Merchant aprovado e conta no adquirente criada. O merchant deve cadastrar sua chave PIX.",
-        acquirerAccountId: result.accountId,
-      });
-    } catch (error: any) {
-      request.log.error({ error: error.message, merchantId: id }, "Erro ao criar conta no adquirente");
-      return reply.status(200).send({
-        message: "Merchant aprovado, mas houve erro ao criar conta no adquirente. Use /setup-acquirer.",
-        error: error.message,
-      });
-    }
+    return reply.status(200).send({
+      message: result.message,
+      acquirerAccountId: result.extra?.acquirerAccountId as string | undefined,
+      error: result.extra?.error as string | undefined,
+    });
   });
 };

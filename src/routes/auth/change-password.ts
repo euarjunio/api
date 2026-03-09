@@ -4,6 +4,7 @@ import { hash, verify } from "argon2";
 import { prisma } from "../../lib/prisma.ts";
 import { authenticate } from "../hooks/authenticate.ts";
 import { logAction, getRequestContext } from "../../lib/audit.ts";
+import { invalidateUserTokens } from "../../lib/jwt-blacklist.ts";
 
 export const changePasswordRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -35,7 +36,6 @@ export const changePasswordRoute: FastifyPluginAsyncZod = async (app) => {
         return reply.status(400).send({ message: "Usuário não encontrado" });
       }
 
-      // Verificar senha atual
       const isCurrentPasswordValid = await verify(user.passwordHash, currentPassword);
 
       if (!isCurrentPasswordValid) {
@@ -43,13 +43,15 @@ export const changePasswordRoute: FastifyPluginAsyncZod = async (app) => {
         return reply.status(400).send({ message: "Senha atual incorreta" });
       }
 
-      // Hash da nova senha
       const newPasswordHash = await hash(newPassword);
 
       await prisma.user.update({
         where: { id: user.id },
         data: { passwordHash: newPasswordHash },
       });
+
+      // Invalidate all existing JWTs for this user
+      await invalidateUserTokens(user.id);
 
       request.log.info({ userId: user.id }, "Password changed successfully");
       logAction({ action: "PASSWORD_CHANGED", actor: user.id, ...getRequestContext(request) });

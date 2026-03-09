@@ -25,6 +25,9 @@ export function startEmailWorker() {
     {
       connection: { url: env.REDIS_URL, maxRetriesPerRequest: null },
       concurrency: 3,
+      drainDelay: 30_000,
+      stalledInterval: 120_000,
+      maxStalledCount: 2,
     },
   );
 
@@ -44,4 +47,18 @@ export function startEmailWorker() {
 // Helper para enfileirar
 export async function queueEmail(options: SendEmailOptions) {
   await emailQueue.add("send-email", options);
+}
+
+// Helper seguro — silencia erros e loga com contexto
+export async function queueEmailSafe(
+  to: string,
+  template: { subject: string; html: string },
+  log: { error: (obj: Record<string, unknown>, msg: string) => void },
+  context: string,
+) {
+  try {
+    await queueEmail({ to, subject: template.subject, html: template.html });
+  } catch (err) {
+    log.error({ err, to, context }, "Failed to queue email");
+  }
 }

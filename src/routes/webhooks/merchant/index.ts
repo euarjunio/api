@@ -5,6 +5,7 @@ import { createMerchantWebhookRoute } from "./create.ts";
 import { getMerchantWebhookRoute } from "./get.ts";
 import { updateMerchantWebhookRoute } from "./update.ts";
 import { deleteMerchantWebhookRoute } from "./delete.ts";
+import { revealWebhookSecretRoute } from "./reveal.ts";
 
 export const merchantWebhookRoutes: FastifyPluginAsyncZod = async (app) => {
   app.addHook("onRequest", authenticate);
@@ -17,6 +18,9 @@ export const merchantWebhookRoutes: FastifyPluginAsyncZod = async (app) => {
 
   // GET  /v1/webhooks/merchant           — listar webhooks
   app.register(getMerchantWebhookRoute);
+
+  // POST /v1/webhooks/merchant/:id/reveal — revelar secret com verificação
+  app.register(revealWebhookSecretRoute);
 
   // PATCH  /v1/webhooks/merchant/:id     — atualizar webhook
   app.register(updateMerchantWebhookRoute);

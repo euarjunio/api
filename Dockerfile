@@ -1,7 +1,9 @@
+# syntax=docker/dockerfile:1
+
 # ═══════════════════════════════════════════════════════════
 # Stage 1: Builder — instala tudo e gera o Prisma Client
 # ═══════════════════════════════════════════════════════════
-FROM node:25-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
@@ -11,16 +13,15 @@ COPY prisma ./prisma/
 # Instalar TODAS as dependências (devDeps necessárias para prisma generate)
 RUN npm ci
 
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-
-# Gerar Prisma Client
-RUN npx prisma generate
+# Use BuildKit secret for DATABASE_URL (not stored in layer history)
+RUN --mount=type=secret,id=DATABASE_URL \
+    DATABASE_URL="$(cat /run/secrets/DATABASE_URL)" \
+    npx prisma generate
 
 # ═══════════════════════════════════════════════════════════
 # Stage 2: Runner — imagem final leve, sem devDependencies
 # ═══════════════════════════════════════════════════════════
-FROM node:25-alpine AS runner
+FROM node:24-alpine AS runner
 
 WORKDIR /app
 

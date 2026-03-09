@@ -10,6 +10,10 @@ export const listPendingKycRoute: FastifyPluginAsyncZod = async (app) => {
       tags: ["Admin"],
       summary: "Listar merchants pendentes de KYC",
       description: "Retorna todos os merchants com status UNDER_REVIEW",
+      querystring: z.object({
+        page: z.coerce.number().int().min(1).default(1),
+        limit: z.coerce.number().int().min(1).max(100).default(20),
+      }),
       response: {
         200: z.object({
           merchants: z.array(z.object({
@@ -25,30 +29,46 @@ export const listPendingKycRoute: FastifyPluginAsyncZod = async (app) => {
             docBackUrl: z.string().nullable(),
             docSelfieUrl: z.string().nullable(),
           })),
+          total: z.number(),
+          page: z.number(),
+          limit: z.number(),
         }),
       },
     },
   }, async (request, reply) => {
-    const merchants = await prisma.merchant.findMany({
-      where: { kycStatus: "UNDER_REVIEW" },
-    });
+    const { page, limit } = request.query;
+
+    const [total, merchants] = await Promise.all([
+      prisma.merchant.count({ where: { kycStatus: "UNDER_REVIEW" } }),
+      prisma.merchant.findMany({
+        where: { kycStatus: "UNDER_REVIEW" },
+        select: {
+          id: true, name: true, email: true, phone: true,
+          document: true, documentType: true, kycStatus: true, createdAt: true,
+          docFrontUrl: true, docBackUrl: true, docSelfieUrl: true,
+        },
+        orderBy: { createdAt: "asc" },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+    ]);
 
     const merchantsWithUrls = await Promise.all(
-      merchants.map(async (m) => ({
-        id: m.id,
-        name: m.name,
-        email: m.email,
-        phone: m.phone,
-        document: m.document,
-        documentType: m.documentType,
-        kycStatus: m.kycStatus,
-        createdAt: m.createdAt.toISOString(),
-        docFrontUrl: m.docFrontUrl ? await storageService.getFileUrl(m.docFrontUrl) : null,
-        docBackUrl: m.docBackUrl ? await storageService.getFileUrl(m.docBackUrl) : null,
-        docSelfieUrl: m.docSelfieUrl ? await storageService.getFileUrl(m.docSelfieUrl) : null,
-      }))
+      merchants.map(async (m) => {
+        const [docFrontUrl, docBackUrl, docSelfieUrl] = await Promise.all([
+          m.docFrontUrl ? storageService.getFileUrl(m.docFrontUrl) : null,
+          m.docBackUrl ? storageService.getFileUrl(m.docBackUrl) : null,
+          m.docSelfieUrl ? storageService.getFileUrl(m.docSelfieUrl) : null,
+        ]);
+        return {
+          id: m.id, name: m.name, email: m.email, phone: m.phone,
+          document: m.document, documentType: m.documentType,
+          kycStatus: m.kycStatus, createdAt: m.createdAt.toISOString(),
+          docFrontUrl, docBackUrl, docSelfieUrl,
+        };
+      })
     );
 
-    return reply.status(200).send({ merchants: merchantsWithUrls });
+    return reply.status(200).send({ merchants: merchantsWithUrls, total, page, limit });
   });
 };

@@ -18,6 +18,78 @@ import { invalidateMerchantCaches, invalidate, CacheKeys } from "../../../lib/ca
 import { dispatchTrackingEvent } from "../../../plugins/tracker.service.ts";
 import { queueEmail } from "../../../lib/queues/email-queue.ts";
 import { chargePaidEmail } from "../../../lib/email-templates.ts";
+import type { LedgerModel } from "../../../lib/generated/prisma/models/Ledger.ts";
+import type { FastifyBaseLogger } from "fastify";
+
+// ── Transfeera webhook payload types ──────────────────────────────
+interface TransfeeraCashInData {
+  id?: string;
+  txid?: string;
+  value?: string | number;
+  end2end_id?: string;
+  pix_key?: string;
+  payer?: { name?: string; document?: string; [k: string]: string | number | boolean | null | undefined };
+}
+
+interface TransfeeraTransferData {
+  id: string;
+  status: string;
+  value: string | number;
+  idempotency_key?: string;
+  integration_id?: string;
+  status_description?: string;
+  pix_end2end_id?: string;
+  receipt_url?: string;
+  error?: string;
+  destination_bank_account?: { name?: string; cpf_cnpj?: string };
+}
+
+interface TransfeeraCashInRefundData {
+  id: string;
+  status: string;
+  value: string | number;
+  end2end_id?: string;
+  cashin_id?: string;
+  reason?: string;
+  txid?: string;
+}
+
+interface TransfeeraTransferRefundData {
+  id: string;
+  status: string;
+  value: string | number;
+  transfer_id?: string;
+  end2end_id?: string;
+  reason?: string;
+  integration_id?: string;
+}
+
+interface TransfeeraInfractionData {
+  id: string;
+  status: string;
+  analysis_status?: string;
+  analysis_due_date?: string;
+  analysis_date?: string;
+  analysis_description?: string;
+  situation_type?: string;
+  transaction_id?: string;
+  amount?: number;
+  infraction_date?: string;
+  infraction_description?: string;
+  payer_name?: string;
+  payer_tax_id?: string;
+  contested_at?: string;
+  refund?: { status?: string; analysis_status?: string; transaction_id?: string; refunded_amount?: number; refund_date?: string; rejection_reason?: string };
+  user?: { name?: string };
+  txid?: string;
+}
+
+interface TransfeeraPixKeyData {
+  id?: string;
+  key?: string;
+  type?: string;
+  status?: string;
+}
 
 const REPLAY_TOLERANCE_MS = 5 * 60 * 1000; // 5 minutos
 
@@ -38,7 +110,7 @@ export const transfeeraHandlerRoute: FastifyPluginAsyncZod = async (app) => {
     // ── 1. Verificação da assinatura (HMAC-SHA256) ──────────────
     if (secret) {
       if (!signatureHeader) {
-        request.log.info("ℹ️  [WEBHOOK] Ping de verificação da Transfeera (sem assinatura) — respondendo 200");
+        request.log.info("[WEBHOOK] Ping de verificação da Transfeera (sem assinatura) — respondendo 200");
         return reply.status(200).send({ received: true });
       }
 
@@ -47,14 +119,14 @@ export const transfeeraHandlerRoute: FastifyPluginAsyncZod = async (app) => {
       const signature = parts.find(p => p.startsWith("v1="))?.split("=")[1];
 
       if (!timestamp || !signature) {
-        request.log.warn("⚠️  [WEBHOOK] Formato de assinatura inválido");
+        request.log.warn("[WEBHOOK] Formato de assinatura inválido");
         return reply.status(401).send({ message: "Invalid signature format" });
       }
 
       // Proteção contra replay attacks
       const ts = Number(timestamp);
       if (Math.abs(Date.now() - ts) > REPLAY_TOLERANCE_MS) {
-        request.log.warn(`⚠️  [WEBHOOK] Timestamp expirado (${new Date(ts).toISOString()})`);
+        request.log.warn(`[WEBHOOK] Timestamp expirado (${new Date(ts).toISOString()})`);
         return reply.status(401).send({ message: "Timestamp expired" });
       }
 
@@ -63,9 +135,14 @@ export const transfeeraHandlerRoute: FastifyPluginAsyncZod = async (app) => {
       const signedPayload = `${timestamp}.${rawBody}`;
 
       if (!provider.verifyWebhookSignature(signedPayload, signature, secret)) {
-        request.log.warn("❌  [WEBHOOK] Assinatura HMAC inválida");
+        request.log.warn("[WEBHOOK] Assinatura HMAC inválida");
         return reply.status(401).send({ message: "Invalid signature" });
       }
+    } else if (env.NODE_ENV === "production") {
+      // In production, TRANSFEERA_WEBHOOK_SECRET is required (enforced in env.ts)
+      // but if somehow missing, reject all unsigned requests
+      request.log.error("[WEBHOOK] TRANSFEERA_WEBHOOK_SECRET not configured in production — rejecting request");
+      return reply.status(401).send({ message: "Webhook signature verification not configured" });
     }
 
     // ── 2. Processar evento ─────────────────────────────────────
@@ -205,7 +282,7 @@ function isRedisError(err: any): boolean {
 }
 
 // ── CashIn Handler ──────────────────────────────────────────────────
-async function handleCashIn(data: any, eventId: string, request: any) {
+async function handleCashIn(data: TransfeeraCashInData, eventId: string, request: { log: FastifyBaseLogger }) {
   const { txid, value, end2end_id, pix_key, payer } = data;
 
   if (!txid) {
@@ -240,8 +317,23 @@ async function handleCashIn(data: any, eventId: string, request: any) {
     return;
   }
 
-  if (charge.status === "PAID") {
-    request.log.info(`💰  [CASHIN] Cobrança já paga (duplicado) | chargeId: ${charge.id} | txid: ${txid}`);
+  // Check if merchant is active
+  if (charge.merchant?.status !== "ACTIVE") {
+    request.log.warn(`💰  [CASHIN] Merchant bloqueado/inativo | merchantId: ${charge.merchantId} | status: ${charge.merchant?.status}`);
+    return;
+  }
+
+  // Atomic update — prevents duplicate processing
+  const updateResult = await prisma.charges.updateMany({
+    where: { id: charge.id, status: "PENDING" },
+    data: {
+      status: "PAID",
+      paidAt: new Date(),
+    },
+  });
+
+  if (updateResult.count === 0) {
+    request.log.info(`💰  [CASHIN] Cobrança já processada (duplicado) | chargeId: ${charge.id} | txid: ${txid}`);
     return;
   }
 
@@ -249,15 +341,13 @@ async function handleCashIn(data: any, eventId: string, request: any) {
   let customerId = charge.customerId;
 
   if (payer && payer.document) {
-    customerId = await findOrCreateCustomerFromPayer(payer, request);
+    customerId = await findOrCreateCustomerFromPayer(payer, charge.merchantId, request);
   }
 
-  // Atualizar cobrança para PAID
+  // Update customer + metadata separately (non-critical)
   await prisma.charges.update({
     where: { id: charge.id },
     data: {
-      status: "PAID",
-      paidAt: new Date(),
       customerId,
       metadata: {
         ...(charge.metadata as object ?? {}),
@@ -268,7 +358,7 @@ async function handleCashIn(data: any, eventId: string, request: any) {
     },
   });
 
-  // Registrar no ledger (livro razão)
+  // Registrar no ledger (livro razão) — atomically via $transaction
   const feeAmount = charge.merchant.feeAmount ?? 0;
   const grossAmount = charge.amount;
 
@@ -281,27 +371,42 @@ async function handleCashIn(data: any, eventId: string, request: any) {
       txid,
     });
     request.log.info(
-      `📒  [LEDGER] Registrado | cashIn: ${cashInEntry.id} (R$${(grossAmount / 100).toFixed(2)}) | fee: ${feeEntry.id} (-R$${(feeAmount / 100).toFixed(2)})`
+      `📒  [LEDGER] Registrado | cashIn: ${cashInEntry.id} (R$${(grossAmount / 100).toFixed(2)})${feeEntry ? ` | fee: ${feeEntry.id} (-R$${(feeAmount / 100).toFixed(2)})` : ""}`
     );
 
     // Enfileirar liquidação automática (PENDING → AVAILABLE) com delay
-    await settlementQueue.add(
-      "settle",
-      {
-        chargeId: charge.id,
-        merchantId: charge.merchantId,
-        txid,
-        grossAmount,
-        feeAmount,
-      },
-      {
-        delay: env.SETTLEMENT_DELAY_MS,
-        jobId: `settle-${charge.id}`,
-      },
-    );
-    request.log.info(
-      `🏦  [SETTLEMENT] Job agendado | chargeId: ${charge.id} | delay: ${env.SETTLEMENT_DELAY_MS}ms`
-    );
+    try {
+      await settlementQueue.add(
+        "settle",
+        {
+          chargeId: charge.id,
+          merchantId: charge.merchantId,
+          txid,
+          grossAmount,
+          feeAmount,
+        },
+        {
+          delay: env.SETTLEMENT_DELAY_MS,
+          jobId: `settle-${charge.id}`,
+        },
+      );
+      request.log.info(
+        `🏦  [SETTLEMENT] Job agendado | chargeId: ${charge.id} | delay: ${env.SETTLEMENT_DELAY_MS}ms`
+      );
+    } catch (settlementErr: any) {
+      request.log.error(`🏦  [SETTLEMENT] Redis offline — salvando fallback no banco | chargeId: ${charge.id}`);
+      await prisma.pendingWebhook.upsert({
+        where: { eventId: `settlement-${charge.id}` },
+        update: { attempts: { increment: 1 }, updatedAt: new Date() },
+        create: {
+          eventId: `settlement-${charge.id}`,
+          object: "Settlement",
+          payload: { chargeId: charge.id, merchantId: charge.merchantId, txid, grossAmount, feeAmount },
+          status: "PENDING",
+          error: settlementErr?.message,
+        },
+      });
+    }
   } catch (err: any) {
     request.log.error(`📒  [LEDGER] Erro ao registrar transação: ${err?.message}`);
   }
@@ -377,7 +482,7 @@ async function handleCashIn(data: any, eventId: string, request: any) {
 }
 
 // ── Transfer Handler ────────────────────────────────────────────────
-async function handleTransfer(data: any, eventId: string, request: any) {
+async function handleTransfer(data: TransfeeraTransferData, eventId: string, request: { log: FastifyBaseLogger }) {
   const { id: transferId, status, value, idempotency_key, integration_id, destination_bank_account } = data;
   const destName = destination_bank_account?.name ?? "?";
   const destDoc = destination_bank_account?.cpf_cnpj ?? "?";
@@ -422,7 +527,7 @@ async function handleTransfer(data: any, eventId: string, request: any) {
 }
 
 // ── Withdraw Transfer Handler ───────────────────────────────────────
-async function handleWithdrawTransfer(ledgerEntry: any, data: any, request: any) {
+async function handleWithdrawTransfer(ledgerEntry: LedgerModel, data: TransfeeraTransferData, request: { log: FastifyBaseLogger }) {
   const { id: transferId, status, value, status_description } = data;
   const currentMeta = (ledgerEntry.metadata as Record<string, any>) ?? {};
 
@@ -503,7 +608,7 @@ async function handleWithdrawTransfer(ledgerEntry: any, data: any, request: any)
 }
 
 // ── CashInRefund Handler (Estorno de PIX recebido) ──────────────────
-async function handleCashInRefund(data: any, eventId: string, accountId: string, request: any) {
+async function handleCashInRefund(data: TransfeeraCashInRefundData, eventId: string, accountId: string, request: { log: FastifyBaseLogger }) {
   const {
     id: refundId,
     status,
@@ -535,43 +640,45 @@ async function handleCashInRefund(data: any, eventId: string, accountId: string,
   }
 
   if (charge) {
-    // Atualizar status da cobrança para REFUNDED
-    await prisma.charges.update({
-      where: { id: charge.id },
-      data: {
-        status: "REFUNDED",
-        metadata: {
-          ...(charge.metadata as object ?? {}),
-          refund_id: refundId,
-          refund_status: status,
-          refund_value: value,
-          refund_reason: reason ?? null,
-          refund_end2end_id: end2end_id ?? null,
-          refund_cashin_id: cashin_id ?? null,
-        },
-      },
-    });
+    // Atomic: update charge + create ledger entry in a single transaction
+    const refundAmountCents = Math.round((parseFloat(String(value)) || 0) * 100);
 
-    // Registrar estorno no ledger
-    const refundAmountCents = Math.round((parseFloat(value) || 0) * 100);
-    if (refundAmountCents > 0) {
-      try {
-        await prisma.ledger.create({
+    try {
+      await prisma.$transaction(async (tx) => {
+        await tx.charges.update({
+          where: { id: charge.id },
           data: {
-            amount: -refundAmountCents,
-            type: "REFUND",
-            status: "AVAILABLE",
-            description: `Estorno PIX | txid: ${txid} | motivo: ${reason ?? "N/A"}`,
-            merchantId: merchant.id,
-            chargeId: charge.id,
+            status: "REFUNDED",
+            metadata: {
+              ...(charge.metadata as object ?? {}),
+              refund_id: refundId,
+              refund_status: status,
+              refund_value: value,
+              refund_reason: reason ?? null,
+              refund_end2end_id: end2end_id ?? null,
+              refund_cashin_id: cashin_id ?? null,
+            },
           },
         });
-        request.log.info(
-          `📒  [LEDGER] Estorno registrado | chargeId: ${charge.id} | -R$${value}`
-        );
-      } catch (err: any) {
-        request.log.error(`📒  [LEDGER] Erro ao registrar estorno: ${err?.message}`);
-      }
+
+        if (refundAmountCents > 0) {
+          await tx.ledger.create({
+            data: {
+              amount: -refundAmountCents,
+              type: "REFUND",
+              status: "AVAILABLE",
+              description: `Estorno PIX | txid: ${txid} | motivo: ${reason ?? "N/A"}`,
+              merchantId: merchant.id,
+              chargeId: charge.id,
+            },
+          });
+          request.log.info(
+            `📒  [LEDGER] Estorno registrado | chargeId: ${charge.id} | -R$${value}`
+          );
+        }
+      });
+    } catch (err: any) {
+      request.log.error(`📒  [LEDGER] Erro ao registrar estorno: ${err?.message}`);
     }
 
     request.log.info(
@@ -604,7 +711,7 @@ async function handleCashInRefund(data: any, eventId: string, accountId: string,
       await dispatchTrackingEvent(merchant.id, "refund", {
         chargeId: charge.id,
         txid: txid ?? charge.id,
-        amount: Math.round((parseFloat(value) || 0) * 100),
+        amount: Math.round((parseFloat(String(value)) || 0) * 100),
         paidAt: new Date().toISOString(),
         tracking: Object.keys(trackingData).length > 0 ? trackingData : undefined,
       });
@@ -615,7 +722,7 @@ async function handleCashInRefund(data: any, eventId: string, accountId: string,
 }
 
 // ── TransferRefund Handler (Devolução de transferência/saque) ────────
-async function handleTransferRefund(data: any, eventId: string, request: any) {
+async function handleTransferRefund(data: TransfeeraTransferRefundData, eventId: string, request: { log: FastifyBaseLogger }) {
   const {
     id: refundId,
     status,
@@ -683,7 +790,7 @@ async function handleTransferRefund(data: any, eventId: string, request: any) {
 }
 
 // ── Infraction Handler (MED — Mecanismo Especial de Devolução) ──────
-async function handleInfraction(data: any, eventId: string, accountId: string, request: any) {
+async function handleInfraction(data: TransfeeraInfractionData, eventId: string, accountId: string, request: { log: FastifyBaseLogger }) {
   const {
     id: acquirerInfractionId,
     status,
@@ -727,8 +834,8 @@ async function handleInfraction(data: any, eventId: string, accountId: string, r
 
   // 3. Mapear status do adquirente → enums do Prisma (usando maps centralizados)
   const mappedStatus = statusMap[status] ?? "PENDING";
-  const mappedAnalysis = analysisStatusMap[analysis_status] ?? "PENDING";
-  const mappedSituation = situationTypeMap[situation_type] ?? "UNKNOWN";
+  const mappedAnalysis = analysis_status ? (analysisStatusMap[analysis_status] ?? "PENDING") : "PENDING";
+  const mappedSituation = situation_type ? (situationTypeMap[situation_type] ?? "UNKNOWN") : "UNKNOWN";
 
   // 4. Upsert infração (pode receber atualizações do mesmo ID)
   const existing = await prisma.infraction.findUnique({
@@ -816,7 +923,7 @@ async function handleInfraction(data: any, eventId: string, accountId: string, r
 }
 
 // ── PixKey Handler ───────────────────────────────────────────────────
-async function handlePixKey(data: any, eventId: string, accountId: string, request: any) {
+async function handlePixKey(data: TransfeeraPixKeyData, eventId: string, accountId: string, request: { log: FastifyBaseLogger }) {
   const { id: keyId, key, type, status } = data;
 
   request.log.info(

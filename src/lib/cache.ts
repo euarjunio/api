@@ -4,8 +4,8 @@ import { redis } from "./redis.ts";
 export const CacheKeys = {
   balance: (merchantId: string) => `cache:balance:${merchantId}`,
   profile: (userId: string) => `cache:profile:${userId}`,
-  charges: (merchantId: string, page: number, limit: number, status?: string) =>
-    `cache:charges:${merchantId}:p${page}:l${limit}${status ? `:s${status}` : ""}`,
+  charges: (merchantId: string, page: number, limit: number, status?: string, startDate?: string, endDate?: string) =>
+    `cache:charges:${merchantId}:p${page}:l${limit}${status ? `:s${status}` : ""}${startDate ? `:from${startDate}` : ""}${endDate ? `:to${endDate}` : ""}`,
   transactions: (merchantId: string, page: number, limit: number, type?: string, status?: string) =>
     `cache:transactions:${merchantId}:p${page}:l${limit}${type ? `:t${type}` : ""}${status ? `:s${status}` : ""}`,
   withdrawals: (merchantId: string, page: number, limit: number) =>
@@ -55,9 +55,30 @@ export async function getOrSet<T>(
 }
 
 // ── Invalidação ──────────────────────────────────────────────────────
+//
+// Existem 3 estratégias de invalidação, cada uma para um cenário diferente:
+//
+// 1. invalidate(key)
+//    Remove UMA chave exata. Use quando você sabe a chave completa.
+//    Ex: invalidate(CacheKeys.balance("merchant-123"))
+//
+// 2. invalidatePattern(pattern)
+//    Remove TODAS as chaves que casam com um glob pattern via SCAN.
+//    Mais lento (I/O proporcional ao número de chaves), mas necessário
+//    para invalidar caches paginados onde a chave inclui page/limit/filtros.
+//    Ex: invalidatePattern("cache:charges:merchant-123:*")
+//    Use quando um evento afeta múltiplas variações paginadas de um recurso.
+//
+// 3. invalidateMerchantCaches(merchantId)
+//    Atalho que invalida TODOS os caches de um merchant de uma vez:
+//    balance (exato) + charges, transactions, withdrawals (pattern).
+//    Use após operações que afetam o saldo ou listagens do merchant
+//    (ex: saque, pagamento recebido, estorno).
+//    Não use para invalidações pontuais — prefira invalidate() ou
+//    invalidatePattern() quando só um tipo de cache foi afetado.
 
 /**
- * Invalida uma chave exata do cache.
+ * Remove uma chave exata do cache.
  */
 export async function invalidate(key: string): Promise<void> {
   try {
@@ -68,10 +89,11 @@ export async function invalidate(key: string): Promise<void> {
 }
 
 /**
- * Invalida todas as chaves que matcham o pattern (usando SCAN para segurança).
- * Útil para invalidar todos os caches paginados de um merchant.
+ * Remove todas as chaves que matcham o pattern (via SCAN, seguro em produção).
+ * Custo: O(N) onde N é o número de chaves no Redis que casam com o pattern.
+ * Prefira invalidate() para chaves exatas.
  *
- * Ex: invalidatePattern("cache:charges:merchant-123:*")
+ * @example invalidatePattern("cache:charges:merchant-123:*")
  */
 export async function invalidatePattern(pattern: string): Promise<void> {
   try {
@@ -89,7 +111,9 @@ export async function invalidatePattern(pattern: string): Promise<void> {
 }
 
 /**
- * Invalida todos os caches de um merchant (balance, charges, transactions, withdrawals).
+ * Invalida TODOS os caches de um merchant: balance + charges + transactions + withdrawals.
+ * Use após operações que afetam saldo ou listagens (saque, pagamento, estorno).
+ * Para invalidar apenas um tipo, use invalidate() ou invalidatePattern() diretamente.
  */
 export async function invalidateMerchantCaches(merchantId: string): Promise<void> {
   await Promise.all([

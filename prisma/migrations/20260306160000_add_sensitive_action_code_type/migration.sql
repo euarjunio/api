@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "CodeType" ADD VALUE 'SENSITIVE_ACTION';

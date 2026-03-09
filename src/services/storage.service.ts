@@ -1,6 +1,8 @@
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import type { StreamingBlobPayloadInputTypes } from "@smithy/types";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { env } from "../config/env.ts"; // Certifique-se de ter as variáveis no seu env.ts
+import { env } from "../config/env.ts";
+import { SIGNED_URL_EXPIRY } from "../config/constants.ts";
 
 export class StorageService {
     private client: S3Client;
@@ -17,7 +19,7 @@ export class StorageService {
         });
     }
 
-    async uploadFile(file: Buffer, fileName: string, mimeType: string): Promise<string> {
+    async uploadFile(file: StreamingBlobPayloadInputTypes, fileName: string, mimeType: string): Promise<string> {
         const command = new PutObjectCommand({
             Bucket: this.bucket,
             Key: fileName,
@@ -35,8 +37,7 @@ export class StorageService {
             Key: fileKey,
         });
 
-        // Gera uma URL assinada que expira em 1 hora (segurança para documentos)
-        return getSignedUrl(this.client, command, { expiresIn: 3600 });
+        return getSignedUrl(this.client, command, { expiresIn: SIGNED_URL_EXPIRY });
     }
 }
 

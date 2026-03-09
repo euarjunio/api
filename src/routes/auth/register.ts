@@ -16,13 +16,18 @@ export const registerRoute: FastifyPluginAsyncZod = async (app) => {
         summary: "Registrar novo usuário",
         description: "Cria uma nova conta de usuário no sistema e envia código de verificação",
         body: z.object({
+          name: z.string().min(2).max(120),
           email: z.email(),
-          password: z.string().min(6),
+          phone: z.string().min(10).max(20).optional(),
+          password: z.string().min(8).regex(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+            "Senha deve conter pelo menos uma letra minúscula, uma maiúscula e um número",
+          ),
         }),
       },
     },
     async (request, reply) => {
-      const { email, password } = request.body;
+      const { name, email, phone, password } = request.body;
 
       request.log.info({ email }, 'Registration attempt');
 
@@ -30,13 +35,13 @@ export const registerRoute: FastifyPluginAsyncZod = async (app) => {
 
       if (existingUser) {
         request.log.warn({ email }, 'Registration failed: email already exists');
-        return reply.status(400).send({ message: "email já cadastrado" });
+        return reply.status(400).send({ message: "Não foi possível criar a conta. Verifique os dados e tente novamente." });
       }
 
       const passwordHash = await hash(password);
 
       const user = await prisma.user.create({
-        data: { email, passwordHash: passwordHash, role: "USER", emailVerified: false },
+        data: { name, email, phone, passwordHash, role: "USER", emailVerified: false },
       });
 
       // Gerar e enviar código de verificação

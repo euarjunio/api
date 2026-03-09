@@ -83,6 +83,9 @@ export function startTrackingWorker() {
     {
       connection: { url: env.REDIS_URL, maxRetriesPerRequest: null },
       concurrency: 5,
+      drainDelay: 30_000,
+      stalledInterval: 120_000,
+      maxStalledCount: 2,
     },
   );
 

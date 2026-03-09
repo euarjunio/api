@@ -108,6 +108,7 @@ enum RefundAnalysisStatus {
 enum CodeType {
   EMAIL_VERIFICATION
   PASSWORD_RESET
+  SENSITIVE_ACTION
 }
 
 enum NotificationType {
@@ -122,6 +123,8 @@ enum NotificationType {
 
 model User {
   id            String   @id @default(uuid())
+  name          String?
+  phone         String?
   email         String   @unique
   passwordHash  String
   role          UserRole @default(USER)
@@ -192,6 +195,17 @@ model Merchant {
   kycNotes      String?   @map("kyc_notes")
   kycAnalyzedAt DateTime? @map("kyc_analyzed_at")
 
+  // KYC — Dados do sócio (CNPJ)
+  partnerName          String?  @map("partner_name")
+  partnerDocument      String?  @map("partner_document")
+
+  // KYC — Documentos extras (CNPJ)
+  socialContractUrl    String?  @map("social_contract_url")
+  cnpjCardUrl          String?  @map("cnpj_card_url")
+  partnerDocFrontUrl   String?  @map("partner_doc_front_url")
+  partnerDocBackUrl    String?  @map("partner_doc_back_url")
+  partnerDocSelfieUrl  String?  @map("partner_doc_selfie_url")
+
   // ── Multi-Adquirente ──
   acquirer          String  @default("transfeera")           // Nome do provedor (transfeera, etc.)
   acquirerAccountId String? @unique @map("acquirer_account_id") // ID da conta no adquirente
@@ -204,11 +218,20 @@ model Merchant {
 
   // Taxa da plataforma (split)
   feeMode   FeeMode @default(FIXADO) @map("fee_mode")
-  feeAmount Int     @default(80) @map("fee_amount") // 80 CENTAVOS (R$ 0.80)
+  feeAmount Int     @default(70) @map("fee_amount") // 70 CENTAVOS (R$ 0.70)
+
+  // Taxa de saque (fixo por merchant, centavos)
+  withdrawFee Int @default(500) @map("withdraw_fee") // 500 CENTAVOS (R$ 5.00)
 
   // Limites de saque
-  maxWithdrawAmount  Int @default(0) @map("max_withdraw_amount")  // centavos; 0 = sem limite por transação
-  dailyWithdrawLimit Int @default(0) @map("daily_withdraw_limit") // centavos; 0 = sem limite diário
+  maxWithdrawAmount    Int @default(500000) @map("max_withdraw_amount")    // centavos; limite por saque: R$ 5.000,00
+  dailyWithdrawLimit   Int @default(500000) @map("daily_withdraw_limit")   // centavos; limite diário: R$ 5.000,00
+  monthlyWithdrawLimit Int @default(40000000) @map("monthly_withdraw_limit") // centavos; limite mensal: R$ 400.000,00
+  nightWithdrawLimit   Int @default(100000) @map("night_withdraw_limit")   // centavos; limite noturno (20h-8h): R$ 1.000,00
+
+  // Limites de ticket (cobrança)
+  minTicketAmount Int @default(100) @map("min_ticket_amount") // centavos; mínimo: R$ 1,00
+  maxTicketAmount Int @default(12000) @map("max_ticket_amount") // centavos; máximo: R$ 120,00
 
   // Preferências de notificação
   emailNotificationsEnabled Boolean @default(true) @map("email_notifications_enabled")
@@ -222,6 +245,7 @@ model Merchant {
 
   apikey        Apikey[]
   charges       Charges[]
+  customers     Customer[]
   webhooks      MerchantWebhook[]
   ledger        Ledger[]
   infractions   Infraction[]
@@ -231,22 +255,30 @@ model Merchant {
 
   @@index([userId])
   @@index([kycStatus])
+  @@index([status, kycStatus])
+  @@index([createdAt])
   @@map("merchants")
 }
 
 model Customer {
   id           String       @id @default(uuid())
   name         String
-  email        String?      @unique
+  email        String?
   phone        String?
-  document     String       @unique
+  document     String
   documentType DocumentType @map("document_type")
   metadata     Json?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-  charges      Charges[]
 
+  merchantId String?  @map("merchant_id")
+  merchant   Merchant? @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  charges Charges[]
+
+  @@unique([merchantId, document])
   @@index([document])
+  @@index([merchantId])
   @@map("customers")
 }
 
@@ -282,15 +314,23 @@ model Charges {
   @@unique([merchantId, idempotencyKey])
   @@index([merchantId, status])
   @@index([txid])
+  @@index([customerId])
+  @@index([merchantId, createdAt])
+  @@index([merchantId, status, createdAt])
+  @@index([status])
+  @@index([status, paidAt])
+  @@index([createdAt])
   @@map("charges")
 }
 
 model Apikey {
-  id          String       @id @default(uuid())
-  name        String
-  value       String       @unique
-  description String
-  status      ApiKeyStatus @default(ACTIVE)
+  id           String       @id @default(uuid())
+  name         String
+  keyHash      String       @unique @map("key_hash")
+  keyPrefix    String       @default("") @map("key_prefix")
+  keyEncrypted String?      @map("key_encrypted") // AES-256-GCM encrypted plain key for reveal
+  description  String
+  status       ApiKeyStatus @default(ACTIVE)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -321,6 +361,8 @@ model Ledger {
   @@index([merchantId, status])
   @@index([merchantId, type])
   @@index([chargeId])
+  @@index([merchantId, type, createdAt])
+  @@index([type])
   @@map("ledger")
 }
 
@@ -494,6 +536,7 @@ model Infraction {
   @@index([merchantId, analysisStatus])
   @@index([txid])
   @@index([transactionId])
+  @@index([merchantId, createdAt])
   @@map("infractions")
 }
 

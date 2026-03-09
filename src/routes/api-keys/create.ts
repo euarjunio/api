@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 
@@ -6,13 +7,18 @@ import { checkUserRequest } from "../../utils/check-user-request.ts";
 import { prisma } from "../../lib/prisma.ts";
 import { generateApiKey } from "../../utils/api-keys.ts";
 import { logAction, getRequestContext } from "../../lib/audit.ts";
+import { encryptSecret } from "../../lib/totp.ts";
+
+function hashApiKey(key: string): string {
+  return createHash("sha256").update(key).digest("hex");
+}
 
 export const createApiKeyRoute: FastifyPluginAsyncZod = async (app) => {
   app.addHook("onRequest", verifyJwt).post("/", {
     schema: {
       tags: ["API Keys"],
       summary: "Criar API Key",
-      description: "Cria uma nova API Key para o logista ativo do usuário",
+      description: "Cria uma nova API Key para o logista ativo. A chave é exibida apenas na criação e pode ser re-visualizada via POST /api-keys/:id/reveal.",
       body: z.object({
         name: z.string().min(1, "Nome é obrigatório"),
         description: z.string().min(1, "Descrição é obrigatória"),
@@ -28,6 +34,7 @@ export const createApiKeyRoute: FastifyPluginAsyncZod = async (app) => {
             createdAt: z.string().datetime(),
           }),
         }),
+        400: z.object({ message: z.string() }),
         404: z.object({ message: z.string() }),
         401: z.object({ message: z.string() }),
       },
@@ -47,13 +54,18 @@ export const createApiKeyRoute: FastifyPluginAsyncZod = async (app) => {
       return reply.status(404).send({ message: "Merchant não encontrado" });
     }
 
-    const value = generateApiKey();
+    const plainKey = generateApiKey();
+    const keyHash = hashApiKey(plainKey);
+    const keyPrefix = plainKey.slice(0, 7) + "****" + plainKey.slice(-4);
+    const keyEncrypted = encryptSecret(plainKey);
 
     const apiKey = await prisma.apikey.create({
       data: {
         name,
         description,
-        value,
+        keyHash,
+        keyPrefix,
+        keyEncrypted,
         merchantId: existingMerchant.id,
         status: "ACTIVE",
       },
@@ -66,7 +78,7 @@ export const createApiKeyRoute: FastifyPluginAsyncZod = async (app) => {
       apiKey: {
         id: apiKey.id,
         name: apiKey.name,
-        value: apiKey.value,
+        value: plainKey,
         description: apiKey.description,
         status: apiKey.status,
         createdAt: apiKey.createdAt.toISOString(),

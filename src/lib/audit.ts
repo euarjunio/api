@@ -1,4 +1,5 @@
-import { prisma } from "./prisma.ts";
+import { Queue } from "bullmq";
+import { env } from "../config/env.ts";
 
 export type AuditAction =
   | "LOGIN"
@@ -19,32 +20,46 @@ export type AuditAction =
 
 interface LogActionInput {
   action: AuditAction;
-  actor: string;                  // userId, "system", ou "admin:userId"
-  target?: string;                // recurso afetado (merchantId, chargeId, etc.)
-  metadata?: Record<string, any>; // payload extra
+  actor: string;
+  target?: string;
+  metadata?: Record<string, any>;
   ip?: string;
   userAgent?: string;
 }
 
+export const auditQueue = new Queue<LogActionInput>("audit-logs", {
+  connection: { url: env.REDIS_URL, maxRetriesPerRequest: null },
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: { type: "exponential", delay: 5_000 },
+    removeOnComplete: { count: 500 },
+    removeOnFail: { count: 1000 },
+  },
+});
+
 /**
- * Registra uma ação no audit log.
- * Fire-and-forget: não lança exceção se falhar (apenas loga no console).
+ * Enqueues an audit log entry via BullMQ.
+ * Falls back to direct DB write if Redis is unavailable.
  */
 export function logAction(input: LogActionInput): void {
-  prisma.auditLog
-    .create({
-      data: {
-        action: input.action,
-        actor: input.actor,
-        target: input.target,
-        metadata: input.metadata ?? undefined,
-        ip: input.ip,
-        userAgent: input.userAgent,
-      },
-    })
-    .catch((err) => {
-      console.error(`📋 [AUDIT] Erro ao registrar ação: ${err?.message}`);
-    });
+  auditQueue.add("audit", input).catch(async (err) => {
+    console.warn(`📋 [AUDIT] Redis offline, fallback direto ao banco: ${err?.message}`);
+    try {
+      const { prisma } = await import("./prisma.ts");
+      await prisma.auditLog.create({
+        data: {
+          action: input.action,
+          actor: input.actor,
+          target: input.target,
+          metadata: input.metadata ?? undefined,
+          ip: input.ip,
+          userAgent: input.userAgent,
+        },
+      });
+    } catch (dbErr: any) {
+      console.error(`📋 [AUDIT] Erro ao registrar ação: ${dbErr?.message}`);
+    }
+  });
 }
 
 /**

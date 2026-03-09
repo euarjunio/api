@@ -10,7 +10,7 @@ export const listCustomersRoute: FastifyPluginAsyncZod = async (app) => {
     schema: {
       tags: ["Customers"],
       summary: "Listar clientes",
-      description: "Lista os clientes que realizaram ao menos uma cobrança do merchant autenticado.",
+      description: "Lista os clientes do merchant autenticado.",
       querystring: z.object({
         page: z.coerce.number().int().min(1).optional().default(1),
         limit: z.coerce.number().int().min(1).max(100).optional().default(20),
@@ -48,7 +48,6 @@ export const listCustomersRoute: FastifyPluginAsyncZod = async (app) => {
       return reply.status(404).send({ message: "Merchant não encontrado" });
     }
 
-    // Busca IDs de clientes com cobranças deste merchant
     const searchFilter = search
       ? {
           OR: [
@@ -59,10 +58,9 @@ export const listCustomersRoute: FastifyPluginAsyncZod = async (app) => {
         }
       : {};
 
+    // Scoped to merchant via merchantId
     const customerWhere = {
-      charges: {
-        some: { merchantId: merchant.id },
-      },
+      merchantId: merchant.id,
       ...searchFilter,
     };
 

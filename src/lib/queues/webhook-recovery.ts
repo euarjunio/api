@@ -28,12 +28,14 @@ async function runRecoveryCycle() {
 
   console.log(`🔄 [RECOVERY] ${pending.length} webhook(s) pendente(s) — iniciando reprocessamento`);
 
+  // Batch update to PROCESSING
+  const pendingIds = pending.map((w) => w.id);
+  await prisma.pendingWebhook.updateMany({
+    where: { id: { in: pendingIds } },
+    data: { status: "PROCESSING" },
+  });
+
   for (const webhook of pending) {
-    // Marcar como PROCESSING para evitar processamento duplicado
-    await prisma.pendingWebhook.update({
-      where: { id: webhook.id },
-      data: { status: "PROCESSING" },
-    });
 
     const log = {
       info:  (m: string) => console.log(`ℹ️  [RECOVERY:${webhook.id.slice(0, 8)}] ${m}`),

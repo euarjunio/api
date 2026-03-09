@@ -9,6 +9,7 @@ import {
   hashBackupCodes,
 } from "../../../lib/totp.ts";
 import { logAction, getRequestContext } from "../../../lib/audit.ts";
+import { invalidateUserTokens } from "../../../lib/jwt-blacklist.ts";
 
 export const enable2faRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -31,6 +32,7 @@ export const enable2faRoute: FastifyPluginAsyncZod = async (app) => {
           }),
           400: z.object({ message: z.string() }),
           409: z.object({ message: z.string() }),
+          401: z.object({ message: z.string() }),
         },
       },
     },
@@ -73,6 +75,9 @@ export const enable2faRoute: FastifyPluginAsyncZod = async (app) => {
           twoFactorBackupCodes: hashedCodes,
         },
       });
+
+      // Invalidate existing JWTs after 2FA state change
+      await invalidateUserTokens(userId);
 
       logAction({ action: "2FA_ENABLED", actor: userId, ...getRequestContext(request) });
 

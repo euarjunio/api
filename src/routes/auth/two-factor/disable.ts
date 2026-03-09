@@ -2,8 +2,9 @@ import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { prisma } from "../../../lib/prisma.ts";
 import { authenticate } from "../../hooks/authenticate.ts";
-import { decryptSecret, verifyToken } from "../../../lib/totp.ts";
+import { decryptSecret, verifyToken, verifyBackupCode } from "../../../lib/totp.ts";
 import { logAction, getRequestContext } from "../../../lib/audit.ts";
+import { invalidateUserTokens } from "../../../lib/jwt-blacklist.ts";
 
 export const disable2faRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -13,9 +14,9 @@ export const disable2faRoute: FastifyPluginAsyncZod = async (app) => {
       schema: {
         tags: ["Auth / 2FA"],
         summary: "Desativar 2FA",
-        description: "Desativa o 2FA usando um código TOTP válido.",
+        description: "Desativa o 2FA usando um código TOTP válido ou um backup code.",
         body: z.object({
-          code: z.string().length(6),
+          code: z.string().min(6).max(9),
         }),
         response: {
           200: z.object({ message: z.string() }),
@@ -29,7 +30,11 @@ export const disable2faRoute: FastifyPluginAsyncZod = async (app) => {
 
       const user = await prisma.user.findUnique({
         where: { id: userId },
-        select: { twoFactorEnabled: true, twoFactorSecret: true },
+        select: {
+          twoFactorEnabled: true,
+          twoFactorSecret: true,
+          twoFactorBackupCodes: true,
+        },
       });
 
       if (!user) {
@@ -41,11 +46,19 @@ export const disable2faRoute: FastifyPluginAsyncZod = async (app) => {
       }
 
       let valid = false;
+
+      // Try TOTP code first
       try {
         const secret = decryptSecret(user.twoFactorSecret);
         valid = verifyToken(secret, code);
       } catch {
-        return reply.status(400).send({ message: "Erro ao validar o código. Contate o suporte." });
+        // Decryption error — fall through to backup code check
+      }
+
+      // Try backup code if TOTP didn't match
+      if (!valid) {
+        const backupIdx = await verifyBackupCode(code, user.twoFactorBackupCodes);
+        valid = backupIdx >= 0;
       }
 
       if (!valid) {
@@ -60,6 +73,9 @@ export const disable2faRoute: FastifyPluginAsyncZod = async (app) => {
           twoFactorBackupCodes: [],
         },
       });
+
+      // Invalidate existing JWTs after 2FA state change
+      await invalidateUserTokens(userId);
 
       logAction({ action: "2FA_DISABLED", actor: userId, ...getRequestContext(request) });
 

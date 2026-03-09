@@ -4,6 +4,7 @@ import { z } from "zod";
 import { checkUserRequest } from "../../../utils/check-user-request.ts";
 import { prisma } from "../../../lib/prisma.ts";
 import { WEBHOOK_EVENT_NAMES } from "./events.ts";
+import { isPrivateUrl } from "../../../utils/validate-url.ts";
 
 export const updateMerchantWebhookRoute: FastifyPluginAsyncZod = async (app) => {
   // PATCH /v1/webhooks/merchant/:id
@@ -15,7 +16,9 @@ export const updateMerchantWebhookRoute: FastifyPluginAsyncZod = async (app) => 
         "Atualiza URL, nome, eventos ou status de um webhook específico. Envie apenas os campos que deseja alterar.",
       params: z.object({ id: z.uuid() }),
       body: z.object({
-        url: z.url("URL inválida").optional(),
+        url: z.url("URL inválida").refine((u) => !isPrivateUrl(u), {
+          message: "URLs privadas/internas não são permitidas",
+        }).optional(),
         name: z.string().max(100).nullable().optional(),
         events: z.array(z.string()).optional(),
         status: z.enum(["ACTIVE", "INACTIVE"]).optional(),

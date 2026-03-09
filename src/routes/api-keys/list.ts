@@ -10,9 +10,16 @@ export const listApiKeysRoute: FastifyPluginAsyncZod = async (app) => {
     schema: {
       tags: ["API Keys"],
       summary: "Listar API Keys",
-      description: "Lista todas as API Keys do logista autenticado",
+      description: "Lista todas as API Keys do logista autenticado (paginado)",
+      querystring: z.object({
+        page: z.coerce.number().int().min(1).optional().default(1),
+        limit: z.coerce.number().int().min(1).max(100).optional().default(20),
+      }),
       response: {
         200: z.object({
+          page: z.number(),
+          limit: z.number(),
+          total: z.number(),
           apiKeys: z.array(z.object({
             id: z.string(),
             name: z.string(),
@@ -28,6 +35,7 @@ export const listApiKeysRoute: FastifyPluginAsyncZod = async (app) => {
     },
   }, async (request, reply) => {
     const { id } = await checkUserRequest(request);
+    const { page, limit } = request.query;
 
     request.log.info({ userId: id }, "Listing API keys");
 
@@ -40,17 +48,27 @@ export const listApiKeysRoute: FastifyPluginAsyncZod = async (app) => {
       return reply.status(404).send({ message: "Merchant não encontrado" });
     }
 
-    const apiKeys = await prisma.apikey.findMany({
-      where: { merchantId: existingMerchant.id },
-      orderBy: { createdAt: "desc" },
-    });
+    const where = { merchantId: existingMerchant.id };
+
+    const [total, apiKeys] = await Promise.all([
+      prisma.apikey.count({ where }),
+      prisma.apikey.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+    ]);
 
     return reply.status(200).send({
+      page,
+      limit,
+      total,
       apiKeys: apiKeys.map((key) => ({
         id: key.id,
         name: key.name,
         description: key.description,
-        value: key.value,
+        value: key.keyPrefix,
         status: key.status,
         createdAt: key.createdAt.toISOString(),
       })),

@@ -1,4 +1,4 @@
-import { createHmac } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { env } from "../../config/env.ts";
 import { AcquirerError } from "../acquirer.error.ts";
 import type { AcquirerProvider } from "../acquirer.interface.ts";
@@ -310,7 +310,11 @@ export class TransfeeraProvider implements AcquirerProvider {
     const expectedSignature = createHmac("sha256", secret)
       .update(payload)
       .digest("hex");
-    return expectedSignature === signature;
+    if (expectedSignature.length !== signature.length) return false;
+    return timingSafeEqual(
+      Buffer.from(expectedSignature, "hex"),
+      Buffer.from(signature, "hex"),
+    );
   }
 
   // ── Infractions (MED) ──────────────────────────────────────────────

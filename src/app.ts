@@ -20,11 +20,32 @@ import { z } from "zod";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import { BadRequestError } from "./routes/errors/bad-request-error.ts";
+import { NotFoundError } from "./routes/errors/not-found-error.ts";
+import { ForbiddenError } from "./routes/errors/forbidden-error.ts";
 import { AcquirerError } from "./providers/acquirer.error.ts";
 import { captureError } from "./lib/sentry.ts";
 import rateLimit from "@fastify/rate-limit";
+import helmet from "@fastify/helmet";
 import { redis } from "./lib/redis.ts";
 import { prisma } from "./lib/prisma.ts";
+import {
+    register,
+    httpRequestDuration,
+    httpRequestsTotal,
+    registerBullMQQueue,
+    collectBullMQMetrics,
+} from "./lib/metrics.ts";
+
+// ── BullMQ queue imports for metrics ─────────────────────────────────
+import { webhookQueue } from "./lib/queues/webhook-queue.ts";
+import { settlementQueue } from "./lib/queues/settlement-queue.ts";
+import { auditQueue } from "./lib/audit.ts";
+import { chargeExpirationQueue } from "./lib/queues/charge-expiration.ts";
+
+registerBullMQQueue(webhookQueue);
+registerBullMQQueue(settlementQueue);
+registerBullMQQueue(auditQueue);
+registerBullMQQueue(chargeExpirationQueue);
 
 // ── Rotas RESTful ────────────────────────────────────────────────────
 import { authRoutes } from "./routes/auth/index.ts";
@@ -56,6 +77,22 @@ const allowedOrigins = parseAllowedOrigins();
 // ── Rate limit multiplier: sandbox é mais permissivo ─────────────────
 const rateLimitMultiplier = isDevelopment ? 2 : 1;
 
+// ── In-memory rate limit fallback when Redis is down ─────────────────
+const memoryLimiter = new Map<string, { count: number; resetAt: number }>();
+let redisAvailable = true;
+
+redis.on("error", () => { redisAvailable = false; });
+redis.on("connect", () => { redisAvailable = true; });
+redis.on("ready", () => { redisAvailable = true; });
+
+// Periodically clean expired in-memory entries
+setInterval(() => {
+    const now = Date.now();
+    for (const [key, val] of memoryLimiter) {
+        if (val.resetAt <= now) memoryLimiter.delete(key);
+    }
+}, 60_000);
+
 const server = fastify({
     logger: {
         ...(env.NODE_ENV === "development"
@@ -74,7 +111,6 @@ const server = fastify({
             : {}),
         serializers: {
             req(request) {
-                // Sanitizar headers: remover tokens, JWTs e API Keys dos logs
                 const safeHeaders: Record<string, unknown> = {};
                 if (request.headers) {
                     for (const [key, value] of Object.entries(request.headers)) {
@@ -92,9 +128,10 @@ const server = fastify({
             },
         },
     },
-    // Gera request ID automaticamente se não vier no header
     genReqId: (request) => {
-        return (request.headers["x-request-id"] as string) ?? randomUUID();
+        const clientId = request.headers["x-request-id"] as string | undefined;
+        const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        return (clientId && UUID_RE.test(clientId)) ? clientId : randomUUID();
     },
     requestIdHeader: "x-request-id",
 }).withTypeProvider<ZodTypeProvider>();
@@ -112,11 +149,16 @@ server.register(rawBody, {
     runFirst: true,
 });
 
+// ── Security Headers ──────────────────────────────────────────────────
+server.register(helmet, {
+    contentSecurityPolicy: false,
+});
+
 // ── CORS ──────────────────────────────────────────────────────────────
 server.register(fastifyCors, {
     origin: allowedOrigins === "*"
-        ? true                    // Aceita qualquer origem (sandbox/dev)
-        : allowedOrigins,         // Lista explícita de origens (produção)
+        ? true
+        : allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-idempotency-key', 'x-request-id'],
 });
@@ -130,14 +172,71 @@ server.register(fastifyJwt, {
 
 // ── Hooks globais ─────────────────────────────────────────────────────
 
-// X-Request-Id + X-Environment em cada resposta
 server.addHook("onSend", async (request, reply) => {
-    // Propagar request ID para o response
     reply.header("x-request-id", request.id);
 
-    // Em sandbox, identificar o ambiente no header
     if (isDevelopment) {
         reply.header("x-environment", "development");
+    }
+});
+
+server.addHook("onResponse", (request, reply, done) => {
+    const route = request.routeOptions?.url ?? request.url;
+    if (route === "/metrics" || route === "/health") {
+        done();
+        return;
+    }
+
+    const durationSec = reply.elapsedTime / 1000;
+    const labels = {
+        method: request.method,
+        route,
+        status: String(reply.statusCode),
+    };
+
+    httpRequestDuration.observe(labels, durationSec);
+    httpRequestsTotal.inc(labels);
+
+    if (reply.elapsedTime > 1000) {
+        request.log.warn(
+            { durationMs: reply.elapsedTime.toFixed(0), route },
+            "Request lento",
+        );
+    }
+
+    done();
+});
+
+// ── In-memory rate limit fallback (active when Redis is down) ────────
+server.addHook("onRequest", async (request, reply) => {
+    if (redisAvailable) return;
+
+    const url = request.url;
+    if (url === "/health" || url === "/metrics") return;
+
+    const ip = request.ip;
+    const now = Date.now();
+    const windowMs = 60_000;
+    let limit: number;
+
+    if (url.startsWith("/v1/auth")) {
+        limit = env.RATE_LIMIT_AUTH * rateLimitMultiplier;
+    } else if (url.startsWith("/v1/charges")) {
+        limit = env.RATE_LIMIT_CHARGE * rateLimitMultiplier;
+    } else {
+        limit = env.RATE_LIMIT_GLOBAL * rateLimitMultiplier;
+    }
+
+    const key = `mem:${ip}:${url.split("/").slice(0, 3).join("/")}`;
+    let entry = memoryLimiter.get(key);
+    if (!entry || entry.resetAt <= now) {
+        entry = { count: 0, resetAt: now + windowMs };
+        memoryLimiter.set(key, entry);
+    }
+
+    entry.count++;
+    if (entry.count > limit) {
+        return reply.status(429).send({ message: "Too many requests. Please try again later." });
     }
 });
 
@@ -148,10 +247,10 @@ server.register(rateLimit, {
     max: (request, _key) => {
         if (request.url.startsWith("/v1/auth")) return env.RATE_LIMIT_AUTH * rateLimitMultiplier;
         if (request.url.startsWith("/v1/charges")) return env.RATE_LIMIT_CHARGE * rateLimitMultiplier;
+        if (request.url.startsWith("/v1/webhooks/transfeera")) return 300 * rateLimitMultiplier;
         return env.RATE_LIMIT_GLOBAL * rateLimitMultiplier;
     },
     keyGenerator: (request) => {
-        // Rotas de cobrança: limita por API Key quando disponível (mais justo)
         if (request.url.startsWith("/v1/charges")) {
             const authHeader = request.headers.authorization ?? "";
             const token = authHeader.replace(/^Bearer\s+/i, "");
@@ -159,18 +258,19 @@ server.register(rateLimit, {
             return `charge:${request.ip}`;
         }
 
-        // Rotas de auth: chave específica por IP (anti brute-force)
+        if (request.url.startsWith("/v1/webhooks/transfeera")) {
+            return `webhook-transfeera:${request.ip}`;
+        }
+
         if (request.url.startsWith("/v1/auth")) return `auth:${request.ip}`;
 
-        // Global: por IP
         return request.ip;
     },
-    // Pula health check e webhooks da Transfeera
     allowList: (request) => {
-        return request.url === "/health" || request.url.startsWith("/v1/webhooks/transfeera");
+        return request.url === "/health";
     },
     redis,
-    skipOnError: true, // fail-open: se Redis cair, não bloqueia requests
+    skipOnError: true,
     errorResponseBuilder: (_request, context) => ({
         message: "Too many requests. Please try again later.",
         retryAfter: Math.ceil(context.ttl / 1000),
@@ -178,7 +278,7 @@ server.register(rateLimit, {
 });
 
 // ── Swagger (controlado por ENABLE_SWAGGER) ───────────────────────────
-if (env.ENABLE_SWAGGER) {
+if (env.ENABLE_SWAGGER && isDevelopment) {
     server.register(fastifySwagger, {
         openapi: {
             info: {
@@ -202,6 +302,24 @@ if (env.ENABLE_SWAGGER) {
         routePrefix: "/docs",
     });
 }
+
+// ── Prometheus Metrics (Fly.io Grafana scrapes this) ─────────────────
+server.get("/metrics", { logLevel: "silent" }, async (request, reply) => {
+    const flyHeader = request.headers["fly-forwarded-port"];
+    const ip = request.ip;
+    const isInternal = flyHeader || ip === "127.0.0.1" || ip === "::1" || ip?.startsWith("fdaa:");
+    if (!isInternal && !isDevelopment) {
+        return reply.status(403).send({ message: "Forbidden" });
+    }
+
+    // Collect BullMQ queue metrics before returning
+    await collectBullMQMetrics();
+
+    const metrics = await register.metrics();
+    return reply
+        .header("content-type", register.contentType)
+        .send(metrics);
+});
 
 // ── Health Check (robusto: Redis + Postgres) ──────────────────────────
 server.get(
@@ -237,15 +355,13 @@ server.get(
         let redisOk = false;
         let postgresOk = false;
 
-        // Checar Redis
         try {
             const pong = await redis.ping();
             redisOk = pong === "PONG";
         } catch { /* down */ }
 
-        // Checar Postgres
         try {
-            await prisma.$queryRawUnsafe("SELECT 1");
+            await prisma.$queryRaw`SELECT 1`;
             postgresOk = true;
         } catch { /* down */ }
 
@@ -276,7 +392,7 @@ server.register(notificationsRoutes, { prefix: "/v1/notifications" });
 server.register(customersRoutes, { prefix: "/v1/customers" });
 
 server.setErrorHandler((error: any, request, reply) => {
-    console.error(error);
+    request.log.error({ err: error }, "Unhandled error");
 
     if (hasZodFastifySchemaValidationErrors(error)) {
         request.log.warn(
@@ -314,6 +430,14 @@ server.setErrorHandler((error: any, request, reply) => {
         return reply.status(error.statusCode).send({ message: error.message });
     }
 
+    if (error instanceof NotFoundError) {
+        return reply.status(404).send({ message: error.message });
+    }
+
+    if (error instanceof ForbiddenError) {
+        return reply.status(403).send({ message: error.message });
+    }
+
     if (error instanceof AcquirerError) {
         request.log.error(
             {
@@ -332,7 +456,6 @@ server.setErrorHandler((error: any, request, reply) => {
         });
     }
 
-    // Capturar no Sentry apenas erros não mapeados (500)
     captureError(error, {
         url: request.url,
         method: request.method,

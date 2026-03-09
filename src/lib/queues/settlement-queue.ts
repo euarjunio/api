@@ -60,9 +60,11 @@ export function startSettlementWorker() {
       );
     },
     {
-      // Use connection options (not an ioredis instance) to avoid type conflicts from nested ioredis deps.
       connection: { url: env.REDIS_URL, maxRetriesPerRequest: null },
       concurrency: 10,
+      drainDelay: 30_000,
+      stalledInterval: 120_000,
+      maxStalledCount: 2,
     },
   );
 

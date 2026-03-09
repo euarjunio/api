@@ -11,7 +11,7 @@ export const createCustomerRoute: FastifyPluginAsyncZod = async (app) => {
     schema: {
       tags: ["Customers"],
       summary: "Cadastrar cliente",
-      description: "Cadastra um novo cliente manualmente. O documento (CPF ou CNPJ) deve ser único.",
+      description: "Cadastra um novo cliente para o merchant autenticado. O documento (CPF ou CNPJ) deve ser único por merchant.",
       body: z.object({
         name: z.string().min(2, "Nome deve ter ao menos 2 caracteres").max(255),
         email: z.email("E-mail inválido").optional(),
@@ -30,13 +30,22 @@ export const createCustomerRoute: FastifyPluginAsyncZod = async (app) => {
             createdAt: z.string().datetime(),
           }),
         }),
+        404: z.object({ message: z.string() }),
         409: z.object({ message: z.string() }),
         422: z.object({ message: z.string() }),
       },
     },
   }, async (request, reply) => {
-    // Apenas verifica que o usuário está autenticado (não precisa do merchant para criar cliente)
-    await checkUserRequest(request);
+    const { id: userId } = await checkUserRequest(request);
+
+    const merchant = await prisma.merchant.findUnique({
+      where: { userId },
+      select: { id: true },
+    });
+
+    if (!merchant) {
+      return reply.status(404).send({ message: "Merchant não encontrado" });
+    }
 
     const { name, email, phone, document } = request.body;
 
@@ -49,9 +58,10 @@ export const createCustomerRoute: FastifyPluginAsyncZod = async (app) => {
       });
     }
 
-    // Verificar duplicidade por documento ou e-mail
+    // Scoped duplicate check: unique per merchant
     const existing = await prisma.customer.findFirst({
       where: {
+        merchantId: merchant.id,
         OR: [
           { document: normalizedDoc },
           ...(email ? [{ email }] : []),
@@ -73,6 +83,7 @@ export const createCustomerRoute: FastifyPluginAsyncZod = async (app) => {
         phone: phone ?? null,
         document: normalizedDoc,
         documentType,
+        merchantId: merchant.id,
       },
     });
 

@@ -16,6 +16,8 @@ export const listChargesRoute: FastifyPluginAsyncZod = async (app) => {
         page: z.coerce.number().int().min(1).optional().default(1),
         limit: z.coerce.number().int().min(1).max(100).optional().default(20),
         status: z.enum(["PENDING", "PAID", "FAILED", "CANCELED", "REFUNDED"]).optional(),
+        startDate: z.string().datetime({ offset: true }).optional(),
+        endDate: z.string().datetime({ offset: true }).optional(),
       }),
       response: {
         200: z.object({
@@ -44,7 +46,7 @@ export const listChargesRoute: FastifyPluginAsyncZod = async (app) => {
     },
   }, async (request, reply) => {
     const { id: userId } = await checkUserRequest(request);
-    const { page, limit, status } = request.query;
+    const { page, limit, status, startDate, endDate } = request.query;
 
     const merchant = await prisma.merchant.findUnique({
       where: { userId },
@@ -56,13 +58,21 @@ export const listChargesRoute: FastifyPluginAsyncZod = async (app) => {
     }
 
     const cached = await getOrSet(
-      CacheKeys.charges(merchant.id, page, limit, status),
+      CacheKeys.charges(merchant.id, page, limit, status, startDate, endDate),
       CacheTTL.charges,
       async () => {
         const where = {
           merchantId: merchant.id,
           ...(status ? { status } : {}),
-        } as const;
+          ...(startDate || endDate
+            ? {
+                createdAt: {
+                  ...(startDate ? { gte: new Date(startDate) } : {}),
+                  ...(endDate ? { lte: new Date(endDate) } : {}),
+                },
+              }
+            : {}),
+        };
 
         const [total, charges] = await Promise.all([
           prisma.charges.count({ where }),

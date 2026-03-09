@@ -5,21 +5,23 @@ import crypto from "node:crypto";
 import { checkUserRequest } from "../../../utils/check-user-request.ts";
 import { prisma } from "../../../lib/prisma.ts";
 import { WEBHOOK_EVENT_NAMES } from "./events.ts";
+import { isPrivateUrl } from "../../../utils/validate-url.ts";
 
 function generateWebhookSecret(): string {
   return crypto.randomBytes(32).toString("hex");
 }
 
 export const createMerchantWebhookRoute: FastifyPluginAsyncZod = async (app) => {
-  // POST /v1/webhooks/merchant
   app.post("/", {
     schema: {
       tags: ["Webhooks"],
       summary: "Criar webhook",
       description:
-        "Cria um novo webhook para o merchant. Cada webhook pode escutar eventos específicos. Se nenhum evento for selecionado, o webhook receberá todos os eventos (wildcard). O secret é retornado apenas na criação — guarde-o.",
+        "Cria um novo webhook para o merchant. O secret é exibido apenas na criação e pode ser re-visualizado via POST /webhooks/merchant/:id/reveal.",
       body: z.object({
-        url: z.url("URL inválida"),
+        url: z.url("URL inválida").refine((u) => !isPrivateUrl(u), {
+          message: "URLs privadas/internas não são permitidas",
+        }),
         name: z.string().max(100).optional(),
         events: z.array(z.string()).default([]),
       }),
@@ -52,7 +54,6 @@ export const createMerchantWebhookRoute: FastifyPluginAsyncZod = async (app) => 
       return reply.status(404).send({ message: "Merchant não encontrado" });
     }
 
-    // Validar se os eventos informados existem
     if (events.length > 0) {
       const invalid = events.filter((e) => !WEBHOOK_EVENT_NAMES.includes(e));
       if (invalid.length > 0) {

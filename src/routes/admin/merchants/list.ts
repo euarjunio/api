@@ -1,6 +1,7 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { prisma } from "../../../lib/prisma.ts";
+import type { Prisma } from "../../../lib/generated/prisma/client.ts";
 
 export const listMerchantsRoute: FastifyPluginAsyncZod = async (app) => {
   // GET /v1/admin/merchants
@@ -42,7 +43,7 @@ export const listMerchantsRoute: FastifyPluginAsyncZod = async (app) => {
   }, async (request, reply) => {
     const { page, limit, kycStatus, status, search } = request.query;
 
-    const where: any = {};
+    const where: Prisma.MerchantWhereInput = {};
     if (kycStatus) where.kycStatus = kycStatus;
     if (status) where.status = status;
     if (search) {
@@ -60,6 +61,12 @@ export const listMerchantsRoute: FastifyPluginAsyncZod = async (app) => {
         orderBy: { createdAt: "desc" },
         skip: (page - 1) * limit,
         take: limit,
+        select: {
+          id: true, name: true, email: true, document: true,
+          documentType: true, status: true, kycStatus: true,
+          feeMode: true, feeAmount: true, pixKey: true,
+          acquirer: true, acquirerAccountId: true, createdAt: true,
+        },
       }),
     ]);
 

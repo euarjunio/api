@@ -3,6 +3,7 @@ import { z } from "zod";
 import { hash } from "argon2";
 import { prisma } from "../../lib/prisma.ts";
 import { verifyCode } from "../../lib/verification-code.ts";
+import { invalidateUserTokens } from "../../lib/jwt-blacklist.ts";
 
 export const resetPasswordRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -45,6 +46,9 @@ export const resetPasswordRoute: FastifyPluginAsyncZod = async (app) => {
         where: { id: user.id },
         data: { passwordHash },
       });
+
+      // Invalidate all existing JWTs for this user
+      await invalidateUserTokens(user.id);
 
       request.log.info({ userId: user.id }, "Password reset successfully");
 

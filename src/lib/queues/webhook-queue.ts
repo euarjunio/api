@@ -1,7 +1,15 @@
 import { Queue, Worker } from "bullmq";
+import { createHmac } from "node:crypto";
 import { prisma } from "../prisma.ts";
 import { env } from "../../config/env.ts";
 import { captureError } from "../sentry.ts";
+
+const SENSITIVE_PATTERNS = /("(?:password|token|secret|key|authorization|cookie|session|api_key|access_token|refresh_token|private)[^"]*"\s*:\s*)"[^"]*"/gi;
+
+function sanitizeWebhookResponse(text: string | null): string | null {
+  if (!text) return null;
+  return text.slice(0, 500).replace(SENSITIVE_PATTERNS, '$1"[REDACTED]"');
+}
 
 // ── Tipos ────────────────────────────────────────────────────────────
 export interface WebhookJobData {
@@ -57,11 +65,13 @@ export function startWebhookWorker() {
       let success = false;
 
       try {
+        const signature = createHmac("sha256", secret).update(body).digest("hex");
+
         const res = await fetch(url, {
           method: "POST",
           headers: {
             "content-type": "application/json",
-            "x-webhook-secret": secret,
+            "x-webhook-signature": signature,
             "x-delivery-id": deliveryId,
           },
           body,
@@ -80,11 +90,13 @@ export function startWebhookWorker() {
       }
 
       // ── Atualizar ou criar log no banco ──────────────────────────
+      const sanitizedResponse = sanitizeWebhookResponse(responseText);
+
       await prisma.webhookLog.upsert({
         where: { deliveryId },
         update: {
           statusCode,
-          response: responseText?.slice(0, 1000) ?? null,
+          response: sanitizedResponse,
           attempts: attempt,
           success,
         },
@@ -94,7 +106,7 @@ export function startWebhookWorker() {
           url,
           payload,
           statusCode,
-          response: responseText?.slice(0, 1000) ?? null,
+          response: sanitizedResponse,
           attempts: attempt,
           success,
           merchantId,
@@ -114,9 +126,11 @@ export function startWebhookWorker() {
       );
     },
     {
-      // Use connection options (not an ioredis instance) to avoid type conflicts from nested ioredis deps.
       connection: { url: env.REDIS_URL, maxRetriesPerRequest: null },
-      concurrency: 5, // até 5 webhooks simultâneos
+      concurrency: 5,
+      drainDelay: 30_000,
+      stalledInterval: 120_000,
+      maxStalledCount: 2,
     },
   );
 

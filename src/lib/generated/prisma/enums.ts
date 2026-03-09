@@ -152,7 +152,8 @@ export type RefundAnalysisStatus = (typeof RefundAnalysisStatus)[keyof typeof Re
 
 export const CodeType = {
   EMAIL_VERIFICATION: 'EMAIL_VERIFICATION',
-  PASSWORD_RESET: 'PASSWORD_RESET'
+  PASSWORD_RESET: 'PASSWORD_RESET',
+  SENSITIVE_ACTION: 'SENSITIVE_ACTION'
 } as const
 
 export type CodeType = (typeof CodeType)[keyof typeof CodeType]

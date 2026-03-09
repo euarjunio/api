@@ -28,14 +28,24 @@ export type AggregateMerchant = {
 
 export type MerchantAvgAggregateOutputType = {
   feeAmount: number | null
+  withdrawFee: number | null
   maxWithdrawAmount: number | null
   dailyWithdrawLimit: number | null
+  monthlyWithdrawLimit: number | null
+  nightWithdrawLimit: number | null
+  minTicketAmount: number | null
+  maxTicketAmount: number | null
 }
 
 export type MerchantSumAggregateOutputType = {
   feeAmount: number | null
+  withdrawFee: number | null
   maxWithdrawAmount: number | null
   dailyWithdrawLimit: number | null
+  monthlyWithdrawLimit: number | null
+  nightWithdrawLimit: number | null
+  minTicketAmount: number | null
+  maxTicketAmount: number | null
 }
 
 export type MerchantMinAggregateOutputType = {
@@ -52,6 +62,13 @@ export type MerchantMinAggregateOutputType = {
   docSelfieUrl: string | null
   kycNotes: string | null
   kycAnalyzedAt: Date | null
+  partnerName: string | null
+  partnerDocument: string | null
+  socialContractUrl: string | null
+  cnpjCardUrl: string | null
+  partnerDocFrontUrl: string | null
+  partnerDocBackUrl: string | null
+  partnerDocSelfieUrl: string | null
   acquirer: string | null
   acquirerAccountId: string | null
   pixKeyId: string | null
@@ -60,8 +77,13 @@ export type MerchantMinAggregateOutputType = {
   pixKeyStatus: string | null
   feeMode: $Enums.FeeMode | null
   feeAmount: number | null
+  withdrawFee: number | null
   maxWithdrawAmount: number | null
   dailyWithdrawLimit: number | null
+  monthlyWithdrawLimit: number | null
+  nightWithdrawLimit: number | null
+  minTicketAmount: number | null
+  maxTicketAmount: number | null
   emailNotificationsEnabled: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -82,6 +104,13 @@ export type MerchantMaxAggregateOutputType = {
   docSelfieUrl: string | null
   kycNotes: string | null
   kycAnalyzedAt: Date | null
+  partnerName: string | null
+  partnerDocument: string | null
+  socialContractUrl: string | null
+  cnpjCardUrl: string | null
+  partnerDocFrontUrl: string | null
+  partnerDocBackUrl: string | null
+  partnerDocSelfieUrl: string | null
   acquirer: string | null
   acquirerAccountId: string | null
   pixKeyId: string | null
@@ -90,8 +119,13 @@ export type MerchantMaxAggregateOutputType = {
   pixKeyStatus: string | null
   feeMode: $Enums.FeeMode | null
   feeAmount: number | null
+  withdrawFee: number | null
   maxWithdrawAmount: number | null
   dailyWithdrawLimit: number | null
+  monthlyWithdrawLimit: number | null
+  nightWithdrawLimit: number | null
+  minTicketAmount: number | null
+  maxTicketAmount: number | null
   emailNotificationsEnabled: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -112,6 +146,13 @@ export type MerchantCountAggregateOutputType = {
   docSelfieUrl: number
   kycNotes: number
   kycAnalyzedAt: number
+  partnerName: number
+  partnerDocument: number
+  socialContractUrl: number
+  cnpjCardUrl: number
+  partnerDocFrontUrl: number
+  partnerDocBackUrl: number
+  partnerDocSelfieUrl: number
   acquirer: number
   acquirerAccountId: number
   pixKeyId: number
@@ -120,8 +161,13 @@ export type MerchantCountAggregateOutputType = {
   pixKeyStatus: number
   feeMode: number
   feeAmount: number
+  withdrawFee: number
   maxWithdrawAmount: number
   dailyWithdrawLimit: number
+  monthlyWithdrawLimit: number
+  nightWithdrawLimit: number
+  minTicketAmount: number
+  maxTicketAmount: number
   emailNotificationsEnabled: number
   metadata: number
   createdAt: number
@@ -133,14 +179,24 @@ export type MerchantCountAggregateOutputType = {
 
 export type MerchantAvgAggregateInputType = {
   feeAmount?: true
+  withdrawFee?: true
   maxWithdrawAmount?: true
   dailyWithdrawLimit?: true
+  monthlyWithdrawLimit?: true
+  nightWithdrawLimit?: true
+  minTicketAmount?: true
+  maxTicketAmount?: true
 }
 
 export type MerchantSumAggregateInputType = {
   feeAmount?: true
+  withdrawFee?: true
   maxWithdrawAmount?: true
   dailyWithdrawLimit?: true
+  monthlyWithdrawLimit?: true
+  nightWithdrawLimit?: true
+  minTicketAmount?: true
+  maxTicketAmount?: true
 }
 
 export type MerchantMinAggregateInputType = {
@@ -157,6 +213,13 @@ export type MerchantMinAggregateInputType = {
   docSelfieUrl?: true
   kycNotes?: true
   kycAnalyzedAt?: true
+  partnerName?: true
+  partnerDocument?: true
+  socialContractUrl?: true
+  cnpjCardUrl?: true
+  partnerDocFrontUrl?: true
+  partnerDocBackUrl?: true
+  partnerDocSelfieUrl?: true
   acquirer?: true
   acquirerAccountId?: true
   pixKeyId?: true
@@ -165,8 +228,13 @@ export type MerchantMinAggregateInputType = {
   pixKeyStatus?: true
   feeMode?: true
   feeAmount?: true
+  withdrawFee?: true
   maxWithdrawAmount?: true
   dailyWithdrawLimit?: true
+  monthlyWithdrawLimit?: true
+  nightWithdrawLimit?: true
+  minTicketAmount?: true
+  maxTicketAmount?: true
   emailNotificationsEnabled?: true
   createdAt?: true
   updatedAt?: true
@@ -187,6 +255,13 @@ export type MerchantMaxAggregateInputType = {
   docSelfieUrl?: true
   kycNotes?: true
   kycAnalyzedAt?: true
+  partnerName?: true
+  partnerDocument?: true
+  socialContractUrl?: true
+  cnpjCardUrl?: true
+  partnerDocFrontUrl?: true
+  partnerDocBackUrl?: true
+  partnerDocSelfieUrl?: true
   acquirer?: true
   acquirerAccountId?: true
   pixKeyId?: true
@@ -195,8 +270,13 @@ export type MerchantMaxAggregateInputType = {
   pixKeyStatus?: true
   feeMode?: true
   feeAmount?: true
+  withdrawFee?: true
   maxWithdrawAmount?: true
   dailyWithdrawLimit?: true
+  monthlyWithdrawLimit?: true
+  nightWithdrawLimit?: true
+  minTicketAmount?: true
+  maxTicketAmount?: true
   emailNotificationsEnabled?: true
   createdAt?: true
   updatedAt?: true
@@ -217,6 +297,13 @@ export type MerchantCountAggregateInputType = {
   docSelfieUrl?: true
   kycNotes?: true
   kycAnalyzedAt?: true
+  partnerName?: true
+  partnerDocument?: true
+  socialContractUrl?: true
+  cnpjCardUrl?: true
+  partnerDocFrontUrl?: true
+  partnerDocBackUrl?: true
+  partnerDocSelfieUrl?: true
   acquirer?: true
   acquirerAccountId?: true
   pixKeyId?: true
@@ -225,8 +312,13 @@ export type MerchantCountAggregateInputType = {
   pixKeyStatus?: true
   feeMode?: true
   feeAmount?: true
+  withdrawFee?: true
   maxWithdrawAmount?: true
   dailyWithdrawLimit?: true
+  monthlyWithdrawLimit?: true
+  nightWithdrawLimit?: true
+  minTicketAmount?: true
+  maxTicketAmount?: true
   emailNotificationsEnabled?: true
   metadata?: true
   createdAt?: true
@@ -335,6 +427,13 @@ export type MerchantGroupByOutputType = {
   docSelfieUrl: string | null
   kycNotes: string | null
   kycAnalyzedAt: Date | null
+  partnerName: string | null
+  partnerDocument: string | null
+  socialContractUrl: string | null
+  cnpjCardUrl: string | null
+  partnerDocFrontUrl: string | null
+  partnerDocBackUrl: string | null
+  partnerDocSelfieUrl: string | null
   acquirer: string
   acquirerAccountId: string | null
   pixKeyId: string | null
@@ -343,8 +442,13 @@ export type MerchantGroupByOutputType = {
   pixKeyStatus: string | null
   feeMode: $Enums.FeeMode
   feeAmount: number
+  withdrawFee: number
   maxWithdrawAmount: number
   dailyWithdrawLimit: number
+  monthlyWithdrawLimit: number
+  nightWithdrawLimit: number
+  minTicketAmount: number
+  maxTicketAmount: number
   emailNotificationsEnabled: boolean
   metadata: runtime.JsonValue | null
   createdAt: Date
@@ -389,6 +493,13 @@ export type MerchantWhereInput = {
   docSelfieUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
   kycNotes?: Prisma.StringNullableFilter<"Merchant"> | string | null
   kycAnalyzedAt?: Prisma.DateTimeNullableFilter<"Merchant"> | Date | string | null
+  partnerName?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  partnerDocument?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  socialContractUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  cnpjCardUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  partnerDocFrontUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  partnerDocBackUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  partnerDocSelfieUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
   acquirer?: Prisma.StringFilter<"Merchant"> | string
   acquirerAccountId?: Prisma.StringNullableFilter<"Merchant"> | string | null
   pixKeyId?: Prisma.StringNullableFilter<"Merchant"> | string | null
@@ -397,8 +508,13 @@ export type MerchantWhereInput = {
   pixKeyStatus?: Prisma.StringNullableFilter<"Merchant"> | string | null
   feeMode?: Prisma.EnumFeeModeFilter<"Merchant"> | $Enums.FeeMode
   feeAmount?: Prisma.IntFilter<"Merchant"> | number
+  withdrawFee?: Prisma.IntFilter<"Merchant"> | number
   maxWithdrawAmount?: Prisma.IntFilter<"Merchant"> | number
   dailyWithdrawLimit?: Prisma.IntFilter<"Merchant"> | number
+  monthlyWithdrawLimit?: Prisma.IntFilter<"Merchant"> | number
+  nightWithdrawLimit?: Prisma.IntFilter<"Merchant"> | number
+  minTicketAmount?: Prisma.IntFilter<"Merchant"> | number
+  maxTicketAmount?: Prisma.IntFilter<"Merchant"> | number
   emailNotificationsEnabled?: Prisma.BoolFilter<"Merchant"> | boolean
   metadata?: Prisma.JsonNullableFilter<"Merchant">
   createdAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
@@ -407,6 +523,7 @@ export type MerchantWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   apikey?: Prisma.ApikeyListRelationFilter
   charges?: Prisma.ChargesListRelationFilter
+  customers?: Prisma.CustomerListRelationFilter
   webhooks?: Prisma.MerchantWebhookListRelationFilter
   ledger?: Prisma.LedgerListRelationFilter
   infractions?: Prisma.InfractionListRelationFilter
@@ -429,6 +546,13 @@ export type MerchantOrderByWithRelationInput = {
   docSelfieUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   kycNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   kycAnalyzedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerDocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  socialContractUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  cnpjCardUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerDocFrontUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerDocBackUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerDocSelfieUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   acquirer?: Prisma.SortOrder
   acquirerAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
   pixKeyId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -437,8 +561,13 @@ export type MerchantOrderByWithRelationInput = {
   pixKeyStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   feeMode?: Prisma.SortOrder
   feeAmount?: Prisma.SortOrder
+  withdrawFee?: Prisma.SortOrder
   maxWithdrawAmount?: Prisma.SortOrder
   dailyWithdrawLimit?: Prisma.SortOrder
+  monthlyWithdrawLimit?: Prisma.SortOrder
+  nightWithdrawLimit?: Prisma.SortOrder
+  minTicketAmount?: Prisma.SortOrder
+  maxTicketAmount?: Prisma.SortOrder
   emailNotificationsEnabled?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -447,6 +576,7 @@ export type MerchantOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   apikey?: Prisma.ApikeyOrderByRelationAggregateInput
   charges?: Prisma.ChargesOrderByRelationAggregateInput
+  customers?: Prisma.CustomerOrderByRelationAggregateInput
   webhooks?: Prisma.MerchantWebhookOrderByRelationAggregateInput
   ledger?: Prisma.LedgerOrderByRelationAggregateInput
   infractions?: Prisma.InfractionOrderByRelationAggregateInput
@@ -475,14 +605,26 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   docSelfieUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
   kycNotes?: Prisma.StringNullableFilter<"Merchant"> | string | null
   kycAnalyzedAt?: Prisma.DateTimeNullableFilter<"Merchant"> | Date | string | null
+  partnerName?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  partnerDocument?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  socialContractUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  cnpjCardUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  partnerDocFrontUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  partnerDocBackUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
+  partnerDocSelfieUrl?: Prisma.StringNullableFilter<"Merchant"> | string | null
   acquirer?: Prisma.StringFilter<"Merchant"> | string
   pixKey?: Prisma.StringNullableFilter<"Merchant"> | string | null
   pixKeyType?: Prisma.StringNullableFilter<"Merchant"> | string | null
   pixKeyStatus?: Prisma.StringNullableFilter<"Merchant"> | string | null
   feeMode?: Prisma.EnumFeeModeFilter<"Merchant"> | $Enums.FeeMode
   feeAmount?: Prisma.IntFilter<"Merchant"> | number
+  withdrawFee?: Prisma.IntFilter<"Merchant"> | number
   maxWithdrawAmount?: Prisma.IntFilter<"Merchant"> | number
   dailyWithdrawLimit?: Prisma.IntFilter<"Merchant"> | number
+  monthlyWithdrawLimit?: Prisma.IntFilter<"Merchant"> | number
+  nightWithdrawLimit?: Prisma.IntFilter<"Merchant"> | number
+  minTicketAmount?: Prisma.IntFilter<"Merchant"> | number
+  maxTicketAmount?: Prisma.IntFilter<"Merchant"> | number
   emailNotificationsEnabled?: Prisma.BoolFilter<"Merchant"> | boolean
   metadata?: Prisma.JsonNullableFilter<"Merchant">
   createdAt?: Prisma.DateTimeFilter<"Merchant"> | Date | string
@@ -490,6 +632,7 @@ export type MerchantWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   apikey?: Prisma.ApikeyListRelationFilter
   charges?: Prisma.ChargesListRelationFilter
+  customers?: Prisma.CustomerListRelationFilter
   webhooks?: Prisma.MerchantWebhookListRelationFilter
   ledger?: Prisma.LedgerListRelationFilter
   infractions?: Prisma.InfractionListRelationFilter
@@ -512,6 +655,13 @@ export type MerchantOrderByWithAggregationInput = {
   docSelfieUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   kycNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   kycAnalyzedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerDocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  socialContractUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  cnpjCardUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerDocFrontUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerDocBackUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerDocSelfieUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   acquirer?: Prisma.SortOrder
   acquirerAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
   pixKeyId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -520,8 +670,13 @@ export type MerchantOrderByWithAggregationInput = {
   pixKeyStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   feeMode?: Prisma.SortOrder
   feeAmount?: Prisma.SortOrder
+  withdrawFee?: Prisma.SortOrder
   maxWithdrawAmount?: Prisma.SortOrder
   dailyWithdrawLimit?: Prisma.SortOrder
+  monthlyWithdrawLimit?: Prisma.SortOrder
+  nightWithdrawLimit?: Prisma.SortOrder
+  minTicketAmount?: Prisma.SortOrder
+  maxTicketAmount?: Prisma.SortOrder
   emailNotificationsEnabled?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -551,6 +706,13 @@ export type MerchantScalarWhereWithAggregatesInput = {
   docSelfieUrl?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
   kycNotes?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
   kycAnalyzedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Merchant"> | Date | string | null
+  partnerName?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  partnerDocument?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  socialContractUrl?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  cnpjCardUrl?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  partnerDocFrontUrl?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  partnerDocBackUrl?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
+  partnerDocSelfieUrl?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
   acquirer?: Prisma.StringWithAggregatesFilter<"Merchant"> | string
   acquirerAccountId?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
   pixKeyId?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
@@ -559,8 +721,13 @@ export type MerchantScalarWhereWithAggregatesInput = {
   pixKeyStatus?: Prisma.StringNullableWithAggregatesFilter<"Merchant"> | string | null
   feeMode?: Prisma.EnumFeeModeWithAggregatesFilter<"Merchant"> | $Enums.FeeMode
   feeAmount?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
+  withdrawFee?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
   maxWithdrawAmount?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
   dailyWithdrawLimit?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
+  monthlyWithdrawLimit?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
+  nightWithdrawLimit?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
+  minTicketAmount?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
+  maxTicketAmount?: Prisma.IntWithAggregatesFilter<"Merchant"> | number
   emailNotificationsEnabled?: Prisma.BoolWithAggregatesFilter<"Merchant"> | boolean
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"Merchant">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Merchant"> | Date | string
@@ -582,6 +749,13 @@ export type MerchantCreateInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -590,8 +764,13 @@ export type MerchantCreateInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -599,6 +778,7 @@ export type MerchantCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
@@ -621,6 +801,13 @@ export type MerchantUncheckedCreateInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -629,8 +816,13 @@ export type MerchantUncheckedCreateInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -638,6 +830,7 @@ export type MerchantUncheckedCreateInput = {
   userId: string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
@@ -660,6 +853,13 @@ export type MerchantUpdateInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -668,8 +868,13 @@ export type MerchantUpdateInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -677,6 +882,7 @@ export type MerchantUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
@@ -699,6 +905,13 @@ export type MerchantUncheckedUpdateInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -707,8 +920,13 @@ export type MerchantUncheckedUpdateInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -716,6 +934,7 @@ export type MerchantUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
@@ -738,6 +957,13 @@ export type MerchantCreateManyInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -746,8 +972,13 @@ export type MerchantCreateManyInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -769,6 +1000,13 @@ export type MerchantUpdateManyMutationInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -777,8 +1015,13 @@ export type MerchantUpdateManyMutationInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -799,6 +1042,13 @@ export type MerchantUncheckedUpdateManyInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -807,8 +1057,13 @@ export type MerchantUncheckedUpdateManyInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -840,6 +1095,13 @@ export type MerchantCountOrderByAggregateInput = {
   docSelfieUrl?: Prisma.SortOrder
   kycNotes?: Prisma.SortOrder
   kycAnalyzedAt?: Prisma.SortOrder
+  partnerName?: Prisma.SortOrder
+  partnerDocument?: Prisma.SortOrder
+  socialContractUrl?: Prisma.SortOrder
+  cnpjCardUrl?: Prisma.SortOrder
+  partnerDocFrontUrl?: Prisma.SortOrder
+  partnerDocBackUrl?: Prisma.SortOrder
+  partnerDocSelfieUrl?: Prisma.SortOrder
   acquirer?: Prisma.SortOrder
   acquirerAccountId?: Prisma.SortOrder
   pixKeyId?: Prisma.SortOrder
@@ -848,8 +1110,13 @@ export type MerchantCountOrderByAggregateInput = {
   pixKeyStatus?: Prisma.SortOrder
   feeMode?: Prisma.SortOrder
   feeAmount?: Prisma.SortOrder
+  withdrawFee?: Prisma.SortOrder
   maxWithdrawAmount?: Prisma.SortOrder
   dailyWithdrawLimit?: Prisma.SortOrder
+  monthlyWithdrawLimit?: Prisma.SortOrder
+  nightWithdrawLimit?: Prisma.SortOrder
+  minTicketAmount?: Prisma.SortOrder
+  maxTicketAmount?: Prisma.SortOrder
   emailNotificationsEnabled?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -859,8 +1126,13 @@ export type MerchantCountOrderByAggregateInput = {
 
 export type MerchantAvgOrderByAggregateInput = {
   feeAmount?: Prisma.SortOrder
+  withdrawFee?: Prisma.SortOrder
   maxWithdrawAmount?: Prisma.SortOrder
   dailyWithdrawLimit?: Prisma.SortOrder
+  monthlyWithdrawLimit?: Prisma.SortOrder
+  nightWithdrawLimit?: Prisma.SortOrder
+  minTicketAmount?: Prisma.SortOrder
+  maxTicketAmount?: Prisma.SortOrder
 }
 
 export type MerchantMaxOrderByAggregateInput = {
@@ -877,6 +1149,13 @@ export type MerchantMaxOrderByAggregateInput = {
   docSelfieUrl?: Prisma.SortOrder
   kycNotes?: Prisma.SortOrder
   kycAnalyzedAt?: Prisma.SortOrder
+  partnerName?: Prisma.SortOrder
+  partnerDocument?: Prisma.SortOrder
+  socialContractUrl?: Prisma.SortOrder
+  cnpjCardUrl?: Prisma.SortOrder
+  partnerDocFrontUrl?: Prisma.SortOrder
+  partnerDocBackUrl?: Prisma.SortOrder
+  partnerDocSelfieUrl?: Prisma.SortOrder
   acquirer?: Prisma.SortOrder
   acquirerAccountId?: Prisma.SortOrder
   pixKeyId?: Prisma.SortOrder
@@ -885,8 +1164,13 @@ export type MerchantMaxOrderByAggregateInput = {
   pixKeyStatus?: Prisma.SortOrder
   feeMode?: Prisma.SortOrder
   feeAmount?: Prisma.SortOrder
+  withdrawFee?: Prisma.SortOrder
   maxWithdrawAmount?: Prisma.SortOrder
   dailyWithdrawLimit?: Prisma.SortOrder
+  monthlyWithdrawLimit?: Prisma.SortOrder
+  nightWithdrawLimit?: Prisma.SortOrder
+  minTicketAmount?: Prisma.SortOrder
+  maxTicketAmount?: Prisma.SortOrder
   emailNotificationsEnabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -907,6 +1191,13 @@ export type MerchantMinOrderByAggregateInput = {
   docSelfieUrl?: Prisma.SortOrder
   kycNotes?: Prisma.SortOrder
   kycAnalyzedAt?: Prisma.SortOrder
+  partnerName?: Prisma.SortOrder
+  partnerDocument?: Prisma.SortOrder
+  socialContractUrl?: Prisma.SortOrder
+  cnpjCardUrl?: Prisma.SortOrder
+  partnerDocFrontUrl?: Prisma.SortOrder
+  partnerDocBackUrl?: Prisma.SortOrder
+  partnerDocSelfieUrl?: Prisma.SortOrder
   acquirer?: Prisma.SortOrder
   acquirerAccountId?: Prisma.SortOrder
   pixKeyId?: Prisma.SortOrder
@@ -915,8 +1206,13 @@ export type MerchantMinOrderByAggregateInput = {
   pixKeyStatus?: Prisma.SortOrder
   feeMode?: Prisma.SortOrder
   feeAmount?: Prisma.SortOrder
+  withdrawFee?: Prisma.SortOrder
   maxWithdrawAmount?: Prisma.SortOrder
   dailyWithdrawLimit?: Prisma.SortOrder
+  monthlyWithdrawLimit?: Prisma.SortOrder
+  nightWithdrawLimit?: Prisma.SortOrder
+  minTicketAmount?: Prisma.SortOrder
+  maxTicketAmount?: Prisma.SortOrder
   emailNotificationsEnabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -925,8 +1221,13 @@ export type MerchantMinOrderByAggregateInput = {
 
 export type MerchantSumOrderByAggregateInput = {
   feeAmount?: Prisma.SortOrder
+  withdrawFee?: Prisma.SortOrder
   maxWithdrawAmount?: Prisma.SortOrder
   dailyWithdrawLimit?: Prisma.SortOrder
+  monthlyWithdrawLimit?: Prisma.SortOrder
+  nightWithdrawLimit?: Prisma.SortOrder
+  minTicketAmount?: Prisma.SortOrder
+  maxTicketAmount?: Prisma.SortOrder
 }
 
 export type MerchantCreateNestedOneWithoutUserInput = {
@@ -997,6 +1298,22 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type MerchantCreateNestedOneWithoutCustomersInput = {
+  create?: Prisma.XOR<Prisma.MerchantCreateWithoutCustomersInput, Prisma.MerchantUncheckedCreateWithoutCustomersInput>
+  connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutCustomersInput
+  connect?: Prisma.MerchantWhereUniqueInput
+}
+
+export type MerchantUpdateOneWithoutCustomersNestedInput = {
+  create?: Prisma.XOR<Prisma.MerchantCreateWithoutCustomersInput, Prisma.MerchantUncheckedCreateWithoutCustomersInput>
+  connectOrCreate?: Prisma.MerchantCreateOrConnectWithoutCustomersInput
+  upsert?: Prisma.MerchantUpsertWithoutCustomersInput
+  disconnect?: Prisma.MerchantWhereInput | boolean
+  delete?: Prisma.MerchantWhereInput | boolean
+  connect?: Prisma.MerchantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MerchantUpdateToOneWithWhereWithoutCustomersInput, Prisma.MerchantUpdateWithoutCustomersInput>, Prisma.MerchantUncheckedUpdateWithoutCustomersInput>
 }
 
 export type MerchantCreateNestedOneWithoutChargesInput = {
@@ -1111,6 +1428,13 @@ export type MerchantCreateWithoutUserInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1119,14 +1443,20 @@ export type MerchantCreateWithoutUserInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
@@ -1149,6 +1479,13 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1157,14 +1494,20 @@ export type MerchantUncheckedCreateWithoutUserInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
@@ -1203,6 +1546,13 @@ export type MerchantUpdateWithoutUserInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1211,14 +1561,20 @@ export type MerchantUpdateWithoutUserInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
@@ -1241,6 +1597,13 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1249,14 +1612,20 @@ export type MerchantUncheckedUpdateWithoutUserInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1279,6 +1648,13 @@ export type MerchantCreateWithoutNotificationsInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1287,8 +1663,13 @@ export type MerchantCreateWithoutNotificationsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1296,6 +1677,7 @@ export type MerchantCreateWithoutNotificationsInput = {
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
@@ -1317,6 +1699,13 @@ export type MerchantUncheckedCreateWithoutNotificationsInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1325,8 +1714,13 @@ export type MerchantUncheckedCreateWithoutNotificationsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1334,6 +1728,7 @@ export type MerchantUncheckedCreateWithoutNotificationsInput = {
   userId: string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
@@ -1371,6 +1766,13 @@ export type MerchantUpdateWithoutNotificationsInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1379,8 +1781,13 @@ export type MerchantUpdateWithoutNotificationsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1388,6 +1795,7 @@ export type MerchantUpdateWithoutNotificationsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
@@ -1409,6 +1817,13 @@ export type MerchantUncheckedUpdateWithoutNotificationsInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1417,8 +1832,233 @@ export type MerchantUncheckedUpdateWithoutNotificationsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
+  charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutMerchantNestedInput
+  webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
+  infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
+  trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
+  trackingLogs?: Prisma.TrackingLogUncheckedUpdateManyWithoutMerchantNestedInput
+}
+
+export type MerchantCreateWithoutCustomersInput = {
+  id?: string
+  name: string
+  email: string
+  phone: string
+  document: string
+  documentType?: $Enums.DocumentType
+  status?: $Enums.MerchantStatus
+  kycStatus?: $Enums.KycStatus
+  docFrontUrl?: string | null
+  docBackUrl?: string | null
+  docSelfieUrl?: string | null
+  kycNotes?: string | null
+  kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
+  acquirer?: string
+  acquirerAccountId?: string | null
+  pixKeyId?: string | null
+  pixKey?: string | null
+  pixKeyType?: string | null
+  pixKeyStatus?: string | null
+  feeMode?: $Enums.FeeMode
+  feeAmount?: number
+  withdrawFee?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
+  emailNotificationsEnabled?: boolean
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutMerchantInput
+  apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
+  charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
+  infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
+  trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
+  trackingLogs?: Prisma.TrackingLogCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutMerchantInput
+}
+
+export type MerchantUncheckedCreateWithoutCustomersInput = {
+  id?: string
+  name: string
+  email: string
+  phone: string
+  document: string
+  documentType?: $Enums.DocumentType
+  status?: $Enums.MerchantStatus
+  kycStatus?: $Enums.KycStatus
+  docFrontUrl?: string | null
+  docBackUrl?: string | null
+  docSelfieUrl?: string | null
+  kycNotes?: string | null
+  kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
+  acquirer?: string
+  acquirerAccountId?: string | null
+  pixKeyId?: string | null
+  pixKey?: string | null
+  pixKeyType?: string | null
+  pixKeyStatus?: string | null
+  feeMode?: $Enums.FeeMode
+  feeAmount?: number
+  withdrawFee?: number
+  maxWithdrawAmount?: number
+  dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
+  emailNotificationsEnabled?: boolean
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userId: string
+  apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
+  charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
+  infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
+  trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
+  trackingLogs?: Prisma.TrackingLogUncheckedCreateNestedManyWithoutMerchantInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutMerchantInput
+}
+
+export type MerchantCreateOrConnectWithoutCustomersInput = {
+  where: Prisma.MerchantWhereUniqueInput
+  create: Prisma.XOR<Prisma.MerchantCreateWithoutCustomersInput, Prisma.MerchantUncheckedCreateWithoutCustomersInput>
+}
+
+export type MerchantUpsertWithoutCustomersInput = {
+  update: Prisma.XOR<Prisma.MerchantUpdateWithoutCustomersInput, Prisma.MerchantUncheckedUpdateWithoutCustomersInput>
+  create: Prisma.XOR<Prisma.MerchantCreateWithoutCustomersInput, Prisma.MerchantUncheckedCreateWithoutCustomersInput>
+  where?: Prisma.MerchantWhereInput
+}
+
+export type MerchantUpdateToOneWithWhereWithoutCustomersInput = {
+  where?: Prisma.MerchantWhereInput
+  data: Prisma.XOR<Prisma.MerchantUpdateWithoutCustomersInput, Prisma.MerchantUncheckedUpdateWithoutCustomersInput>
+}
+
+export type MerchantUpdateWithoutCustomersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  document?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  docFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquirer?: Prisma.StringFieldUpdateOperationsInput | string
+  acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
+  apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
+  charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
+  infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
+  trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
+  trackingLogs?: Prisma.TrackingLogUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutMerchantNestedInput
+}
+
+export type MerchantUncheckedUpdateWithoutCustomersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  document?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  status?: Prisma.EnumMerchantStatusFieldUpdateOperationsInput | $Enums.MerchantStatus
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  docFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acquirer?: Prisma.StringFieldUpdateOperationsInput | string
+  acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
+  maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1431,6 +2071,7 @@ export type MerchantUncheckedUpdateWithoutNotificationsInput = {
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
   trackingLogs?: Prisma.TrackingLogUncheckedUpdateManyWithoutMerchantNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type MerchantCreateWithoutChargesInput = {
@@ -1447,6 +2088,13 @@ export type MerchantCreateWithoutChargesInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1455,14 +2103,20 @@ export type MerchantCreateWithoutChargesInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
@@ -1485,6 +2139,13 @@ export type MerchantUncheckedCreateWithoutChargesInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1493,14 +2154,20 @@ export type MerchantUncheckedCreateWithoutChargesInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
@@ -1539,6 +2206,13 @@ export type MerchantUpdateWithoutChargesInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1547,14 +2221,20 @@ export type MerchantUpdateWithoutChargesInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
@@ -1577,6 +2257,13 @@ export type MerchantUncheckedUpdateWithoutChargesInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1585,14 +2272,20 @@ export type MerchantUncheckedUpdateWithoutChargesInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1615,6 +2308,13 @@ export type MerchantCreateWithoutApikeyInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1623,14 +2323,20 @@ export type MerchantCreateWithoutApikeyInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
   charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
@@ -1653,6 +2359,13 @@ export type MerchantUncheckedCreateWithoutApikeyInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1661,14 +2374,20 @@ export type MerchantUncheckedCreateWithoutApikeyInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: string
   charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
@@ -1707,6 +2426,13 @@ export type MerchantUpdateWithoutApikeyInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1715,14 +2441,20 @@ export type MerchantUpdateWithoutApikeyInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
   charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
@@ -1745,6 +2477,13 @@ export type MerchantUncheckedUpdateWithoutApikeyInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1753,14 +2492,20 @@ export type MerchantUncheckedUpdateWithoutApikeyInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1783,6 +2528,13 @@ export type MerchantCreateWithoutLedgerInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1791,8 +2543,13 @@ export type MerchantCreateWithoutLedgerInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1800,6 +2557,7 @@ export type MerchantCreateWithoutLedgerInput = {
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
@@ -1821,6 +2579,13 @@ export type MerchantUncheckedCreateWithoutLedgerInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1829,8 +2594,13 @@ export type MerchantUncheckedCreateWithoutLedgerInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1838,6 +2608,7 @@ export type MerchantUncheckedCreateWithoutLedgerInput = {
   userId: string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
@@ -1875,6 +2646,13 @@ export type MerchantUpdateWithoutLedgerInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1883,8 +2661,13 @@ export type MerchantUpdateWithoutLedgerInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1892,6 +2675,7 @@ export type MerchantUpdateWithoutLedgerInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
@@ -1913,6 +2697,13 @@ export type MerchantUncheckedUpdateWithoutLedgerInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1921,8 +2712,13 @@ export type MerchantUncheckedUpdateWithoutLedgerInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1930,6 +2726,7 @@ export type MerchantUncheckedUpdateWithoutLedgerInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
@@ -1951,6 +2748,13 @@ export type MerchantCreateWithoutWebhooksInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1959,8 +2763,13 @@ export type MerchantCreateWithoutWebhooksInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1968,6 +2777,7 @@ export type MerchantCreateWithoutWebhooksInput = {
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
@@ -1989,6 +2799,13 @@ export type MerchantUncheckedCreateWithoutWebhooksInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -1997,8 +2814,13 @@ export type MerchantUncheckedCreateWithoutWebhooksInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2006,6 +2828,7 @@ export type MerchantUncheckedCreateWithoutWebhooksInput = {
   userId: string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
@@ -2043,6 +2866,13 @@ export type MerchantUpdateWithoutWebhooksInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2051,8 +2881,13 @@ export type MerchantUpdateWithoutWebhooksInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2060,6 +2895,7 @@ export type MerchantUpdateWithoutWebhooksInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
@@ -2081,6 +2917,13 @@ export type MerchantUncheckedUpdateWithoutWebhooksInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2089,8 +2932,13 @@ export type MerchantUncheckedUpdateWithoutWebhooksInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2098,6 +2946,7 @@ export type MerchantUncheckedUpdateWithoutWebhooksInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2119,6 +2968,13 @@ export type MerchantCreateWithoutTrackingsInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -2127,8 +2983,13 @@ export type MerchantCreateWithoutTrackingsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2136,6 +2997,7 @@ export type MerchantCreateWithoutTrackingsInput = {
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
@@ -2157,6 +3019,13 @@ export type MerchantUncheckedCreateWithoutTrackingsInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -2165,8 +3034,13 @@ export type MerchantUncheckedCreateWithoutTrackingsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2174,6 +3048,7 @@ export type MerchantUncheckedCreateWithoutTrackingsInput = {
   userId: string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
@@ -2211,6 +3086,13 @@ export type MerchantUpdateWithoutTrackingsInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2219,8 +3101,13 @@ export type MerchantUpdateWithoutTrackingsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2228,6 +3115,7 @@ export type MerchantUpdateWithoutTrackingsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
@@ -2249,6 +3137,13 @@ export type MerchantUncheckedUpdateWithoutTrackingsInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2257,8 +3152,13 @@ export type MerchantUncheckedUpdateWithoutTrackingsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2266,6 +3166,7 @@ export type MerchantUncheckedUpdateWithoutTrackingsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2287,6 +3188,13 @@ export type MerchantCreateWithoutTrackingLogsInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -2295,8 +3203,13 @@ export type MerchantCreateWithoutTrackingLogsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2304,6 +3217,7 @@ export type MerchantCreateWithoutTrackingLogsInput = {
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionCreateNestedManyWithoutMerchantInput
@@ -2325,6 +3239,13 @@ export type MerchantUncheckedCreateWithoutTrackingLogsInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -2333,8 +3254,13 @@ export type MerchantUncheckedCreateWithoutTrackingLogsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2342,6 +3268,7 @@ export type MerchantUncheckedCreateWithoutTrackingLogsInput = {
   userId: string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   infractions?: Prisma.InfractionUncheckedCreateNestedManyWithoutMerchantInput
@@ -2379,6 +3306,13 @@ export type MerchantUpdateWithoutTrackingLogsInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2387,8 +3321,13 @@ export type MerchantUpdateWithoutTrackingLogsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2396,6 +3335,7 @@ export type MerchantUpdateWithoutTrackingLogsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUpdateManyWithoutMerchantNestedInput
@@ -2417,6 +3357,13 @@ export type MerchantUncheckedUpdateWithoutTrackingLogsInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2425,8 +3372,13 @@ export type MerchantUncheckedUpdateWithoutTrackingLogsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2434,6 +3386,7 @@ export type MerchantUncheckedUpdateWithoutTrackingLogsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   infractions?: Prisma.InfractionUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2455,6 +3408,13 @@ export type MerchantCreateWithoutInfractionsInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -2463,8 +3423,13 @@ export type MerchantCreateWithoutInfractionsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2472,6 +3437,7 @@ export type MerchantCreateWithoutInfractionsInput = {
   user: Prisma.UserCreateNestedOneWithoutMerchantInput
   apikey?: Prisma.ApikeyCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingCreateNestedManyWithoutMerchantInput
@@ -2493,6 +3459,13 @@ export type MerchantUncheckedCreateWithoutInfractionsInput = {
   docSelfieUrl?: string | null
   kycNotes?: string | null
   kycAnalyzedAt?: Date | string | null
+  partnerName?: string | null
+  partnerDocument?: string | null
+  socialContractUrl?: string | null
+  cnpjCardUrl?: string | null
+  partnerDocFrontUrl?: string | null
+  partnerDocBackUrl?: string | null
+  partnerDocSelfieUrl?: string | null
   acquirer?: string
   acquirerAccountId?: string | null
   pixKeyId?: string | null
@@ -2501,8 +3474,13 @@ export type MerchantUncheckedCreateWithoutInfractionsInput = {
   pixKeyStatus?: string | null
   feeMode?: $Enums.FeeMode
   feeAmount?: number
+  withdrawFee?: number
   maxWithdrawAmount?: number
   dailyWithdrawLimit?: number
+  monthlyWithdrawLimit?: number
+  nightWithdrawLimit?: number
+  minTicketAmount?: number
+  maxTicketAmount?: number
   emailNotificationsEnabled?: boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -2510,6 +3488,7 @@ export type MerchantUncheckedCreateWithoutInfractionsInput = {
   userId: string
   apikey?: Prisma.ApikeyUncheckedCreateNestedManyWithoutMerchantInput
   charges?: Prisma.ChargesUncheckedCreateNestedManyWithoutMerchantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutMerchantInput
   webhooks?: Prisma.MerchantWebhookUncheckedCreateNestedManyWithoutMerchantInput
   ledger?: Prisma.LedgerUncheckedCreateNestedManyWithoutMerchantInput
   trackings?: Prisma.MerchantTrackingUncheckedCreateNestedManyWithoutMerchantInput
@@ -2547,6 +3526,13 @@ export type MerchantUpdateWithoutInfractionsInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2555,8 +3541,13 @@ export type MerchantUpdateWithoutInfractionsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2564,6 +3555,7 @@ export type MerchantUpdateWithoutInfractionsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMerchantNestedInput
   apikey?: Prisma.ApikeyUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUpdateManyWithoutMerchantNestedInput
@@ -2585,6 +3577,13 @@ export type MerchantUncheckedUpdateWithoutInfractionsInput = {
   docSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycAnalyzedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  partnerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialContractUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cnpjCardUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocFrontUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocBackUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerDocSelfieUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   acquirer?: Prisma.StringFieldUpdateOperationsInput | string
   acquirerAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pixKeyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2593,8 +3592,13 @@ export type MerchantUncheckedUpdateWithoutInfractionsInput = {
   pixKeyStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  withdrawFee?: Prisma.IntFieldUpdateOperationsInput | number
   maxWithdrawAmount?: Prisma.IntFieldUpdateOperationsInput | number
   dailyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  monthlyWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  nightWithdrawLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  minTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  maxTicketAmount?: Prisma.IntFieldUpdateOperationsInput | number
   emailNotificationsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2602,6 +3606,7 @@ export type MerchantUncheckedUpdateWithoutInfractionsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   apikey?: Prisma.ApikeyUncheckedUpdateManyWithoutMerchantNestedInput
   charges?: Prisma.ChargesUncheckedUpdateManyWithoutMerchantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutMerchantNestedInput
   webhooks?: Prisma.MerchantWebhookUncheckedUpdateManyWithoutMerchantNestedInput
   ledger?: Prisma.LedgerUncheckedUpdateManyWithoutMerchantNestedInput
   trackings?: Prisma.MerchantTrackingUncheckedUpdateManyWithoutMerchantNestedInput
@@ -2617,6 +3622,7 @@ export type MerchantUncheckedUpdateWithoutInfractionsInput = {
 export type MerchantCountOutputType = {
   apikey: number
   charges: number
+  customers: number
   webhooks: number
   ledger: number
   infractions: number
@@ -2628,6 +3634,7 @@ export type MerchantCountOutputType = {
 export type MerchantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   apikey?: boolean | MerchantCountOutputTypeCountApikeyArgs
   charges?: boolean | MerchantCountOutputTypeCountChargesArgs
+  customers?: boolean | MerchantCountOutputTypeCountCustomersArgs
   webhooks?: boolean | MerchantCountOutputTypeCountWebhooksArgs
   ledger?: boolean | MerchantCountOutputTypeCountLedgerArgs
   infractions?: boolean | MerchantCountOutputTypeCountInfractionsArgs
@@ -2658,6 +3665,13 @@ export type MerchantCountOutputTypeCountApikeyArgs<ExtArgs extends runtime.Types
  */
 export type MerchantCountOutputTypeCountChargesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ChargesWhereInput
+}
+
+/**
+ * MerchantCountOutputType without action
+ */
+export type MerchantCountOutputTypeCountCustomersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CustomerWhereInput
 }
 
 /**
@@ -2717,6 +3731,13 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   docSelfieUrl?: boolean
   kycNotes?: boolean
   kycAnalyzedAt?: boolean
+  partnerName?: boolean
+  partnerDocument?: boolean
+  socialContractUrl?: boolean
+  cnpjCardUrl?: boolean
+  partnerDocFrontUrl?: boolean
+  partnerDocBackUrl?: boolean
+  partnerDocSelfieUrl?: boolean
   acquirer?: boolean
   acquirerAccountId?: boolean
   pixKeyId?: boolean
@@ -2725,8 +3746,13 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   pixKeyStatus?: boolean
   feeMode?: boolean
   feeAmount?: boolean
+  withdrawFee?: boolean
   maxWithdrawAmount?: boolean
   dailyWithdrawLimit?: boolean
+  monthlyWithdrawLimit?: boolean
+  nightWithdrawLimit?: boolean
+  minTicketAmount?: boolean
+  maxTicketAmount?: boolean
   emailNotificationsEnabled?: boolean
   metadata?: boolean
   createdAt?: boolean
@@ -2735,6 +3761,7 @@ export type MerchantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   apikey?: boolean | Prisma.Merchant$apikeyArgs<ExtArgs>
   charges?: boolean | Prisma.Merchant$chargesArgs<ExtArgs>
+  customers?: boolean | Prisma.Merchant$customersArgs<ExtArgs>
   webhooks?: boolean | Prisma.Merchant$webhooksArgs<ExtArgs>
   ledger?: boolean | Prisma.Merchant$ledgerArgs<ExtArgs>
   infractions?: boolean | Prisma.Merchant$infractionsArgs<ExtArgs>
@@ -2758,6 +3785,13 @@ export type MerchantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   docSelfieUrl?: boolean
   kycNotes?: boolean
   kycAnalyzedAt?: boolean
+  partnerName?: boolean
+  partnerDocument?: boolean
+  socialContractUrl?: boolean
+  cnpjCardUrl?: boolean
+  partnerDocFrontUrl?: boolean
+  partnerDocBackUrl?: boolean
+  partnerDocSelfieUrl?: boolean
   acquirer?: boolean
   acquirerAccountId?: boolean
   pixKeyId?: boolean
@@ -2766,8 +3800,13 @@ export type MerchantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   pixKeyStatus?: boolean
   feeMode?: boolean
   feeAmount?: boolean
+  withdrawFee?: boolean
   maxWithdrawAmount?: boolean
   dailyWithdrawLimit?: boolean
+  monthlyWithdrawLimit?: boolean
+  nightWithdrawLimit?: boolean
+  minTicketAmount?: boolean
+  maxTicketAmount?: boolean
   emailNotificationsEnabled?: boolean
   metadata?: boolean
   createdAt?: boolean
@@ -2790,6 +3829,13 @@ export type MerchantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   docSelfieUrl?: boolean
   kycNotes?: boolean
   kycAnalyzedAt?: boolean
+  partnerName?: boolean
+  partnerDocument?: boolean
+  socialContractUrl?: boolean
+  cnpjCardUrl?: boolean
+  partnerDocFrontUrl?: boolean
+  partnerDocBackUrl?: boolean
+  partnerDocSelfieUrl?: boolean
   acquirer?: boolean
   acquirerAccountId?: boolean
   pixKeyId?: boolean
@@ -2798,8 +3844,13 @@ export type MerchantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   pixKeyStatus?: boolean
   feeMode?: boolean
   feeAmount?: boolean
+  withdrawFee?: boolean
   maxWithdrawAmount?: boolean
   dailyWithdrawLimit?: boolean
+  monthlyWithdrawLimit?: boolean
+  nightWithdrawLimit?: boolean
+  minTicketAmount?: boolean
+  maxTicketAmount?: boolean
   emailNotificationsEnabled?: boolean
   metadata?: boolean
   createdAt?: boolean
@@ -2822,6 +3873,13 @@ export type MerchantSelectScalar = {
   docSelfieUrl?: boolean
   kycNotes?: boolean
   kycAnalyzedAt?: boolean
+  partnerName?: boolean
+  partnerDocument?: boolean
+  socialContractUrl?: boolean
+  cnpjCardUrl?: boolean
+  partnerDocFrontUrl?: boolean
+  partnerDocBackUrl?: boolean
+  partnerDocSelfieUrl?: boolean
   acquirer?: boolean
   acquirerAccountId?: boolean
   pixKeyId?: boolean
@@ -2830,8 +3888,13 @@ export type MerchantSelectScalar = {
   pixKeyStatus?: boolean
   feeMode?: boolean
   feeAmount?: boolean
+  withdrawFee?: boolean
   maxWithdrawAmount?: boolean
   dailyWithdrawLimit?: boolean
+  monthlyWithdrawLimit?: boolean
+  nightWithdrawLimit?: boolean
+  minTicketAmount?: boolean
+  maxTicketAmount?: boolean
   emailNotificationsEnabled?: boolean
   metadata?: boolean
   createdAt?: boolean
@@ -2839,11 +3902,12 @@ export type MerchantSelectScalar = {
   userId?: boolean
 }
 
-export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "document" | "documentType" | "status" | "kycStatus" | "docFrontUrl" | "docBackUrl" | "docSelfieUrl" | "kycNotes" | "kycAnalyzedAt" | "acquirer" | "acquirerAccountId" | "pixKeyId" | "pixKey" | "pixKeyType" | "pixKeyStatus" | "feeMode" | "feeAmount" | "maxWithdrawAmount" | "dailyWithdrawLimit" | "emailNotificationsEnabled" | "metadata" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["merchant"]>
+export type MerchantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "document" | "documentType" | "status" | "kycStatus" | "docFrontUrl" | "docBackUrl" | "docSelfieUrl" | "kycNotes" | "kycAnalyzedAt" | "partnerName" | "partnerDocument" | "socialContractUrl" | "cnpjCardUrl" | "partnerDocFrontUrl" | "partnerDocBackUrl" | "partnerDocSelfieUrl" | "acquirer" | "acquirerAccountId" | "pixKeyId" | "pixKey" | "pixKeyType" | "pixKeyStatus" | "feeMode" | "feeAmount" | "withdrawFee" | "maxWithdrawAmount" | "dailyWithdrawLimit" | "monthlyWithdrawLimit" | "nightWithdrawLimit" | "minTicketAmount" | "maxTicketAmount" | "emailNotificationsEnabled" | "metadata" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["merchant"]>
 export type MerchantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   apikey?: boolean | Prisma.Merchant$apikeyArgs<ExtArgs>
   charges?: boolean | Prisma.Merchant$chargesArgs<ExtArgs>
+  customers?: boolean | Prisma.Merchant$customersArgs<ExtArgs>
   webhooks?: boolean | Prisma.Merchant$webhooksArgs<ExtArgs>
   ledger?: boolean | Prisma.Merchant$ledgerArgs<ExtArgs>
   infractions?: boolean | Prisma.Merchant$infractionsArgs<ExtArgs>
@@ -2865,6 +3929,7 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     user: Prisma.$UserPayload<ExtArgs>
     apikey: Prisma.$ApikeyPayload<ExtArgs>[]
     charges: Prisma.$ChargesPayload<ExtArgs>[]
+    customers: Prisma.$CustomerPayload<ExtArgs>[]
     webhooks: Prisma.$MerchantWebhookPayload<ExtArgs>[]
     ledger: Prisma.$LedgerPayload<ExtArgs>[]
     infractions: Prisma.$InfractionPayload<ExtArgs>[]
@@ -2886,6 +3951,13 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     docSelfieUrl: string | null
     kycNotes: string | null
     kycAnalyzedAt: Date | null
+    partnerName: string | null
+    partnerDocument: string | null
+    socialContractUrl: string | null
+    cnpjCardUrl: string | null
+    partnerDocFrontUrl: string | null
+    partnerDocBackUrl: string | null
+    partnerDocSelfieUrl: string | null
     acquirer: string
     acquirerAccountId: string | null
     pixKeyId: string | null
@@ -2894,8 +3966,13 @@ export type $MerchantPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     pixKeyStatus: string | null
     feeMode: $Enums.FeeMode
     feeAmount: number
+    withdrawFee: number
     maxWithdrawAmount: number
     dailyWithdrawLimit: number
+    monthlyWithdrawLimit: number
+    nightWithdrawLimit: number
+    minTicketAmount: number
+    maxTicketAmount: number
     emailNotificationsEnabled: boolean
     metadata: runtime.JsonValue | null
     createdAt: Date
@@ -3298,6 +4375,7 @@ export interface Prisma__MerchantClient<T, Null = never, ExtArgs extends runtime
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   apikey<T extends Prisma.Merchant$apikeyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$apikeyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApikeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   charges<T extends Prisma.Merchant$chargesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$chargesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChargesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  customers<T extends Prisma.Merchant$customersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$customersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   webhooks<T extends Prisma.Merchant$webhooksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$webhooksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MerchantWebhookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ledger<T extends Prisma.Merchant$ledgerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$ledgerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   infractions<T extends Prisma.Merchant$infractionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Merchant$infractionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InfractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3346,6 +4424,13 @@ export interface MerchantFieldRefs {
   readonly docSelfieUrl: Prisma.FieldRef<"Merchant", 'String'>
   readonly kycNotes: Prisma.FieldRef<"Merchant", 'String'>
   readonly kycAnalyzedAt: Prisma.FieldRef<"Merchant", 'DateTime'>
+  readonly partnerName: Prisma.FieldRef<"Merchant", 'String'>
+  readonly partnerDocument: Prisma.FieldRef<"Merchant", 'String'>
+  readonly socialContractUrl: Prisma.FieldRef<"Merchant", 'String'>
+  readonly cnpjCardUrl: Prisma.FieldRef<"Merchant", 'String'>
+  readonly partnerDocFrontUrl: Prisma.FieldRef<"Merchant", 'String'>
+  readonly partnerDocBackUrl: Prisma.FieldRef<"Merchant", 'String'>
+  readonly partnerDocSelfieUrl: Prisma.FieldRef<"Merchant", 'String'>
   readonly acquirer: Prisma.FieldRef<"Merchant", 'String'>
   readonly acquirerAccountId: Prisma.FieldRef<"Merchant", 'String'>
   readonly pixKeyId: Prisma.FieldRef<"Merchant", 'String'>
@@ -3354,8 +4439,13 @@ export interface MerchantFieldRefs {
   readonly pixKeyStatus: Prisma.FieldRef<"Merchant", 'String'>
   readonly feeMode: Prisma.FieldRef<"Merchant", 'FeeMode'>
   readonly feeAmount: Prisma.FieldRef<"Merchant", 'Int'>
+  readonly withdrawFee: Prisma.FieldRef<"Merchant", 'Int'>
   readonly maxWithdrawAmount: Prisma.FieldRef<"Merchant", 'Int'>
   readonly dailyWithdrawLimit: Prisma.FieldRef<"Merchant", 'Int'>
+  readonly monthlyWithdrawLimit: Prisma.FieldRef<"Merchant", 'Int'>
+  readonly nightWithdrawLimit: Prisma.FieldRef<"Merchant", 'Int'>
+  readonly minTicketAmount: Prisma.FieldRef<"Merchant", 'Int'>
+  readonly maxTicketAmount: Prisma.FieldRef<"Merchant", 'Int'>
   readonly emailNotificationsEnabled: Prisma.FieldRef<"Merchant", 'Boolean'>
   readonly metadata: Prisma.FieldRef<"Merchant", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Merchant", 'DateTime'>
@@ -3802,6 +4892,30 @@ export type Merchant$chargesArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.ChargesScalarFieldEnum | Prisma.ChargesScalarFieldEnum[]
+}
+
+/**
+ * Merchant.customers
+ */
+export type Merchant$customersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Customer
+   */
+  select?: Prisma.CustomerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Customer
+   */
+  omit?: Prisma.CustomerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CustomerInclude<ExtArgs> | null
+  where?: Prisma.CustomerWhereInput
+  orderBy?: Prisma.CustomerOrderByWithRelationInput | Prisma.CustomerOrderByWithRelationInput[]
+  cursor?: Prisma.CustomerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CustomerScalarFieldEnum | Prisma.CustomerScalarFieldEnum[]
 }
 
 /**

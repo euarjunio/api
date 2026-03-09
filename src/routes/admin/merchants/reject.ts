@@ -1,10 +1,9 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
-import { prisma } from "../../../lib/prisma.ts";
 import { logAction, getRequestContext } from "../../../lib/audit.ts";
+import { rejectMerchant } from "../../../services/merchant.service.ts";
 
 export const rejectMerchantRoute: FastifyPluginAsyncZod = async (app) => {
-  // POST /v1/admin/merchants/:id/reject
   app.post("/:id/reject", {
     schema: {
       tags: ["Admin"],
@@ -16,6 +15,7 @@ export const rejectMerchantRoute: FastifyPluginAsyncZod = async (app) => {
       }),
       response: {
         200: z.object({ message: z.string() }),
+        400: z.object({ message: z.string() }),
         404: z.object({ message: z.string() }),
       },
     },
@@ -23,20 +23,13 @@ export const rejectMerchantRoute: FastifyPluginAsyncZod = async (app) => {
     const { id } = request.params;
     const { reason } = request.body;
 
-    const merchant = await prisma.merchant.findUnique({ where: { id } });
-    if (!merchant) return reply.status(404).send({ message: "Merchant não encontrado" });
-
-    await prisma.merchant.update({
-      where: { id },
-      data: {
-        kycStatus: "REJECTED",
-        kycNotes: reason,
-        kycAnalyzedAt: new Date(),
-      },
-    });
+    const result = await rejectMerchant(id, reason, request.log);
+    if (!result.ok) {
+      return reply.status(result.status).send({ message: result.message });
+    }
 
     logAction({ action: "MERCHANT_REJECTED", actor: `admin:${request.user.id}`, target: id, metadata: { reason }, ...getRequestContext(request) });
 
-    return reply.status(200).send({ message: "Merchant rejeitado." });
+    return reply.status(200).send({ message: result.message });
   });
 };

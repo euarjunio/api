@@ -7,10 +7,10 @@ import { unreadCountRoute } from "./unread-count.ts";
 import { authenticate } from "../hooks/authenticate.ts";
 
 export const notificationsRoutes: FastifyPluginAsyncZod = async (app) => {
-  // Rotas autenticadas (exceto stream que faz auth manual)
+  // Rotas autenticadas (exceto stream que faz auth manual via SSE token)
   app.addHook("onRequest", async (request, reply) => {
-    // Stream faz autenticação manual (aceita token via query string)
     const path = request.url.split("?")[0];
+    // Stream does its own auth (SSE token from Redis)
     if (path.endsWith("/stream")) {
       return;
     }

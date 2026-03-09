@@ -13,8 +13,10 @@ const PERIOD = 30;
 function getEncryptionKey(): Buffer {
   const hex = env.TOTP_ENCRYPTION_KEY;
   if (!hex || hex.length < 64) {
-    // Dev fallback — produção exige chave real (validado em env.ts)
-    return Buffer.alloc(32, 0);
+    throw new Error(
+      "TOTP_ENCRYPTION_KEY must be a 64+ char hex string (32 bytes). " +
+      "Generate one with: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\"",
+    );
   }
   return Buffer.from(hex, "hex");
 }
@@ -25,7 +27,6 @@ export function encryptSecret(plainSecret: string): string {
   const cipher = createCipheriv("aes-256-gcm", key, iv);
   const encrypted = Buffer.concat([cipher.update(plainSecret, "utf8"), cipher.final()]);
   const tag = cipher.getAuthTag();
-  // formato: iv:tag:encrypted (hex)
   return `${iv.toString("hex")}:${tag.toString("hex")}:${encrypted.toString("hex")}`;
 }
 
@@ -42,17 +43,11 @@ export function decryptSecret(encryptedStr: string): string {
 
 // ── TOTP helpers ─────────────────────────────────────────────────────
 
-/**
- * Gera um secret TOTP aleatório (base32 string).
- */
 export function generateSecret(): string {
   const secret = new Secret({ size: 20 });
   return secret.base32;
 }
 
-/**
- * Gera o URI otpauth:// para exibir no QR Code.
- */
 export function generateQrCodeUri(email: string, secret: string): string {
   const totp = new TOTP({
     issuer: ISSUER,
@@ -65,9 +60,6 @@ export function generateQrCodeUri(email: string, secret: string): string {
   return totp.toString();
 }
 
-/**
- * Verifica um código TOTP com janela de 1 período (±30s).
- */
 export function verifyToken(secret: string, code: string): boolean {
   const totp = new TOTP({
     issuer: ISSUER,
@@ -83,29 +75,19 @@ export function verifyToken(secret: string, code: string): boolean {
 
 // ── Backup Codes ─────────────────────────────────────────────────────
 
-/**
- * Gera N backup codes aleatórios no formato XXXX-XXXX.
- */
 export function generateBackupCodes(count = 8): string[] {
   const codes: string[] = [];
   for (let i = 0; i < count; i++) {
-    const raw = randomBytes(4).toString("hex").toUpperCase(); // 8 hex chars
+    const raw = randomBytes(4).toString("hex").toUpperCase();
     codes.push(`${raw.slice(0, 4)}-${raw.slice(4, 8)}`);
   }
   return codes;
 }
 
-/**
- * Hash de backup codes com argon2 (para armazenar no DB).
- */
 export async function hashBackupCodes(codes: string[]): Promise<string[]> {
   return Promise.all(codes.map((code) => hash(code)));
 }
 
-/**
- * Verifica se um código fornecido bate com algum backup code hasheado.
- * Retorna o índice do match (para remoção) ou -1.
- */
 export async function verifyBackupCode(
   code: string,
   hashedCodes: string[],
