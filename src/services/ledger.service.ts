@@ -233,7 +233,7 @@ export class LedgerService {
     const totalDebit = amount + withdrawFee;
 
     return prisma.$transaction(async (tx) => {
-      await tx.$queryRawUnsafe(
+      await tx.$executeRawUnsafe(
         `SELECT pg_advisory_xact_lock(hashtext($1))`,
         merchantId,
       );
