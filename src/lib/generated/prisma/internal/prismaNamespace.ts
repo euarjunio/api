@@ -1760,6 +1760,8 @@ export const ChargesScalarFieldEnum = {
   txid: 'txid',
   qrCode: 'qrCode',
   expiresIn: 'expiresIn',
+  feeAmount: 'feeAmount',
+  feeMode: 'feeMode',
   idempotencyKey: 'idempotencyKey',
   metadata: 'metadata',
   tracking: 'tracking',

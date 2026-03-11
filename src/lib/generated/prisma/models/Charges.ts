@@ -29,11 +29,13 @@ export type AggregateCharges = {
 export type ChargesAvgAggregateOutputType = {
   amount: number | null
   expiresIn: number | null
+  feeAmount: number | null
 }
 
 export type ChargesSumAggregateOutputType = {
   amount: number | null
   expiresIn: number | null
+  feeAmount: number | null
 }
 
 export type ChargesMinAggregateOutputType = {
@@ -46,6 +48,8 @@ export type ChargesMinAggregateOutputType = {
   txid: string | null
   qrCode: string | null
   expiresIn: number | null
+  feeAmount: number | null
+  feeMode: $Enums.FeeMode | null
   idempotencyKey: string | null
   paidAt: Date | null
   canceledAt: Date | null
@@ -65,6 +69,8 @@ export type ChargesMaxAggregateOutputType = {
   txid: string | null
   qrCode: string | null
   expiresIn: number | null
+  feeAmount: number | null
+  feeMode: $Enums.FeeMode | null
   idempotencyKey: string | null
   paidAt: Date | null
   canceledAt: Date | null
@@ -84,6 +90,8 @@ export type ChargesCountAggregateOutputType = {
   txid: number
   qrCode: number
   expiresIn: number
+  feeAmount: number
+  feeMode: number
   idempotencyKey: number
   metadata: number
   tracking: number
@@ -100,11 +108,13 @@ export type ChargesCountAggregateOutputType = {
 export type ChargesAvgAggregateInputType = {
   amount?: true
   expiresIn?: true
+  feeAmount?: true
 }
 
 export type ChargesSumAggregateInputType = {
   amount?: true
   expiresIn?: true
+  feeAmount?: true
 }
 
 export type ChargesMinAggregateInputType = {
@@ -117,6 +127,8 @@ export type ChargesMinAggregateInputType = {
   txid?: true
   qrCode?: true
   expiresIn?: true
+  feeAmount?: true
+  feeMode?: true
   idempotencyKey?: true
   paidAt?: true
   canceledAt?: true
@@ -136,6 +148,8 @@ export type ChargesMaxAggregateInputType = {
   txid?: true
   qrCode?: true
   expiresIn?: true
+  feeAmount?: true
+  feeMode?: true
   idempotencyKey?: true
   paidAt?: true
   canceledAt?: true
@@ -155,6 +169,8 @@ export type ChargesCountAggregateInputType = {
   txid?: true
   qrCode?: true
   expiresIn?: true
+  feeAmount?: true
+  feeMode?: true
   idempotencyKey?: true
   metadata?: true
   tracking?: true
@@ -263,6 +279,8 @@ export type ChargesGroupByOutputType = {
   txid: string | null
   qrCode: string | null
   expiresIn: number
+  feeAmount: number
+  feeMode: $Enums.FeeMode
   idempotencyKey: string | null
   metadata: runtime.JsonValue | null
   tracking: runtime.JsonValue | null
@@ -307,6 +325,8 @@ export type ChargesWhereInput = {
   txid?: Prisma.StringNullableFilter<"Charges"> | string | null
   qrCode?: Prisma.StringNullableFilter<"Charges"> | string | null
   expiresIn?: Prisma.IntFilter<"Charges"> | number
+  feeAmount?: Prisma.IntFilter<"Charges"> | number
+  feeMode?: Prisma.EnumFeeModeFilter<"Charges"> | $Enums.FeeMode
   idempotencyKey?: Prisma.StringNullableFilter<"Charges"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Charges">
   tracking?: Prisma.JsonNullableFilter<"Charges">
@@ -330,6 +350,8 @@ export type ChargesOrderByWithRelationInput = {
   txid?: Prisma.SortOrderInput | Prisma.SortOrder
   qrCode?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
+  feeMode?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   tracking?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -357,6 +379,8 @@ export type ChargesWhereUniqueInput = Prisma.AtLeast<{
   paymentMethod?: Prisma.StringFilter<"Charges"> | string
   qrCode?: Prisma.StringNullableFilter<"Charges"> | string | null
   expiresIn?: Prisma.IntFilter<"Charges"> | number
+  feeAmount?: Prisma.IntFilter<"Charges"> | number
+  feeMode?: Prisma.EnumFeeModeFilter<"Charges"> | $Enums.FeeMode
   idempotencyKey?: Prisma.StringNullableFilter<"Charges"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Charges">
   tracking?: Prisma.JsonNullableFilter<"Charges">
@@ -380,6 +404,8 @@ export type ChargesOrderByWithAggregationInput = {
   txid?: Prisma.SortOrderInput | Prisma.SortOrder
   qrCode?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
+  feeMode?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   tracking?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -409,6 +435,8 @@ export type ChargesScalarWhereWithAggregatesInput = {
   txid?: Prisma.StringNullableWithAggregatesFilter<"Charges"> | string | null
   qrCode?: Prisma.StringNullableWithAggregatesFilter<"Charges"> | string | null
   expiresIn?: Prisma.IntWithAggregatesFilter<"Charges"> | number
+  feeAmount?: Prisma.IntWithAggregatesFilter<"Charges"> | number
+  feeMode?: Prisma.EnumFeeModeWithAggregatesFilter<"Charges"> | $Enums.FeeMode
   idempotencyKey?: Prisma.StringNullableWithAggregatesFilter<"Charges"> | string | null
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"Charges">
   tracking?: Prisma.JsonNullableWithAggregatesFilter<"Charges">
@@ -430,6 +458,8 @@ export type ChargesCreateInput = {
   txid?: string | null
   qrCode?: string | null
   expiresIn?: number
+  feeAmount?: number
+  feeMode?: $Enums.FeeMode
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -451,6 +481,8 @@ export type ChargesUncheckedCreateInput = {
   txid?: string | null
   qrCode?: string | null
   expiresIn?: number
+  feeAmount?: number
+  feeMode?: $Enums.FeeMode
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -472,6 +504,8 @@ export type ChargesUpdateInput = {
   txid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -493,6 +527,8 @@ export type ChargesUncheckedUpdateInput = {
   txid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -514,6 +550,8 @@ export type ChargesCreateManyInput = {
   txid?: string | null
   qrCode?: string | null
   expiresIn?: number
+  feeAmount?: number
+  feeMode?: $Enums.FeeMode
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -535,6 +573,8 @@ export type ChargesUpdateManyMutationInput = {
   txid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -554,6 +594,8 @@ export type ChargesUncheckedUpdateManyInput = {
   txid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -590,6 +632,8 @@ export type ChargesCountOrderByAggregateInput = {
   txid?: Prisma.SortOrder
   qrCode?: Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
+  feeMode?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   tracking?: Prisma.SortOrder
@@ -604,6 +648,7 @@ export type ChargesCountOrderByAggregateInput = {
 export type ChargesAvgOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
 }
 
 export type ChargesMaxOrderByAggregateInput = {
@@ -616,6 +661,8 @@ export type ChargesMaxOrderByAggregateInput = {
   txid?: Prisma.SortOrder
   qrCode?: Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
+  feeMode?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   canceledAt?: Prisma.SortOrder
@@ -635,6 +682,8 @@ export type ChargesMinOrderByAggregateInput = {
   txid?: Prisma.SortOrder
   qrCode?: Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
+  feeMode?: Prisma.SortOrder
   idempotencyKey?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   canceledAt?: Prisma.SortOrder
@@ -647,6 +696,7 @@ export type ChargesMinOrderByAggregateInput = {
 export type ChargesSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   expiresIn?: Prisma.SortOrder
+  feeAmount?: Prisma.SortOrder
 }
 
 export type ChargesCreateNestedManyWithoutMerchantInput = {
@@ -747,6 +797,8 @@ export type ChargesCreateWithoutMerchantInput = {
   txid?: string | null
   qrCode?: string | null
   expiresIn?: number
+  feeAmount?: number
+  feeMode?: $Enums.FeeMode
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -767,6 +819,8 @@ export type ChargesUncheckedCreateWithoutMerchantInput = {
   txid?: string | null
   qrCode?: string | null
   expiresIn?: number
+  feeAmount?: number
+  feeMode?: $Enums.FeeMode
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -816,6 +870,8 @@ export type ChargesScalarWhereInput = {
   txid?: Prisma.StringNullableFilter<"Charges"> | string | null
   qrCode?: Prisma.StringNullableFilter<"Charges"> | string | null
   expiresIn?: Prisma.IntFilter<"Charges"> | number
+  feeAmount?: Prisma.IntFilter<"Charges"> | number
+  feeMode?: Prisma.EnumFeeModeFilter<"Charges"> | $Enums.FeeMode
   idempotencyKey?: Prisma.StringNullableFilter<"Charges"> | string | null
   metadata?: Prisma.JsonNullableFilter<"Charges">
   tracking?: Prisma.JsonNullableFilter<"Charges">
@@ -837,6 +893,8 @@ export type ChargesCreateWithoutCustomerInput = {
   txid?: string | null
   qrCode?: string | null
   expiresIn?: number
+  feeAmount?: number
+  feeMode?: $Enums.FeeMode
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -857,6 +915,8 @@ export type ChargesUncheckedCreateWithoutCustomerInput = {
   txid?: string | null
   qrCode?: string | null
   expiresIn?: number
+  feeAmount?: number
+  feeMode?: $Enums.FeeMode
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -903,6 +963,8 @@ export type ChargesCreateManyMerchantInput = {
   txid?: string | null
   qrCode?: string | null
   expiresIn?: number
+  feeAmount?: number
+  feeMode?: $Enums.FeeMode
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -923,6 +985,8 @@ export type ChargesUpdateWithoutMerchantInput = {
   txid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -943,6 +1007,8 @@ export type ChargesUncheckedUpdateWithoutMerchantInput = {
   txid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -963,6 +1029,8 @@ export type ChargesUncheckedUpdateManyWithoutMerchantInput = {
   txid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -983,6 +1051,8 @@ export type ChargesCreateManyCustomerInput = {
   txid?: string | null
   qrCode?: string | null
   expiresIn?: number
+  feeAmount?: number
+  feeMode?: $Enums.FeeMode
   idempotencyKey?: string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1003,6 +1073,8 @@ export type ChargesUpdateWithoutCustomerInput = {
   txid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1023,6 +1095,8 @@ export type ChargesUncheckedUpdateWithoutCustomerInput = {
   txid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1043,6 +1117,8 @@ export type ChargesUncheckedUpdateManyWithoutCustomerInput = {
   txid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   qrCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresIn?: Prisma.IntFieldUpdateOperationsInput | number
+  feeAmount?: Prisma.IntFieldUpdateOperationsInput | number
+  feeMode?: Prisma.EnumFeeModeFieldUpdateOperationsInput | $Enums.FeeMode
   idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   tracking?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1065,6 +1141,8 @@ export type ChargesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   txid?: boolean
   qrCode?: boolean
   expiresIn?: boolean
+  feeAmount?: boolean
+  feeMode?: boolean
   idempotencyKey?: boolean
   metadata?: boolean
   tracking?: boolean
@@ -1088,6 +1166,8 @@ export type ChargesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   txid?: boolean
   qrCode?: boolean
   expiresIn?: boolean
+  feeAmount?: boolean
+  feeMode?: boolean
   idempotencyKey?: boolean
   metadata?: boolean
   tracking?: boolean
@@ -1111,6 +1191,8 @@ export type ChargesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   txid?: boolean
   qrCode?: boolean
   expiresIn?: boolean
+  feeAmount?: boolean
+  feeMode?: boolean
   idempotencyKey?: boolean
   metadata?: boolean
   tracking?: boolean
@@ -1134,6 +1216,8 @@ export type ChargesSelectScalar = {
   txid?: boolean
   qrCode?: boolean
   expiresIn?: boolean
+  feeAmount?: boolean
+  feeMode?: boolean
   idempotencyKey?: boolean
   metadata?: boolean
   tracking?: boolean
@@ -1145,7 +1229,7 @@ export type ChargesSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ChargesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "description" | "status" | "acquirer" | "paymentMethod" | "txid" | "qrCode" | "expiresIn" | "idempotencyKey" | "metadata" | "tracking" | "paidAt" | "canceledAt" | "merchantId" | "customerId" | "createdAt" | "updatedAt", ExtArgs["result"]["charges"]>
+export type ChargesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "amount" | "description" | "status" | "acquirer" | "paymentMethod" | "txid" | "qrCode" | "expiresIn" | "feeAmount" | "feeMode" | "idempotencyKey" | "metadata" | "tracking" | "paidAt" | "canceledAt" | "merchantId" | "customerId" | "createdAt" | "updatedAt", ExtArgs["result"]["charges"]>
 export type ChargesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   merchant?: boolean | Prisma.MerchantDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.Charges$customerArgs<ExtArgs>
@@ -1175,6 +1259,8 @@ export type $ChargesPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     txid: string | null
     qrCode: string | null
     expiresIn: number
+    feeAmount: number
+    feeMode: $Enums.FeeMode
     idempotencyKey: string | null
     metadata: runtime.JsonValue | null
     tracking: runtime.JsonValue | null
@@ -1618,6 +1704,8 @@ export interface ChargesFieldRefs {
   readonly txid: Prisma.FieldRef<"Charges", 'String'>
   readonly qrCode: Prisma.FieldRef<"Charges", 'String'>
   readonly expiresIn: Prisma.FieldRef<"Charges", 'Int'>
+  readonly feeAmount: Prisma.FieldRef<"Charges", 'Int'>
+  readonly feeMode: Prisma.FieldRef<"Charges", 'FeeMode'>
   readonly idempotencyKey: Prisma.FieldRef<"Charges", 'String'>
   readonly metadata: Prisma.FieldRef<"Charges", 'Json'>
   readonly tracking: Prisma.FieldRef<"Charges", 'Json'>

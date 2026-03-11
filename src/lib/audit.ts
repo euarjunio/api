@@ -16,7 +16,8 @@ export type AuditAction =
   | "MERCHANT_REJECTED"
   | "MERCHANT_BLOCKED"
   | "MERCHANT_UNBLOCKED"
-  | "FEE_CHANGED";
+  | "FEE_CHANGED"
+  | "LEDGER_ADJUSTMENT";
 
 interface LogActionInput {
   action: AuditAction;

@@ -162,6 +162,8 @@ export async function createChargeOnAcquirer(params: CreateChargeParams): Promis
         merchantId: merchant.id,
         customerId: customer?.id ?? null,
         tracking: tracking ?? undefined,
+        feeAmount: merchant.feeAmount,
+        feeMode: merchant.feeMode,
       },
     });
   } catch (err: any) {

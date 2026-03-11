@@ -295,6 +295,8 @@ model Charges {
   txid           String? @unique
   qrCode         String? @map("qr_code")
   expiresIn      Int     @default(86400) @map("expires_in")
+  feeAmount      Int     @default(0) @map("fee_amount")   // Taxa snapshot no momento da criação (centavos)
+  feeMode        FeeMode @default(FIXADO) @map("fee_mode") // Modo snapshot
   idempotencyKey String? @map("idempotency_key")
   metadata       Json?
   tracking       Json?    // UTM params, fbclid, fbc, fbp, sourceUrl, clientIp, userAgent

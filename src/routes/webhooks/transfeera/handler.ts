@@ -359,7 +359,8 @@ async function handleCashIn(data: TransfeeraCashInData, eventId: string, request
   });
 
   // Registrar no ledger (livro razão) — atomically via $transaction
-  const feeAmount = charge.merchant.feeAmount ?? 0;
+  // Usar feeAmount snapshot salvo no momento da criação da cobrança (não a taxa atual do merchant)
+  const feeAmount = charge.feeAmount ?? 0;
   const grossAmount = charge.amount;
 
   try {
