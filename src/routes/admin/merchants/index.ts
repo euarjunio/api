@@ -14,6 +14,7 @@ import { acquirerBalanceRoute } from "./acquirer-balance.ts";
 import { adminDisable2faRoute } from "./disable-2fa.ts";
 import { adminListChargesRoute } from "./list-charges.ts";
 import { ledgerAdjustmentRoute } from "./ledger-adjustment.ts";
+import { adminListWithdrawalsRoute } from "./list-withdrawals.ts";
 
 export const adminMerchantsRoutes: FastifyPluginAsyncZod = async (app) => {
   // Todas as rotas de admin exigem ADMIN
@@ -57,4 +58,7 @@ export const adminMerchantsRoutes: FastifyPluginAsyncZod = async (app) => {
 
   // POST   /v1/admin/merchants/:id/ledger-adjustment
   app.register(ledgerAdjustmentRoute);
+
+  // GET    /v1/admin/merchants/:id/withdrawals
+  app.register(adminListWithdrawalsRoute);
 };
