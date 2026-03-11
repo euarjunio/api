@@ -22,9 +22,12 @@ export const adminListWithdrawalsRoute: FastifyPluginAsyncZod = async (app) => {
           page: z.number(),
           limit: z.number(),
           total: z.number(),
+          totalAmount: z.number(),
+          totalFees: z.number(),
           withdrawals: z.array(z.object({
             id: z.string(),
             amount: z.number(),
+            fee: z.number(),
             pixKey: z.string().nullable(),
             pixKeyType: z.string().nullable(),
             status: z.string(),
@@ -61,6 +64,7 @@ export const adminListWithdrawalsRoute: FastifyPluginAsyncZod = async (app) => {
       return {
         id: entry.id,
         amount: Math.abs(entry.amount),
+        fee: (meta.withdrawFee as number) ?? 0,
         pixKey: (meta.pixKey as string) ?? null,
         pixKeyType: (meta.pixKeyType as string) ?? null,
         status: (meta.withdrawStatus as string) ?? "REQUESTED",
@@ -71,8 +75,10 @@ export const adminListWithdrawalsRoute: FastifyPluginAsyncZod = async (app) => {
 
     const filtered = status ? mapped.filter((w) => w.status === status) : mapped;
     const total = filtered.length;
+    const totalAmount = filtered.reduce((acc, w) => acc + w.amount, 0);
+    const totalFees = filtered.reduce((acc, w) => acc + w.fee, 0);
     const withdrawals = filtered.slice((page - 1) * limit, page * limit);
 
-    return reply.status(200).send({ page, limit, total, withdrawals });
+    return reply.status(200).send({ page, limit, total, totalAmount, totalFees, withdrawals });
   });
 };
