@@ -112,6 +112,11 @@ export type Infraction = Prisma.InfractionModel
  */
 export type PendingWebhook = Prisma.PendingWebhookModel
 /**
+ * Model ErrorLog
+ * 
+ */
+export type ErrorLog = Prisma.ErrorLogModel
+/**
  * Model AuditLog
  * 
  */

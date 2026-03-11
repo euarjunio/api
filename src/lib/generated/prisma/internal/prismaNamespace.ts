@@ -398,6 +398,7 @@ export const ModelName = {
   TrackingLog: 'TrackingLog',
   Infraction: 'Infraction',
   PendingWebhook: 'PendingWebhook',
+  ErrorLog: 'ErrorLog',
   AuditLog: 'AuditLog'
 } as const
 
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "notification" | "verificationCode" | "merchant" | "customer" | "charges" | "apikey" | "ledger" | "merchantWebhook" | "webhookLog" | "merchantTracking" | "trackingLog" | "infraction" | "pendingWebhook" | "auditLog"
+    modelProps: "user" | "notification" | "verificationCode" | "merchant" | "customer" | "charges" | "apikey" | "ledger" | "merchantWebhook" | "webhookLog" | "merchantTracking" | "trackingLog" | "infraction" | "pendingWebhook" | "errorLog" | "auditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1454,6 +1455,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ErrorLog: {
+      payload: Prisma.$ErrorLogPayload<ExtArgs>
+      fields: Prisma.ErrorLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ErrorLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ErrorLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+        }
+        findFirst: {
+          args: Prisma.ErrorLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ErrorLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+        }
+        findMany: {
+          args: Prisma.ErrorLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload>[]
+        }
+        create: {
+          args: Prisma.ErrorLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+        }
+        createMany: {
+          args: Prisma.ErrorLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ErrorLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload>[]
+        }
+        delete: {
+          args: Prisma.ErrorLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+        }
+        update: {
+          args: Prisma.ErrorLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.ErrorLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ErrorLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ErrorLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.ErrorLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+        }
+        aggregate: {
+          args: Prisma.ErrorLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateErrorLog>
+        }
+        groupBy: {
+          args: Prisma.ErrorLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ErrorLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ErrorLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ErrorLogCountAggregateOutputType> | number
+        }
+      }
+    }
     AuditLog: {
       payload: Prisma.$AuditLogPayload<ExtArgs>
       fields: Prisma.AuditLogFieldRefs
@@ -1852,6 +1927,21 @@ export const PendingWebhookScalarFieldEnum = {
 } as const
 
 export type PendingWebhookScalarFieldEnum = (typeof PendingWebhookScalarFieldEnum)[keyof typeof PendingWebhookScalarFieldEnum]
+
+
+export const ErrorLogScalarFieldEnum = {
+  id: 'id',
+  statusCode: 'statusCode',
+  message: 'message',
+  stack: 'stack',
+  route: 'route',
+  requestId: 'requestId',
+  userId: 'userId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type ErrorLogScalarFieldEnum = (typeof ErrorLogScalarFieldEnum)[keyof typeof ErrorLogScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {
@@ -2345,6 +2435,7 @@ export type GlobalOmitConfig = {
   trackingLog?: Prisma.TrackingLogOmit
   infraction?: Prisma.InfractionOmit
   pendingWebhook?: Prisma.PendingWebhookOmit
+  errorLog?: Prisma.ErrorLogOmit
   auditLog?: Prisma.AuditLogOmit
 }
 

@@ -65,6 +65,7 @@ export const ModelName = {
   TrackingLog: 'TrackingLog',
   Infraction: 'Infraction',
   PendingWebhook: 'PendingWebhook',
+  ErrorLog: 'ErrorLog',
   AuditLog: 'AuditLog'
 } as const
 
@@ -369,6 +370,21 @@ export const PendingWebhookScalarFieldEnum = {
 } as const
 
 export type PendingWebhookScalarFieldEnum = (typeof PendingWebhookScalarFieldEnum)[keyof typeof PendingWebhookScalarFieldEnum]
+
+
+export const ErrorLogScalarFieldEnum = {
+  id: 'id',
+  statusCode: 'statusCode',
+  message: 'message',
+  stack: 'stack',
+  route: 'route',
+  requestId: 'requestId',
+  userId: 'userId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type ErrorLogScalarFieldEnum = (typeof ErrorLogScalarFieldEnum)[keyof typeof ErrorLogScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {

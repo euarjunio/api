@@ -41,6 +41,7 @@ export interface AcquirerProvider {
 
   // ── Charges (PIX) ────────────────────────────────────────────────
   createCharge(token: string, params: CreateChargeParams): Promise<CreateChargeResult>;
+  getChargeByTxid?(token: string, txid: string): Promise<{ txid: string; status: string; value: number; id?: string; payer?: any } | null>;
 
   // ── Transfers / Withdrawals ──────────────────────────────────────
   createTransferBatch(token: string, params: CreateTransferBatchParams): Promise<TransferBatchResult>;

@@ -558,6 +558,24 @@ model PendingWebhook {
   @@map("pending_webhooks")
 }
 
+// ── Error Log ─────────────────────────────────────────────────
+
+model ErrorLog {
+  id         String   @id @default(cuid())
+  statusCode Int
+  message    String
+  stack      String?  @db.Text
+  route      String?                         // "POST /v1/merchants/me/withdrawals"
+  requestId  String?
+  userId     String?
+  metadata   Json?                           // request body sanitizado
+  createdAt  DateTime @default(now())
+
+  @@index([statusCode])
+  @@index([createdAt])
+  @@map("error_logs")
+}
+
 // ── Audit Log ─────────────────────────────────────────────────
 
 model AuditLog {

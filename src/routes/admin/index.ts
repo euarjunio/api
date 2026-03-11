@@ -4,6 +4,8 @@ import { adminMerchantsRoutes } from "./merchants/index.ts";
 import { adminInfractionsRoutes } from "./infractions/index.ts";
 import { adminAuditLogsRoute } from "./audit-logs.ts";
 import { adminDashboardRoute } from "./dashboard.ts";
+import { adminChargesRoutes } from "./charges/index.ts";
+import { adminErrorLogsRoute } from "./error-logs.ts";
 
 export const adminRoutes: FastifyPluginAsyncZod = async (app) => {
   app.addHook("onRequest", verifyAdmin);
@@ -19,4 +21,10 @@ export const adminRoutes: FastifyPluginAsyncZod = async (app) => {
 
   // /v1/admin/audit-logs
   app.register(adminAuditLogsRoute, { prefix: "/audit-logs" });
+
+  // /v1/admin/charges
+  app.register(adminChargesRoutes, { prefix: "/charges" });
+
+  // /v1/admin/error-logs
+  app.register(adminErrorLogsRoute, { prefix: "/error-logs" });
 };

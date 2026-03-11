@@ -466,6 +466,29 @@ server.setErrorHandler((error: any, request, reply) => {
         { url: request.url, method: request.method, err: error?.message, stack: error?.stack },
         "Request error",
     );
+
+    // Persistir erro no banco de forma assíncrona (fire-and-forget)
+    const SENSITIVE_KEYS = new Set(["password", "totpCode", "token", "secret", "authorization", "newPassword", "currentPassword"]);
+    const sanitizeBody = (body: any): any => {
+        if (!body || typeof body !== "object") return body;
+        const result: Record<string, any> = {};
+        for (const [k, v] of Object.entries(body)) {
+            result[k] = SENSITIVE_KEYS.has(k) ? "[REDACTED]" : v;
+        }
+        return result;
+    };
+    prisma.errorLog.create({
+        data: {
+            statusCode: 500,
+            message: error?.message ?? "Internal Server Error",
+            stack: error?.stack ?? null,
+            route: `${request.method} ${request.url}`,
+            requestId: request.id ?? null,
+            userId: request.user?.id ?? null,
+            metadata: request.body ? sanitizeBody(request.body) : null,
+        },
+    }).catch(() => { /* silencioso — não deve quebrar a resposta */ });
+
     return reply.status(500).send({
         message: "Internal Server Error",
         ...(isDevelopment ? { error: error?.message } : {}),

@@ -201,6 +201,28 @@ export class TransfeeraProvider implements AcquirerProvider {
     };
   }
 
+  async getChargeByTxid(token: string, txid: string): Promise<{ txid: string; status: string; value: number; id?: string; payer?: any } | null> {
+    const response = await fetch(`${this.apiUrl}/pix/qrcode/collection/immediate/${txid}`, {
+      headers: {
+        "User-Agent": USER_AGENT,
+        accept: "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 404) return null;
+    if (!response.ok) await this.handleError("getChargeByTxid", response);
+
+    const data: any = await response.json();
+    return {
+      id: data.id,
+      txid: data.txid ?? txid,
+      status: data.status ?? "",
+      value: Math.round((parseFloat(data.original_value ?? data.value ?? "0")) * 100),
+      payer: data.payer ?? null,
+    };
+  }
+
   // ── Transfers / Withdrawals ─────────────────────────────────────────
 
   async createTransferBatch(token: string, params: CreateTransferBatchParams): Promise<TransferBatchResult> {
